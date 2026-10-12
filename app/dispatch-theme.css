@@ -647,3 +647,38 @@ main.narrow.login h1 { margin: 2px 0 18px; }
     scrollbar-width: thin;
   }
 }
+
+/* ---- Floating leaves + bubbles behind the dashboard (app/floating-background.tsx) ---- */
+.dsp-bg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.dsp-bg::before, .dsp-bg::after { content: ""; position: absolute; border-radius: 50%; filter: blur(90px); transition: background-color .4s ease, opacity .4s ease; }
+.dsp-bg::before { width: 560px; height: 560px; left: -200px; top: -220px; background: #F8D9C4; opacity: .55; }
+.dsp-bg::after { width: 520px; height: 520px; right: -180px; bottom: -200px; background: #E4DAF2; opacity: .6; }
+.dsp-f { position: absolute; will-change: transform; }
+.dsp-f.leaf { top: -120px; animation: dsp-fall var(--d) linear var(--dl) infinite; }
+.dsp-f.bubble { bottom: -120px; animation: dsp-rise var(--d) linear var(--dl) infinite; }
+.dsp-f > span { display: block; }
+.dsp-f.leaf > span { border-radius: 0 100% 0 100%; opacity: .8; animation: dsp-tumble var(--a) ease-in-out infinite; }
+.dsp-f.bubble > span { border-radius: 50%; border: 1px solid rgba(255,255,255,.7); opacity: .65; animation: dsp-sway var(--a) ease-in-out infinite; }
+@keyframes dsp-rise { to { transform: translateY(calc(-100vh - 260px)); } }
+@keyframes dsp-fall { to { transform: translateY(calc(100vh + 260px)); } }
+@keyframes dsp-sway { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(var(--sx)); } }
+@keyframes dsp-tumble {
+  0%, 100% { transform: translateX(0) rotate(var(--r)); }
+  25% { transform: translateX(var(--sx)) rotate(calc(var(--r) + 40deg)); }
+  50% { transform: translateX(0) rotate(calc(var(--r) + 10deg)); }
+  75% { transform: translateX(calc(var(--sx) * -1)) rotate(calc(var(--r) - 30deg)); }
+}
+/* The dashboard sits above the background layer. */
+.dash { position: relative; z-index: 1; }
+@media (prefers-reduced-motion: reduce) { .dsp-f, .dsp-f > span { animation: none; } }
+/* Dark: follows the light/dark switch, and the system setting until one is picked. */
+:root[data-theme="dark"] .dsp-bg::before { background: #6B3F26; opacity: .35; }
+:root[data-theme="dark"] .dsp-bg::after { background: #3E3160; opacity: .45; }
+:root[data-theme="dark"] .dsp-f.leaf > span { opacity: .42; filter: saturate(1.5) brightness(.9); }
+:root[data-theme="dark"] .dsp-f.bubble > span { background: radial-gradient(circle at 32% 30%, rgba(255,255,255,.14), transparent 65%) !important; border-color: rgba(255,255,255,.14); opacity: 1; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .dsp-bg::before { background: #6B3F26; opacity: .35; }
+  :root:not([data-theme="light"]) .dsp-bg::after { background: #3E3160; opacity: .45; }
+  :root:not([data-theme="light"]) .dsp-f.leaf > span { opacity: .42; filter: saturate(1.5) brightness(.9); }
+  :root:not([data-theme="light"]) .dsp-f.bubble > span { background: radial-gradient(circle at 32% 30%, rgba(255,255,255,.14), transparent 65%) !important; border-color: rgba(255,255,255,.14); opacity: 1; }
+}

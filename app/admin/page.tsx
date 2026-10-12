@@ -9,6 +9,7 @@ import { loadRubric, rubricHistory } from "@/lib/rubric-store";
 import { getStyleGuide } from "@/lib/style";
 import { TOPIC_KEYS, TOPICS, type Topic } from "@/lib/topics";
 import { formatIst, sendTimeFor, weekStart } from "@/lib/week";
+import { FloatingBackground } from "../floating-background";
 import { ThemeToggle } from "../theme-toggle";
 import { lockRubric, logout, toggleSource } from "./actions";
 import {
@@ -105,6 +106,8 @@ export default async function EditorDashboard({ searchParams }: Props) {
   const stepIndex = issue ? STATUS_STEPS.findIndex((x) => x.key === issue.status) : -1;
 
   return (
+    <>
+    <FloatingBackground />
     <main className="dash">
       <aside className="dash-side">
         <div className="side-brand">
@@ -163,6 +166,7 @@ export default async function EditorDashboard({ searchParams }: Props) {
       </div>
       </div>
     </main>
+    </>
   );
 }
 
