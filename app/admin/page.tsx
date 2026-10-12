@@ -48,7 +48,7 @@ const TABS = [
   { key: "subscribers", label: "Subscribers" },
   { key: "replies", label: "Reader replies" },
   { key: "guide", label: "Voice guide" },
-  { key: "scoring", label: "How scoring works" },
+  { key: "scoring", label: "Scoring" },
   { key: "history", label: "Past issues" },
   { key: "pipeline", label: "Pipeline" },
 ] as const;
@@ -91,6 +91,7 @@ const STATUS_COPY: Record<string, { label: string; tone: string }> = {
   failed: { label: "Failed", tone: "bad" },
 };
 
+const truncateText = (t: string, n: number) => (t.length > n ? `${t.slice(0, n - 1).trimEnd()}…` : t);
 const fmt = (d: string | null) => (d ? formatIst(new Date(d)) : "—");
 
 /** Pastel per topic (design tokens in dispatch-theme.css); unlisted topics stay neutral. */
@@ -497,7 +498,7 @@ function Score({ item }: { item: EditorItem }) {
         ))}
       </div>
       <p className="muted small">
-        Points = weight × score ÷ 5. Hover a row to see what 0, 3 and 5 mean, or read <Link href="/admin?tab=scoring">how scoring works</Link>.
+        Points = weight × score ÷ 5. Hover a row to see what 0, 3 and 5 mean, or see the <Link href="/admin?tab=scoring">Scoring</Link> tab.
       </p>
       <p className="muted small">Covered by {new Set(item.publishers).size} outlet(s): {item.publishers.slice(0, 6).join(", ")}</p>
       {item.checks?.review && (
@@ -770,7 +771,7 @@ async function GuideTab() {
       </p>
       <div className="panel"><StyleGuideForm guide={await getStyleGuide()} /></div>
       <p className="small">
-        The automatic checks on commentary and the scoring of stories are explained in <Link href="/admin?tab=scoring">How scoring works</Link>.
+        The automatic checks on commentary and the scoring of stories are explained on the <Link href="/admin?tab=scoring">Scoring</Link> tab.
       </p>
     </section>
     <section>
@@ -911,7 +912,7 @@ async function ScoringTab({ issue }: { issue: EditorIssue | undefined }) {
     <div className="explainer">
       <section className="panel hero-card">
         <div className="hero-intro">
-          <span className="chip">How scoring works</span>
+          <span className="chip">Scoring</span>
           <p className="statement">
             Every story gets a score out of 100.{" "}
             <span className="faint">It measures how well it fits The Dispatch: counterintuitive, under-reported, or connecting two trends.</span>{" "}
@@ -976,8 +977,13 @@ async function ScoringTab({ issue }: { issue: EditorIssue | undefined }) {
       <RubricEditSection />
 
       {lead?.criteria && (
-        <section className="panel">
+        <details className="panel collapsible">
+          <summary>
           <h2>Worked example: this week&apos;s lead story</h2>
+          <span className="collapsible-meta">{truncateText(lead.headline, 70)} · {Math.round(Number(lead.score ?? 0))}/100</span>
+          <span className="chevron" aria-hidden="true" />
+        </summary>
+          <div className="collapsible-body">
           <p><b>{lead.headline}</b> <span className="muted small">· via {lead.publisher} · {new Set(lead.publishers).size} outlet(s)</span></p>
           <div className="table-wrap">
             <table>
@@ -999,28 +1005,41 @@ async function ScoringTab({ issue }: { issue: EditorIssue | undefined }) {
             </table>
           </div>
           <p className="muted small">Gemini&apos;s reason: “{lead.reason}”</p>
-        </section>
+          </div>
+        </details>
       )}
 
       {dist.total > 0 && (
-        <section className="panel">
+        <details className="panel collapsible">
+          <summary>
           <h2>This week&apos;s spread</h2>
-          <p className="muted small">{dist.total} scored stories · average {dist.avg} · highest {dist.max}. Only the best few clear 80.</p>
-          <div className="dist">
-            {bands.map((b) => (
-              <div key={b.label} className="bar-row">
-                <span>{b.label}</span>
-                <span className="bar"><span style={{ width: `${(b.n / maxBand) * 100}%` }} /></span>
-                <span className="num">{b.n}</span>
-              </div>
-            ))}
+          <span className="collapsible-meta">{dist.total} scored · average {dist.avg} · highest {dist.max}</span>
+          <span className="chevron" aria-hidden="true" />
+        </summary>
+          <div className="collapsible-body">
+            <p className="muted small">Only the best few clear 80. Each tile shows how many of this week&apos;s stories landed in that band.</p>
+            <div className="bands">
+              {bands.map((b, i) => (
+                <div key={b.label} className={`band band-${i}`}>
+                  <span className="band-range">{b.label.split(" · ")[0]}</span>
+                  <b className="band-count">{b.n}</b>
+                  <span className="band-label">{b.label.split(" · ")[1]} · {Math.round((b.n / Math.max(1, dist.total)) * 100)}%</span>
+                  <span className="bar"><span style={{ width: `${(b.n / maxBand) * 100}%` }} /></span>
+                </div>
+              ))}
+            </div>
           </div>
-        </section>
+        </details>
       )}
 
-      <section className="panel">
-        <h2>From scores to a lineup</h2>
-        <ol className="flow">
+      <details className="panel collapsible">
+        <summary>
+          <h2>From scores to a lineup</h2>
+          <span className="collapsible-meta">Top {SELECTION.shortlist} → Gemini picks {SELECTION.min}–{SELECTION.max} → rules checked → bench of {SELECTION.bench}</span>
+          <span className="chevron" aria-hidden="true" />
+        </summary>
+        <div className="collapsible-body">
+        <ol className="flow step-cards">
           <li>The top {SELECTION.shortlist} stories by score form the shortlist.</li>
           <li>
             Gemini, acting as editor, picks {SELECTION.min}–{SELECTION.max} of them (aiming for {SELECTION.target}) and puts them in running order. It weighs
@@ -1033,11 +1052,16 @@ async function ScoringTab({ issue }: { issue: EditorIssue | undefined }) {
           </li>
           <li>The next {SELECTION.bench} best stories become the bench, your swap options.</li>
         </ol>
-      </section>
+        </div>
+      </details>
 
-      <section>
-        <h2>How commentary is checked</h2>
-        <div className="two-col">
+      <details className="panel collapsible">
+        <summary>
+          <h2>How commentary is checked</h2>
+          <span className="collapsible-meta">5 automatic checks · 4-point AI review · one rewrite, then flagged</span>
+          <span className="chevron" aria-hidden="true" />
+        </summary>
+        <div className="collapsible-body two-col">
           <div className="panel">
             <h3>Automatic checks (pass / fail)</h3>
             <ul className="tight">
@@ -1063,7 +1087,7 @@ async function ScoringTab({ issue }: { issue: EditorIssue | undefined }) {
             </p>
           </div>
         </div>
-      </section>
+      </details>
     </div>
   );
 }

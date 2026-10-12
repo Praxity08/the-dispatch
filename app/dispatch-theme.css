@@ -911,3 +911,23 @@ details.collapsible > summary { transition: border-radius .42s ease, background-
 @media (prefers-reduced-motion: reduce) {
   details.collapsible::details-content, details.rubric::details-content, details.bench::details-content { transition: none; }
 }
+
+/* ---- Scoring tab: spread as band tiles, lineup steps as cards (fill the width) ---- */
+.bands { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+.band { border-radius: 20px; padding: 16px 18px; display: grid; gap: 4px; }
+.band-range { font-size: 12.5px; font-weight: 500; letter-spacing: .02em; }
+.band-count { font: 500 34px/1.1 var(--font); letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.band-label { font-size: 13px; opacity: .85; }
+.band .bar { margin-top: 8px; background: rgba(255,255,255,.55); }
+.band-0 { background: var(--green-bg); color: var(--green); } .band-0 .bar > span { background: var(--green-dot); }
+.band-1 { background: var(--blue-bg); color: var(--blue); } .band-1 .bar > span { background: var(--blue-dot); }
+.band-2 { background: var(--butter-bg); color: var(--butter); } .band-2 .bar > span { background: var(--butter-dot); }
+.band-3 { background: var(--surface-3); color: var(--text-2); } .band-3 .bar > span { background: var(--faint); }
+:root[data-theme="dark"] .band .bar { background: rgba(0,0,0,.25); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .band .bar { background: rgba(0,0,0,.25); } }
+ol.step-cards { list-style: none; padding: 0; margin: 4px 0 0; max-width: none; counter-reset: step; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+ol.step-cards li { counter-increment: step; background: var(--surface-2); border-radius: 20px; padding: 16px 18px; font-size: 14px; line-height: 1.5; color: var(--text-2); display: grid; align-content: start; gap: 10px; }
+ol.step-cards li::before { content: counter(step); width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font: 600 12.5px var(--font); background: var(--lav-bg); color: var(--lav); }
+.collapsible-body.two-col { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 1000px) { .bands, ol.step-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .bands, ol.step-cards, .collapsible-body.two-col { grid-template-columns: minmax(0, 1fr); } }

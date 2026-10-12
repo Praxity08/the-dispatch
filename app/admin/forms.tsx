@@ -422,7 +422,7 @@ export function RubricEditor({ rubric, meta }: { rubric: Rubric; meta: Criterion
       <section>
         <h3>What each criterion means</h3>
         <p className="muted small">
-          This wording is sent to Gemini word for word when it scores stories, and shown in “How scoring works”. Changes apply the next time
+          This wording is sent to Gemini word for word when it scores stories, and shown on the Scoring tab. Changes apply the next time
           stories are scored.
         </p>
         {meta.map((m) => {
