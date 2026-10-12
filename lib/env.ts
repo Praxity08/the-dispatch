@@ -10,3 +10,12 @@ export function requireEnv(name: string): string {
   if (!v) throw new Error(`${name} is not set`);
   return v;
 }
+
+/**
+ * The public website as subscribers see it: the logo in emails and the "you subscribed at …" line.
+ * Defaults to appUrl(); set PUBLIC_SITE_URL locally so test emails sent from a laptop still load the
+ * hosted logo instead of pointing at localhost.
+ */
+export function publicSiteUrl(): string {
+  return (process.env.PUBLIC_SITE_URL ?? appUrl()).replace(/\/+$/, "");
+}
