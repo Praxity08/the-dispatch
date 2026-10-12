@@ -1,0 +1,1259 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><style>/* [project]/app/globals.css [app-client] (css) */
+:root {
+  --bg: #fafaf9;
+  --surface: #fff;
+  --text: #1c1917;
+  --muted: #78716c;
+  --border: #e7e5e4;
+  --accent: #b45309;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0c0a09;
+    --surface: #1c1917;
+    --text: #f5f5f4;
+    --muted: #a8a29e;
+    --border: #292524;
+    --accent: #f59e0b;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  font: 15px / 1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 16px 64px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 26px;
+}
+
+h2 {
+  margin: 32px 0 12px;
+  font-size: 17px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.stats {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+  display: grid;
+}
+
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.stat b {
+  font-size: 24px;
+  display: block;
+}
+
+table {
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  width: 100%;
+  overflow: hidden;
+}
+
+th, td {
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  padding: 9px 12px;
+}
+
+th {
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+a {
+  color: var(--accent);
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.narrow {
+  max-width: 480px;
+}
+
+section {
+  margin-top: 36px;
+}
+
+.eyebrow {
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.display {
+  margin: 6px 0 10px;
+  font-family: Georgia, Times New Roman, serif;
+  font-size: clamp(36px, 8vw, 56px);
+}
+
+.lede {
+  max-width: 620px;
+  font-family: Georgia, Times New Roman, serif;
+  font-size: 18px;
+}
+
+.hero {
+  padding-bottom: 8px;
+}
+
+.small {
+  font-size: 13px;
+}
+
+.row-between {
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  display: flex;
+}
+
+.stack {
+  gap: 12px;
+  display: grid;
+}
+
+label {
+  gap: 6px;
+  font-size: 14px;
+  display: grid;
+}
+
+input, textarea {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  min-width: 0;
+  padding: 9px 12px;
+}
+
+textarea {
+  width: 100%;
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.inline-form {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+  display: flex;
+}
+
+.inline-form input[type="email"] {
+  flex: 220px;
+}
+
+.btn {
+  font: inherit;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-weight: 600;
+}
+
+.btn.secondary {
+  color: var(--text);
+  border-color: var(--border);
+  background: none;
+}
+
+.btn:disabled {
+  opacity: .6;
+  cursor: progress;
+}
+
+.link-btn {
+  font: inherit;
+  color: var(--accent);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 13px;
+}
+
+.ok {
+  color: #15803d;
+  margin: 0;
+}
+
+.error {
+  color: #b91c1c;
+  margin: 0;
+}
+
+.hp {
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  left: -9999px;
+}
+
+.jobs {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  display: grid;
+}
+
+.job {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  align-content: start;
+  gap: 6px;
+  padding: 14px;
+  display: grid;
+}
+
+.steps {
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.steps li {
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.steps li.done {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+tr.dim td {
+  opacity: .45;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.archive {
+  padding-left: 18px;
+}
+
+footer {
+  margin-top: 48px;
+}
+
+:root {
+  --good: #15803d;
+  --good-bg: #dcfce7;
+  --warn: #b45309;
+  --warn-bg: #fef3c7;
+  --bad: #b91c1c;
+  --info-bg: #e0f2fe;
+  --info: #0369a1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --good: #4ade80;
+    --good-bg: #14532d;
+    --warn: #fbbf24;
+    --warn-bg: #422006;
+    --bad: #f87171;
+    --info-bg: #082f49;
+    --info: #7dd3fc;
+  }
+}
+
+.dash {
+  max-width: 1200px;
+}
+
+.dash-head {
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  display: flex;
+}
+
+.strip {
+  color: var(--muted);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  margin: 8px 0 0;
+  font-size: 14px;
+  display: flex;
+}
+
+.pill {
+  background: var(--border);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pill.info {
+  background: var(--info-bg);
+  color: var(--info);
+}
+
+.pill.good {
+  background: var(--good-bg);
+  color: var(--good);
+}
+
+.pill.bad {
+  color: var(--bad);
+  background: #fee2e2;
+}
+
+.tabs {
+  border-bottom: 1px solid var(--border);
+  gap: 4px;
+  margin: 22px 0 4px;
+  display: flex;
+  overflow-x: auto;
+}
+
+.tabs a {
+  color: var(--muted);
+  white-space: nowrap;
+  border-bottom: 2px solid #0000;
+  margin-bottom: -1px;
+  padding: 10px 14px;
+  text-decoration: none;
+}
+
+.tabs a.active {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+
+.issue-layout {
+  grid-template-columns: minmax(0, 1fr) 330px;
+  align-items: start;
+  gap: 28px;
+  display: grid;
+}
+
+.issue-side {
+  gap: 14px;
+  margin-top: 36px;
+  display: grid;
+  position: sticky;
+  top: 16px;
+}
+
+@media (max-width: 900px) {
+  .issue-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .issue-side {
+    order: -1;
+    margin-top: 20px;
+    position: static;
+  }
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin: 0;
+  padding: 16px;
+}
+
+.panel h3 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.section-head {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  display: flex;
+}
+
+.section-head h2 {
+  margin-bottom: 8px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 14px;
+  padding: 16px 18px;
+}
+
+.card.approved {
+  border-left: 4px solid var(--good);
+}
+
+.card.pending {
+  border-left: 4px solid var(--border);
+}
+
+.card.removed {
+  opacity: .75;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  display: flex;
+}
+
+.card-top {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  display: flex;
+}
+
+.pos {
+  background: var(--text);
+  width: 26px;
+  height: 26px;
+  color: var(--bg);
+  border-radius: 50%;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-grid;
+}
+
+.chip {
+  border: 1px solid var(--border);
+  color: var(--muted);
+  white-space: nowrap;
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: 12px;
+}
+
+.chip.good {
+  background: var(--good-bg);
+  color: var(--good);
+  border-color: #0000;
+}
+
+.chip.warn {
+  background: var(--warn-bg);
+  color: var(--warn);
+  border-color: #0000;
+}
+
+.reorder {
+  gap: 2px;
+  margin-left: auto;
+  display: flex;
+}
+
+.headline {
+  margin: 10px 0 2px;
+  font: 600 19px / 1.35 Georgia, Times New Roman, serif;
+}
+
+.headline a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.headline a:hover {
+  text-decoration: underline;
+}
+
+.warn {
+  color: var(--warn);
+}
+
+.editor {
+  margin-top: 10px;
+}
+
+textarea.commentary {
+  resize: vertical;
+  field-sizing: content;
+  min-height: 5lh;
+  font-family: Georgia, Times New Roman, serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.editor-bar {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin-top: 6px;
+  font-size: 13px;
+  display: flex;
+}
+
+.meter {
+  color: var(--muted);
+}
+
+.meter.warn {
+  color: var(--warn);
+}
+
+.editor-actions {
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-left: auto;
+  display: flex;
+}
+
+.ai-form {
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  display: flex;
+}
+
+.ai-form input {
+  flex: 260px;
+}
+
+.rubric {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.rubric summary {
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.bars {
+  gap: 6px;
+  margin: 8px 0;
+  display: grid;
+}
+
+.bar-row {
+  grid-template-columns: minmax(150px, 1fr) minmax(80px, 2fr) 34px;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  display: grid;
+}
+
+.bar {
+  background: var(--border);
+  border-radius: 4px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.bar > span {
+  background: var(--accent);
+  height: 100%;
+  display: block;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.card-actions {
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  display: flex;
+}
+
+.action {
+  flex-direction: column;
+  gap: 4px;
+  display: inline-flex;
+}
+
+.swap {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  display: flex;
+}
+
+select {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-width: 100%;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+.swap {
+  flex-direction: column;
+  flex: 260px;
+  align-items: flex-end;
+}
+
+.swap.open {
+  flex-basis: 100%;
+}
+
+.card-actions {
+  align-items: flex-start;
+}
+
+.swap-panel {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: 10px;
+  width: 100%;
+  padding: 10px 12px;
+}
+
+.swap-panel ul {
+  gap: 8px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+}
+
+.swap-panel li {
+  border-top: 1px solid var(--border);
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  display: grid;
+}
+
+.swap-score {
+  justify-items: center;
+  line-height: 1.1;
+  display: grid;
+}
+
+.swap-score b {
+  font-variant-numeric: tabular-nums;
+  font-size: 20px;
+}
+
+.swap-score span {
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+}
+
+.swap-title {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.swap-criteria {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+  display: flex;
+}
+
+.crit {
+  background: var(--border);
+  color: var(--muted);
+  white-space: nowrap;
+  border-radius: 999px;
+  padding: 1px 7px;
+  font-size: 11px;
+}
+
+.crit b {
+  color: var(--text);
+}
+
+.crit.s4, .crit.s5 {
+  background: var(--good-bg);
+  color: var(--good);
+}
+
+.crit.s4 b, .crit.s5 b {
+  color: var(--good);
+}
+
+@media (max-width: 560px) {
+  .swap-panel li {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+
+  .swap-panel li form {
+    grid-column: 2;
+  }
+}
+
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.btn.ghost {
+  color: var(--muted);
+  background: none;
+  border-color: #0000;
+  padding: 7px 10px;
+}
+
+.btn.ghost:hover {
+  color: var(--text);
+  background: var(--border);
+}
+
+.btn.danger {
+  border-color: var(--border);
+  color: var(--bad);
+  background: none;
+}
+
+.btn.big {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+}
+
+.result {
+  margin: 4px 0 0;
+  font-size: 13px;
+}
+
+.checklist {
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 0;
+  font-size: 14px;
+  list-style: none;
+  display: grid;
+}
+
+.checklist li {
+  grid-template-columns: 18px 1fr;
+  gap: 6px;
+  display: grid;
+}
+
+.checklist li.ok > span:first-child {
+  color: var(--good);
+  font-weight: 700;
+}
+
+.checklist li.todo > span:first-child {
+  color: var(--muted);
+}
+
+.confirm {
+  gap: 8px;
+  display: grid;
+}
+
+.confirm.armed {
+  background: var(--warn-bg);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.confirm.armed p {
+  margin: 0;
+}
+
+.row {
+  flex-wrap: wrap;
+  gap: 8px;
+  display: flex;
+}
+
+.side-links {
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  display: flex;
+}
+
+.side-links a.btn {
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.timeline {
+  gap: 4px;
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+}
+
+.stats.compact {
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 0;
+}
+
+.stats a.stat {
+  color: inherit;
+  text-decoration: none;
+}
+
+details.bench summary {
+  cursor: pointer;
+  align-items: center;
+  gap: 10px;
+  list-style: none;
+  display: flex;
+}
+
+details.bench summary::-webkit-details-marker {
+  display: none;
+}
+
+.bench-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.filters {
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 14px;
+  display: flex;
+}
+
+.filters a {
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.filters a.active {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+.empty {
+  max-width: 560px;
+}
+
+textarea.mono {
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 13px;
+}
+
+.steps.progress {
+  margin: 20px 0 0;
+}
+
+.stats.overview {
+  margin-top: 14px;
+}
+
+.notice {
+  background: var(--info-bg);
+  border-radius: 10px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0;
+  padding: 12px 14px;
+  display: flex;
+}
+
+.notice .job {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.narrow-panel {
+  max-width: 560px;
+}
+
+.explainer section {
+  max-width: 900px;
+}
+
+.lede-small {
+  max-width: 720px;
+  font-size: 16px;
+}
+
+.flow {
+  gap: 10px;
+  max-width: 760px;
+  padding-left: 22px;
+  display: grid;
+}
+
+.flow code {
+  background: var(--border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 13px;
+}
+
+.criteria {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  display: grid;
+}
+
+.criterion {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.criterion-head {
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  display: flex;
+}
+
+.criterion-head h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.weight {
+  color: var(--accent);
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.question {
+  margin: 8px 0 4px;
+  font-family: Georgia, Times New Roman, serif;
+  font-size: 15px;
+}
+
+.scale {
+  gap: 6px;
+  margin: 10px 0;
+  padding: 0;
+  font-size: 14px;
+  list-style: none;
+  display: grid;
+}
+
+.scale li {
+  grid-template-columns: 24px 1fr;
+  align-items: start;
+  gap: 8px;
+  display: grid;
+}
+
+.score-dot {
+  border: 1px solid var(--accent);
+  width: 22px;
+  height: 22px;
+  color: var(--accent);
+  border-radius: 50%;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-grid;
+}
+
+table.mini {
+  font-size: 13px;
+}
+
+table.mini th, table.mini td {
+  text-align: center;
+  padding: 5px 8px;
+}
+
+.bar-row.points {
+  grid-template-columns: minmax(150px, 1fr) minmax(80px, 2fr) 34px 40px;
+}
+
+.dist {
+  gap: 8px;
+  max-width: 640px;
+  display: grid;
+}
+
+.dist .bar-row {
+  grid-template-columns: minmax(190px, 1fr) minmax(80px, 2fr) 34px;
+}
+
+.two-col {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  display: grid;
+}
+
+.tight {
+  gap: 4px;
+  padding-left: 18px;
+  font-size: 14px;
+  display: grid;
+}
+
+.rubric-lock, .rubric-open {
+  margin-top: 28px;
+}
+
+.rubric-open {
+  border-color: var(--accent);
+}
+
+.rubric-editor {
+  gap: 4px;
+  display: grid;
+}
+
+.rubric-editor section {
+  margin-top: 18px;
+}
+
+.rubric-editor h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.weights {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+  display: grid;
+}
+
+.weight-field input {
+  width: 80px;
+}
+
+.sum {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.criterion-edit {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  gap: 8px;
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  display: grid;
+}
+
+.criterion-edit legend {
+  padding: 0 4px;
+  font-weight: 600;
+}
+
+.criterion-edit input {
+  width: 100%;
+}
+
+.criterion-edit input[readonly] {
+  color: var(--muted);
+}
+
+.anchors {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 8px;
+  display: grid;
+}
+
+.num-grid {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+  display: grid;
+}
+
+.num-field input {
+  width: 100%;
+}
+
+.save-row {
+  flex-wrap: wrap;
+  gap: 8px;
+  display: flex;
+}
+
+.save-row input {
+  flex: 280px;
+}
+
+.tabs .badge {
+  background: var(--accent);
+  min-width: 18px;
+  color: var(--bg);
+  text-align: center;
+  border-radius: 999px;
+  margin-left: 6px;
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  display: inline-block;
+}
+
+.stat.active {
+  border-color: var(--accent);
+}
+
+td .chip {
+  margin-left: 6px;
+}
+
+.row-actions {
+  justify-content: flex-end;
+  gap: 6px;
+  display: flex;
+}
+
+.add-link {
+  margin: 12px 0 18px;
+}
+
+.add-link .inline-form input[type="url"] {
+  flex: 2 260px;
+}
+
+.add-link .inline-form input[type="text"] {
+  flex: 200px;
+}
+
+.edits {
+  gap: 12px;
+  display: grid;
+}
+
+.edit-pair .pair {
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  display: grid;
+}
+
+.edit-pair .pair p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.edit-pair .before {
+  color: var(--muted);
+  text-decoration: line-through;
+  -webkit-text-decoration-color: color-mix(in srgb, var(--muted) 45%, transparent);
+  text-decoration-color: color-mix(in srgb, var(--muted) 45%, transparent);
+}
+
+.replies {
+  gap: 12px;
+  margin-top: 16px;
+  display: grid;
+}
+
+.reply.unread {
+  border-left: 3px solid var(--accent);
+}
+
+.reply-head {
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  display: flex;
+}
+
+.reply-chips {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  display: flex;
+}
+
+.reply-body {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 12px 0;
+  line-height: 1.55;
+}
+
+@media (max-width: 640px) {
+  .edit-pair .pair {
+    grid-template-columns: 1fr;
+  }
+
+  .reply-head {
+    flex-direction: column;
+  }
+
+  .reply-chips {
+    justify-content: flex-start;
+  }
+}
+
+a.btn {
+  align-items: center;
+  text-decoration: none;
+  display: inline-flex;
+}
+
+/*# sourceMappingURL=app_globals_0yg4wg8plh8sv.css.map*/</style><title>The Dispatch — Newsletter Engine</title><meta name="description" content="Newsletter intelligence and delivery pipeline for The Dispatch"/></head><body><div hidden=""><!--$--><!--/$--></div><main class="dash"><header class="dash-head"><div><p class="eyebrow">The Dispatch · Editor</p><h1>Good to see you, Shreya</h1><p class="strip"><span class="pill info">In review</span><span>Issue #<!-- -->105</span><span>Confirm before <!-- -->Wed, 14 Oct, 10:00 PM IST</span><span>Sends <!-- -->Thu, 15 Oct, 8:00 AM IST</span></p></div><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_ID_0080f1f538bc948391f039b475d86cf5c627cc0599"/><button class="btn ghost">Log out</button></form></header><nav class="tabs" aria-label="Sections"><a class="" href="02-dashboard-this-weeks-issue.html">This week&#x27;s issue</a><a class="active" aria-current="page" href="03-dashboard-story-pool.html">Story pool</a><a class="" href="04-dashboard-subscribers.html">Subscribers</a><a class="" href="05-dashboard-reader-replies.html">Reader replies<span class="badge" aria-label="2 unread">2</span></a><a class="" href="06-dashboard-voice-guide.html">Voice guide</a><a class="" href="07-dashboard-how-scoring-works.html">How scoring works</a><a class="" href="09-dashboard-past-issues.html">Past issues</a><a class="" href="10-dashboard-pipeline.html">Pipeline</a></nav><section><h2>All stories this week</h2><p class="muted small">Every distinct story the engine found, ranked by the editorial rubric. Add any of them to the bench, then swap it into the lineup.</p><form class="add-link" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_81"/><input type="hidden" name="$ACTION_81:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_81:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kdb01e417535e014681bcc734bccd47b3"/><input type="hidden" name="op" value="add-link"/><div class="inline-form"><input type="url" placeholder="https://… a story the feeds missed" required="" aria-label="Story link" name="url"/><input type="text" placeholder="Headline (if paywalled)" aria-label="Headline" name="headline"/><button class="btn secondary">Add story</button></div><p class="muted small">Paste a story the feeds missed: it&#x27;s scored, gets draft commentary and goes on the bench.</p></form><div class="filters"><a class="active" href="03-dashboard-story-pool.html">All</a><a class="" href="03-dashboard-story-pool.html">Funding &amp; VC</a><a class="" href="03-dashboard-story-pool.html">IPOs &amp; Public Markets</a><a class="" href="03-dashboard-story-pool.html">Layoffs &amp; Shutdowns</a><a class="" href="03-dashboard-story-pool.html">Policy &amp; Regulation</a><a class="" href="03-dashboard-story-pool.html">Fintech</a><a class="" href="03-dashboard-story-pool.html">Commerce, Quick Commerce &amp; D2C</a><a class="" href="03-dashboard-story-pool.html">AI &amp; Deeptech</a><a class="" href="03-dashboard-story-pool.html">Mobility, EV &amp; Climate</a><a class="" href="03-dashboard-story-pool.html">Healthtech &amp; Edtech</a><a class="" href="03-dashboard-story-pool.html">SaaS &amp; Enterprise</a><a class="" href="03-dashboard-story-pool.html">Consumer Internet &amp; Media</a><a class="" href="03-dashboard-story-pool.html">M&amp;A &amp; Consolidation</a><a class="" href="03-dashboard-story-pool.html">People, Leadership &amp; Governance</a></div><div class="table-wrap"><table><thead><tr><th>Score</th><th>Story</th><th>Topic</th><th>Outlets</th><th></th></tr></thead><tbody><tr><td class="num">94</td><td><a href="https://news.google.com/rss/articles/CBMimgFBVV95cUxOa0pCYl9nc3M1M1JuZXJ6a2NwcHVpc2JnVmpOU0Z3S3REcEVMcnlFMjZMczdhUUk0alRyS3BSS0FuYXllUEp0WElzaElaM0dzSHQzQUNQODVOYWhMNjNxUlJQNmlSdjdHcTZYSVVYUGhkM1hqSWhmbEtSRDRERnhrYUFMSTNPeWFVRUp2QlpsRm1uU0NCSUhrV1hR?oc=5" target="_blank" rel="noreferrer">India’s semiconductor ambition is all packaging, no chips</a><div class="muted small">Flips the narrative on India&#x27;s chip push, arguing that current successes are just in low-value packaging.</div></td><td>AI &amp; Deeptech</td><td>1</td><td class="nowrap"><span class="chip">In lineup</span></td></tr><tr><td class="num">91</td><td><a href="https://news.google.com/rss/articles/CBMi5AFBVV95cUxQaDRoWHV1T0FUZW4zMjV3aG9hY004LTdpRFQ0cmhTZnEzVnNYNGhwWC1tZTJFaXJtMHNfTTVYdVBieUlyX1d2aGF0SGZ3QVkxX3c0LXAtS3JJbG1OVHZOMF83UnBZcUY2eHRLbzdkRmgwcmh2WWs2c1Zlc0R2R0toRVhLMlVYd2FJUDNTTzd4YWZjZy1UTTY2R1EtMTZrS1Aya2RLOEJtMFNnZFdXNzdMYmRWbXlTMmQ3R1IxWkVaVVJCd2dRUXpOOXdiSDV2eVNvTEtRc01PVVUxSm1vRXpmSXB2NEzSAeoBQVVfeXFMT3c1SWF0elBTNGFiNlRzNXY0Rmh4MTBacFk4R3VDQkNVR1dSV1NZam12ZUtHNmZLZzY4MnUyS0xqNWJDTDFBVDhXMlU2WDNwdURmYWZtczFuWDN6R0xXNzhJTnlpT0hLYUprTGtnX2JXYkV4TU1KM1QxcHZjQUM1YjVYeWZGUkhubVZ5NndydldvalJOQ2tBWVEtSnd6VVZfZm94Y0wzekhBYWpPa0gybENiMm1oWWFoc2hxLWRSeEROTkk1SnNZRC1XMWtnYklFZW5rMUw2ZnV4V25JcUp6dlJsMVJSUTIxcjNR?oc=5" target="_blank" rel="noreferrer">ETSA 2026: Not getting H-1B visas will boost our startup ecosystem, says Piyush Goyal</a><div class="muted small">A bold claim that H-1B restrictions actually benefit India by retaining elite talent for local startups.</div></td><td>People, Leadership &amp; Governance</td><td>2</td><td class="nowrap"><span class="chip">In lineup</span></td></tr><tr><td class="num">87</td><td><a href="https://www.livemint.com/companies/news/sap-india-nayara-energy-delhi-high-court-11791532108416.html" target="_blank" rel="noreferrer">SAP India challenges order to restore software services to Nayara Energy</a><div class="muted small">SAP using EU sanctions as a lever in India is a major sovereignty and legal precedent.</div></td><td>Other</td><td>1</td><td class="nowrap"><span class="chip">In lineup</span></td></tr><tr><td class="num">85</td><td><a href="https://www.medianama.com/2026/10/223-data-residency-airtel-imc-2026/" target="_blank" rel="noreferrer">Data residency is not enough, says Airtel at IMC 2026, as Indian rules still focus on location</a><div class="muted small">Airtel&#x27;s warning that residency != sovereignty is a sophisticated nudge to data policy.</div></td><td>Policy &amp; Regulation</td><td>1</td><td class="nowrap"><span class="chip">In lineup</span></td></tr><tr><td class="num">85</td><td><a href="https://www.medianama.com/2026/10/223-reliance-jio-network-slicing-india/" target="_blank" rel="noreferrer">Jio deployed Network Slicing while TRAI’s regulations are yet to be finalised</a><div class="muted small">Jio deploying network slicing ahead of TRAI rules shows a &#x27;technology first, regulation later&#x27; approach.</div></td><td>Other</td><td>1</td><td class="nowrap"><span class="chip">In lineup</span></td></tr><tr><td class="num">82</td><td><a href="https://yourstory.com/2026/10/ecomm-festive-sales-hit-rs-24000-cr-in-two-days" target="_blank" rel="noreferrer">Festive e-com sales fall 10% YoY to Rs 30,000 crore in four days as pricier electronics drag demand</a><div class="muted small">First festive GMV contraction reveals consumer fatigue in big-ticket electronics despite buoyant PR.</div></td><td>Commerce, Quick Commerce &amp; D2C</td><td>2</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_82"/><input type="hidden" name="$ACTION_82:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_82:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k0dac81010fe53095a4371c65e9b9aa9c"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="595"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">81</td><td><a href="https://economictimes.indiatimes.com/tech/technology/et-startup-awards-2026-meesho-groww-ceos-on-how-life-changes-after-an-ipo/articleshow/134837023.cms" target="_blank" rel="noreferrer">ETSA 2026: Indian founders eyeing early IPOs instead of private capital: Meesho CEO Vidit Aatrey</a><div class="muted small">Signals a massive shift as late-stage startups prioritize public market discipline over easy private capital.</div></td><td>IPOs &amp; Public Markets</td><td>2</td><td class="nowrap"><span class="chip">In lineup</span></td></tr><tr><td class="num">81</td><td><a href="https://www.medianama.com/2026/10/223-satcom-licensees-security-clearance/" target="_blank" rel="noreferrer">Satcom licensees can launch only after individual security clearance, says Scindia at IMC 2026</a><div class="muted small">Mandatory individual security clearances add fresh regulatory hurdles for Starlink and satcom entrants.</div></td><td>Policy &amp; Regulation</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_83"/><input type="hidden" name="$ACTION_83:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_83:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k75317a8f0a2a44c88f60f31aee60ea06"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="600"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">80</td><td><a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxPeUxJMG5OeDJFb0FtNmN0UmNyemtFd2dvUG9qMFl3QTM3dldmQV9fLTEwQlNsVmlnOU9xNmZrUVZCTG1tNnlpWGhiMFlCZ1prTmdBNktuWW1kVWxNRDVTa2dYeVNsaG4zRFRZV0lxZ3N0TnQ5bVZFNGpWNU5WLW0xbnBHUFZlRHkzbjN4a2huQVYwT1UzRXpJZUVvdnNMZER4Y2ZFc25CeFJZdmE2OWVWLQ?oc=5" target="_blank" rel="noreferrer">Why IIT Madras is Shunning the YC Model for its ₹1,000 Cr Deeptech Fund</a><div class="muted small">Academic institution rejects quick software accelerator playbooks for patient deeptech capital.</div></td><td>Funding &amp; VC</td><td>1</td><td class="nowrap"><span class="chip">In lineup</span></td></tr><tr><td class="num">80</td><td><a href="https://news.google.com/rss/articles/CBMihgJBVV95cUxQQU54WjQ1OVFoRk9PZHZWUUF4cjYtMkRTYUs1dmJfLUVXV0ZHQkFEaEFiVUd5WUViM3NaQTVHc0F1eTNhSUxzazhtMGRWR3lLUGp6ZGptVm1qaWJkYmFqc1JPdVd1ekhFTkdMa3l4ZE8wSGhTcFRCOExDYTlpVUhKaVFEUERJR3VpNkxfNFI2UVJJVVRkRTV1TzFKbjY0LXY5Y3BUeWtkaHg2SUxQQ2M1TUtKYmFrY3ZhSUhwbEZaODc0ZGhfZmt1dVVsWjFUQmVJTEY4d0xybWstejBMWUVmVHp0X0VZQUF3Ymh0ZjU5THpPeG95TWMyQU5UakRTSkVBZmVVZHFR0gGLAkFVX3lxTFBzRl9ScmlaQ0J1eUtHM1EyNGg3U0FBdERpdFZqXzdDZkxPRTZlbFFqSE5DWVp1ZTY3cldXM1hlT3hnakh2bzRLVGlIQWdTZlZUYm9FZk8yQU1JbHBCNnhfaHBoUDBqVzlWYXFJd2t2bldWWlh3d0xMVjl6YzRsamdDZUNHSmdBSjVpMGRsbGtCVU1KdDlnQzRFT3B2SnZvclgxckRSWUM1ZTc0clRWS2FPS3pNUGVRMEN3OHpReTZlWU5MaW1xRFhjX3dqNkdId3BqOXQxMGxZbk0xSVpBVVZsUWo4dnNrU3FSa2d2S2JVSVJZNmdEMks0MDdhRnFjVDVNY2czT1VIX3JBMA?oc=5" target="_blank" rel="noreferrer">&#x27;These are facts Elon&#x27;: Zoho cofounder Sridhar Vembu takes on Musk&#x27;s claim of Starlink facing license hurd</a><div class="muted small">Vembu&#x27;s public pushback against Musk highlights the intense local vs global friction in India&#x27;s satcom policy.</div></td><td>Policy &amp; Regulation</td><td>1</td><td class="nowrap"><span class="chip">In lineup</span></td></tr><tr><td class="num">80</td><td><a href="https://news.google.com/rss/articles/CBMi0gFBVV95cUxQeU1ZTE9CeHo0b0tfdkVvZGlCa1JWbF9xbEJFYnd5Q2duWlB5WFh1WTBfTTFVNGgtWnFWZzgzZ24zU1dpN0doSk1jRVdVRU1uT0llenF5S1JKbW1mOGIwWTJTT1JfYm53Y01ZLTZBRFMtWlRuT0RUa0xnMTRsakxhYlN6ODhxdEVjYXVJOVBqN21RaVJpNmdvakFZVFEzY0txNVIxRWNuTlRUZ1JROE5iS2lNYVh5TmFaN2YzUnllQ1JMajVRNkd0T25JVnZ4elFWcmfSAdIBQVVfeXFMUHlNWUxPQnh6NG9LX3ZFb2RpQmtSVmxfcWxCRWJ3eUNnblpQeVhYdVkwX00xVTRoLVpxVmc4M2duM1NXaTdHaEpNY0VXVUVNbk9JZXpxeUtSSm1tZjhiMFkyU09SX2Jud2NNWS02QURTLVpUbk9EVGtMZzE0bGpMYWJTejg4cXRFY2F1STlQajdtUWlSaTZnb2pBWVRRM2NLcTVSMUVjbk5UVGdSUThOYktpTWFYeU5hWjdmM1J5ZUNSTGo1UTZHdE9uSVZ2eHpRVnJn?oc=5" target="_blank" rel="noreferrer">UNIQLO India allocates 15% of media budget to CTV, rules out quick commerce entry</a><div class="muted small">Uniqlo shunning quick commerce despite the $90B hype is a bold, brand-first counter-narrative.</div></td><td>Commerce, Quick Commerce &amp; D2C</td><td>1</td><td class="nowrap"><span class="chip">In lineup</span></td></tr><tr><td class="num">79</td><td><a href="https://economictimes.indiatimes.com/tech/technology/upi-mdr-framework-needs-rationalisation-to-protect-public-trust-report/articleshow/134870367.cms" target="_blank" rel="noreferrer">UPI MDR framework needs rationalisation to protect public trust: Report</a><div class="muted small">Reignites the critical debate over UPI MDR, arguing current free models may stifle long-term infrastructure resilience.</div></td><td>Fintech</td><td>2</td><td class="nowrap"><span class="chip">In lineup</span></td></tr><tr><td class="num">78</td><td><a href="https://news.google.com/rss/articles/CBMigwJBVV95cUxOblNoT1h1VGdUU1I1OWJmdWVhazU2YndnZm5ubjMzYm0ycVFLaVNYU3JvT3VPNFc3dWVQbDJNYXU5OFRBblBQWHBpd2RnUHYzTWxwczktLUEwVXM4QjM4d2V4Sk80cnh1cnFnS19WUEVKS2RqdE9wLUVRd1RwTUZJZEFETHVMYkpGbE1jVmxfemQ0dUZCWmtGckhlVklxVnRKWlFVc0F1dFBmZkxOaHcyWDhRX1RXQURuLWpfWF9hMzNIOU1vVjMwZjFBRUhGcU54bmh5VmZLbnFIVXBGVVhoMjVjV0VmOGVyOFpnMkh6ODZyUk5DdWtCbG1uc2lxTlVORHFV?oc=5" target="_blank" rel="noreferrer">#MCTech3 | Quick comm festive ad rates squeeze D2C brands; Fintech Oolka eyes $45 million funding; and more</a><div class="muted small">Surging quick commerce ad rates squeeze D2C margins, forcing startups into expensive working capital.</div></td><td>Commerce, Quick Commerce &amp; D2C</td><td>2</td><td class="nowrap"><span class="chip">In lineup</span></td></tr><tr><td class="num">78</td><td><a href="https://inc42.com/features/pledge-sell-pledge-again-bhavish-agarwal-ola-electrics-dilemma/" target="_blank" rel="noreferrer">Pledge, Sell, Pledge Again: Bhavish Agarwal &amp; Ola Electric’s Dilemma</a><div class="muted small">Promoter share-pledging loop highlights deepening capital strain and governance risks at Ola.</div></td><td>Mobility, EV &amp; Climate</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_84"/><input type="hidden" name="$ACTION_84:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_84:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kabb40f715df86d47e9ef9cbe41652a54"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="601"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">77</td><td><a href="https://news.google.com/rss/articles/CBMiigFBVV95cUxOMHZWcHJCa3d5cXBrYm4wV1JKaVdFekp2cHRIMExpQjVDU1hTNGVZckcyUDRtRWxyWmJOTXVyaGVNd1hmaFJtZUIyZ1kyRUhUUkVmQTlTMkhGcWRjNFNjZjVJcVFqVzVsS0wybnhrY0VkVWxmN21EWkhwWUl0SmgxMkZ2bE9YV3hzS2c?oc=5" target="_blank" rel="noreferrer">Jio Platforms set to target nearly $106 bn valuation in IPO</a><div class="muted small">A $100B+ IPO target would redefine the Indian tech landscape and public market depth.</div></td><td>IPOs &amp; Public Markets</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_85"/><input type="hidden" name="$ACTION_85:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_85:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k970b880b4d0f4b5dd0f91ce110117e84"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="510"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">77</td><td><a href="https://economictimes.indiatimes.com/tech/technology/need-judicious-mix-in-use-of-open-and-proprietary-ai-models-to-protect-data-it-secy/articleshow/134796854.cms" target="_blank" rel="noreferrer">Need &#x27;judicious mix&#x27; in use of open and proprietary AI models to protect data: IT Secy</a><span class="chip">Added by you</span><div class="muted small">Government warming up to open-source AI models to avoid vendor lock-in and sovereignty risks.</div></td><td>Policy &amp; Regulation</td><td>1</td><td class="nowrap"><span class="chip">In lineup</span></td></tr><tr><td class="num">75</td><td><a href="https://inc42.com/buzz/irdai-mulls-introducing-insurance-commission-caps-from-january-2027/" target="_blank" rel="noreferrer">IRDAI may roll out insurance commission caps from January, overhaul distribution rules</a><div class="muted small">Proposed commission caps could disrupt unit economics for digital insurance distributors like PolicyBazaar.</div></td><td>Policy &amp; Regulation</td><td>2</td><td class="nowrap"><span class="chip">On bench</span></td></tr><tr><td class="num">74</td><td><a href="https://inc42.com/buzz/zetwerk-sets-ipo-price-band-at-%e2%82%b9143-%e2%82%b9151-for-%e2%82%b95012-cr-issue/" target="_blank" rel="noreferrer">Zetwerk&#x27;s Rs 5,012 crore IPO to open this week. Check price band, other details</a><div class="muted small">Major Rs 5,012 Cr listing tests public market appetite for venture-backed contract manufacturing.</div></td><td>IPOs &amp; Public Markets</td><td>4</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_86"/><input type="hidden" name="$ACTION_86:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_86:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k2842dd3c0601ab64b11ad31059824249"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="598"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">74</td><td><a href="https://www.thehindu.com/business/rbi-removes-paytm-payments-bank-from-the-official-list-of-scheduled-banks/article71558512.ece" target="_blank" rel="noreferrer">RBI Removes Paytm Payments Bank From Scheduled Banks. Was Paytm’s Biggest Mistake Trying To Become A Bank, Or Did Its Ambitions Grow Faster Than Its Systems And Controls?</a><div class="muted small">Formal scheduled bank removal shuts the door on PPBL, ending an era of aggressive bank-licence pursuit.</div></td><td>Fintech</td><td>2</td><td class="nowrap"><span class="chip">On bench</span></td></tr><tr><td class="num">74</td><td><a href="https://yourstory.com/2026/10/tonbo-imagings-rs-852-crore-ipo-offers-investor-exit" target="_blank" rel="noreferrer">Tonbo Imaging’s Rs 852 Cr IPO offers investor exit</a><span class="chip">Added by you</span><div class="muted small">Tonbo&#x27;s Rs 852 Cr IPO proves deeptech and defense startups can deliver public market exits for Indian VCs.</div></td><td>IPOs &amp; Public Markets</td><td>1</td><td class="nowrap"><span class="chip">On bench</span></td></tr><tr><td class="num">74</td><td><a href="https://news.google.com/rss/articles/CBMi2wFBVV95cUxNdFJtVnZKdG1fWFRRVTNaU2VXa09uWFQ0bzQwZjB6QkRnWFNYcUhyd0hKdElpLWJQZXN1bXF3WTNlMjlpYnpUR3hiZG9xcmk5eHU2MFVCSFFTbVFrWnBtTDNnbGY3LW9QZ1NSZUtEX0JxSmhYWGlxaXFHN3htUkxxWjh5ZzBDM1doOHlNT3NEY3ZSODNwSXZzZUtPa0ZSakNTN0hJM1JMLTNXcXJUdm9VeVV4ZGdEWmhJblFyTVNBWGZGTGZuSlA5clpXZDRYUkRYVEVNWGpkRHk0WHPSAeABQVVfeXFMTnN2SXROSllUUXdwWDJYb3FVT3dvNE5CMXpuTnB1WnlvdGFBdnk2Z29HQnl4b3VnM1NhVmYxSWZra2lZbHJRNWx4NkRRWEdfYmVrb3E3bmN4b0o3eUxtdnpnZE9RNHctbUV3dzZ0bkdERWc3LVVBWjNVN0lhVEFyd2EwdjdSamliQ2VPcHhhUFRmZndiTHVKeTU3T3N2bTh2OGNwSUsyWTZFQnNLOXRoRFdSbFFmQ1ZHaDQ1RGNkQjM0dFluTUt5WEF3MWhiUXVXZVpLNW0zMnI5SmN2Rzhub1A?oc=5" target="_blank" rel="noreferrer">Quick commerce fuels festive credit demand as brands seek working capital</a><div class="muted small">D2C brands resort to debt to feed the ruthless inventory and marketing demands of 10-minute delivery.</div></td><td>Commerce, Quick Commerce &amp; D2C</td><td>1</td><td class="nowrap"><span class="chip">On bench</span></td></tr><tr><td class="num">73</td><td><a href="https://economictimes.indiatimes.com/tech/funding/tessolve-raises-75-million-from-us-based-vector-line-capital/articleshow/134868349.cms" target="_blank" rel="noreferrer">Tessolve raises $75 million from US-based Vector Line Capital</a><div class="muted small">A rare, large strategic check in the semiconductor space, signaling investor confidence in India&#x27;s chip supply chain.</div></td><td>AI &amp; Deeptech</td><td>2</td><td class="nowrap"><span class="chip">On bench</span></td></tr><tr><td class="num">72</td><td><a href="https://www.livemint.com/companies/supplychain-shifts-policy-push-fuel-india-s-manufacturing-startup-boom-11791710198682.html" target="_blank" rel="noreferrer">Supply-chain shifts, policy push fuel India’s manufacturing startup boom</a><div class="muted small">Manufacturing startups raise ten times more capital as global supply chains diversify into India.</div></td><td>Funding &amp; VC</td><td>2</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_87"/><input type="hidden" name="$ACTION_87:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_87:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k1a2084233b8ce8817d9f417bcd63c893"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="593"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">72</td><td><a href="https://www.medianama.com/2026/10/223-sahamati-bg-mahesh-rbi-account-aggregator-interoperability/" target="_blank" rel="noreferrer">Users won’t need to open multiple account aggregator handles under RBI’s interoperability plan: Sahamati CEO</a><div class="muted small">Account aggregator interoperability eliminates siloed consent architectures, boosting digital lending conversion.</div></td><td>Fintech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_88"/><input type="hidden" name="$ACTION_88:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_88:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k866811c4d2ded6e28d0e9bf42bff8a7c"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="603"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">72</td><td><a href="https://news.google.com/rss/articles/CBMiqAFBVV95cUxNbG1HVGE4ZlVZdkZWVFpoYUczNmR5eFNIclB4VkdSME9KdzgzT2FkLUlIcVpQNTdlUkZDYUFqSlpHT2NtUk9tbDdUcUk5bzdMMXQzajlkelM4aEtqaWNOYmZtOEJyRE5QY3ZDcXY5WHI3WFFiZmdaOEhWS3dlSlpGNEVIdjltel82bHE5LU1lZGZCTHl1Q2J4emJ2YTVuNTFEYkV4R2N2Z0nSAagBQVVfeXFMTWxtR1RhOGZVWXZGVlRaaGFHMzZkeXhTSHJQeFZHUjBPSnc4M09hZC1JSHFaUDU3ZVJGQ2FBakpaR09jbVJPbWw3VHFJOW83TDF0M2o5ZHpTOGhLamljTmJmbThCckROUGN2Q3F2OVhyN1hRYmZnWjhIVkt3ZUpaRjRFSHY5bXpfNmxxOS1NZWRmQkx5dUNieHpidmE1bjUxRGJFeEdjdmdJ?oc=5" target="_blank" rel="noreferrer">Google Cloud names Amit Kumar interim India head after Sreedharan exit</a><div class="muted small">Sreedharan departs Google Cloud India leadership to steer commercial operations at Sarvam AI.</div></td><td>People, Leadership &amp; Governance</td><td>1</td><td class="nowrap"><span class="chip">On bench</span></td></tr><tr><td class="num">70</td><td><a href="https://news.google.com/rss/articles/CBMimgFBVV95cUxNSGJWMUpuZm94Ymg2bzNSdjllWkk5aUsyUVI4OHAxTi1mVGFlaU5ZTWlCV1NWMGdoYnJEaktLLUxwWG1HVVBmekpLVkZDYk1PSnhmeFkwY2ZGU1JwYy1iRGxNUm11QTdXSlFuMWFTVm1meTVGWnEyYlJDalk2cTZBLUtaQkVET25XZjU2dWYtRUg2cGhVbHlYZ0hn?oc=5" target="_blank" rel="noreferrer">Ultraviolette and the quixotic allure of building an EV</a><div class="muted small">High-end premium EV manufacturing faces severe capital intensity and market size challenges in India.</div></td><td>Mobility, EV &amp; Climate</td><td>1</td><td class="nowrap"><span class="chip">On bench</span></td></tr><tr><td class="num">70</td><td><a href="https://news.google.com/rss/articles/CBMi3wFBVV95cUxOaEI0RzVhaUo3N2VFYk5VSVBHdU9MY3R6ZTFqaUJSM2hpek9OQWs4NWdYa012TjZDMTFXMjl5dUthY2p0QWtGOURWNUFzX2Jhd25sMVhaQXZVbGJKakV3Y2tNS2hSdXRMS0RGU3ZlYmNmTU12OEdzVGM4SVdzbTFFb1ZvajlUSEtHYlhpRjJLekFvbGhmMnZsUDg1ejM5ZVpmcUtqblBvNUZaYkx2RXRqZGhObmlDTnNKU1pOWFkyelQ0Ui1aX2FzYmdpb21SUDZfYkM1d2luVnk5ZUhfdzhR0gHkAUFVX3lxTE9ScjdkVGZvM1lwZDlPbTJhbmZ6YXZ5RDQxSG14N3IyTjBYVFo0WE9nTzBnelRVdnFvS3pqRVB3LXpidWt6cjRTUUkwMmRSaWFOWXlHVWVhZHRKSm00X0RsRFJUbDIwOUhWRW1HVGU1aEhlQ2pmRGxucWdxQTVOTS1sdzBtejZwc0VubURLeEx1VnNCaEp5czBacEtEZnR1dVVJTVJRUExia1VlaG92Ukt3SU9vVFBmU0hCcDkxd09pRXB6NWk5RGdRSTdERHRYeTNUVjgza1J3b0hvMkpvZkloNklvTg?oc=5" target="_blank" rel="noreferrer">India doesn&#x27;t allow monopoly in any sector, says Telecom Minister Scindia</a><div class="muted small">Anti-monopoly stance from the minister is a direct warning to telecom giants ahead of IPOs.</div></td><td>Policy &amp; Regulation</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_89"/><input type="hidden" name="$ACTION_89:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_89:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k6e18aa515cfe864a39a3356f482040c2"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="517"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">69</td><td><a href="https://www.livemint.com/companies/news/zetwerk-eyes-27-000-crore-ipo-valuation-as-over-30-investors-weigh-anchor-book-11791532870989.html" target="_blank" rel="noreferrer">Zetwerk eyes ₹27,000 crore IPO valuation as over 30 investors weigh anchor book</a><div class="muted small">Zetwerk&#x27;s massive $3.2B valuation target for IPO marks a coming-of-age for India&#x27;s B2B manufacturing tech.</div></td><td>IPOs &amp; Public Markets</td><td>2</td><td class="nowrap"><span class="chip">On bench</span></td></tr><tr><td class="num">69</td><td><a href="https://news.google.com/rss/articles/CBMirAFBVV95cUxPSXdTaWNncHp5Y21VaUlVVE9uVUphdmp5azJCRHF6ZjdSV0FjLThGY0N0andORER3ZW5rVkxEU1FpZ2NMWWlaTnVBMTdLYkJibmkybExDTlZobk12dU1Wdlc0UHVuMlJHT09oRnVOcHVHbzJZdXI3Y25fUXdRZy1URl9pcWlfQXpGUTA5aFJrcElRNm90LVVaN1dyUkdZR3ZtdDU1NHluWkk5RXRY0gGsAUFVX3lxTE9Jd1NpY2dwenljbVVpSVVUT25VSmF2anlrMkJEcXpmN1JXQWMtOEZjQ3Rqd05ERHdlbmtWTERTUWlnY0xZaVpOdUExN0tiQmJuaTJsTENOVmhuTXZ1TVZ2VzRQdW4yUkdPT2hGdU5wdUdvMll1cjdjbl9Rd1FnLVRGX2lxaV9BekZRMDloUmtwSVE2b3QtVVo3V3JSR1lHdm10NTU0eW5aSTlFdFg?oc=5" target="_blank" rel="noreferrer">GST Council removes arrest powers, raises prosecution threshold to Rs 5 Cr</a><div class="muted small">Significant ease of doing business move; decriminalizing tax thresholds reduces founder anxiety.</div></td><td>Policy &amp; Regulation</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_90"/><input type="hidden" name="$ACTION_90:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_90:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kca6e2ec762abe6e24e215b05f1e2e779"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="464"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">69</td><td><a href="https://news.google.com/rss/articles/CBMiiAFBVV95cUxOdkNwNkFuSnJzZHhQNl82UlpxVEU3UkUwYkRSWTBSaWJEdEFTUkJGSXlHaW9GM21Ec19Lam5VM08wTGR0MXU3bzJzcUgwZHNlSGNBRmRKeUlPQ3Z4WmNybU5FSzh1NkJ5SUs3aGRlV2I1d1BncWFSSWVPblI2TFFXdUZjT2ZPdm10?oc=5" target="_blank" rel="noreferrer">Gaurav Munjal loses his faith</a><div class="muted small">Sharp longform dissection of Unacademy&#x27;s operational pivots and shifting leadership philosophy.</div></td><td>Healthtech &amp; Edtech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_91"/><input type="hidden" name="$ACTION_91:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_91:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k88775a4cf055827ec88089f9ffd94e2a"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="424"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">69</td><td><a href="https://news.google.com/rss/articles/CBMimAFBVV95cUxORUhsMVFaX2ZZSi11amZjRUJqZnpqRzVhZUthUXphZ01qQTNEZkZ6VnkwM2cxOC1PVXdZcGxOQTJLRTYzcmtpaUJiZmYzNnRIelpWa1lEUFRNNUI4TmJKT3ZWUGl6SFgzcnVXVGw3alA0cHZYa3ZvNUNadVZfbGpaX2xhVUdCaW5RN2tpWmZ1QVduOFFPZlNFOdIBmAFBVV95cUxORUhsMVFaX2ZZSi11amZjRUJqZnpqRzVhZUthUXphZ01qQTNEZkZ6VnkwM2cxOC1PVXdZcGxOQTJLRTYzcmtpaUJiZmYzNnRIelpWa1lEUFRNNUI4TmJKT3ZWUGl6SFgzcnVXVGw3alA0cHZYa3ZvNUNadVZfbGpaX2xhVUdCaW5RN2tpWmZ1QVduOFFPZlNFOQ?oc=5" target="_blank" rel="noreferrer">Ola Electric to open Rs 1,000 Cr rights issue on October 22</a><div class="muted small">Rights issue so shortly after listing underlines aggressive cash burn and ongoing operational strain.</div></td><td>Mobility, EV &amp; Climate</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_92"/><input type="hidden" name="$ACTION_92:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_92:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="ka2197b9c2b8d73f6714a4f449b90480e"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="422"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">69</td><td><a href="https://www.livemint.com/companies/news/5-gst-on-ola-uber-swiggy-zomato-amazon-and-flipkart-regardless-of-business-model-report-11791567413508.html" target="_blank" rel="noreferrer">5% GST on Ola, Uber, Swiggy, Zomato, Amazon and Flipkart regardless of business model: Report</a><div class="muted small">Uniform 5% GST removes business model arbitrage for giants like Ola, Swiggy, and Amazon.</div></td><td>Policy &amp; Regulation</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_93"/><input type="hidden" name="$ACTION_93:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_93:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k44df97b3ae5a07c7f676799568c180b7"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="530"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">69</td><td><a href="https://news.google.com/rss/articles/CBMi5AFBVV95cUxPcmxIdm9ya3FROVRKUUJPdTVPUWNXVEhfa2hWdDkzUy12MV8wNy1qTFZPRmVKQkloYnc4YUNZS3NoRnhhbllqSHdSZDF3UlZiSGNMSEcyLTJZMXVwbGRYLWpsdDFOc082c3FnQzJ5MW5PRnh5M3RIMWFlclhCMEpLUGpicXpILXdOazRWc0tLZURZaFk0bzdtaHlJMGxEakp3bHZWeTFEN1FBOUpFeFdBWjExU21yV1VmTVlqeUk2aDFldllyTWhnb1g4T3cwUmxrd01KRHNsVUZEVnRSRV9VUUk1ZVrSAeoBQVVfeXFMTkxXdlRyZkxieUpWdmF6YmMwVWtJbmYxRXkyMHdEdWZwUHczbkJGMklZaTlRdTVHNkhoZTdoYnBhV0MzdXhLbVFhU0xjeXFROU9HbkIxRHZRWVNHNE9ldnJLMmhFNERlUEZWMWl6SklQaFR2eGZTMU5vbkp5OGZRMHNUSjhOMk9FUEIxVUxnNUZHa2hReGNFeUZ0LVdOeEp6LVIzNlhXWFVnX0FZaVItS0cxZnVTOF9xYmdDdEMzNmktNGhxNnBEQmhEVVZYbjRrdnRLX0VKTEd2Q3NibHNrdDRHVV9RUkNHUWJ3?oc=5" target="_blank" rel="noreferrer">&#x27;We got several things wrong&#x27;: What Dr Uday Narang learnt while building an EV business in India</a><div class="muted small">Refreshing founder honesty on early failures in the Indian EV space.</div></td><td>Mobility, EV &amp; Climate</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_94"/><input type="hidden" name="$ACTION_94:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_94:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k9786fbbcc2ff50d440f7709750fcadb0"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="515"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">68</td><td><a href="https://economictimes.indiatimes.com/tech/technology/indias-quick-commerce-growth-set-to-accelerate-food-delivery-to-remain-steady-report/articleshow/134868720.cms" target="_blank" rel="noreferrer">India&#x27;s quick commerce growth set to accelerate, food delivery to remain steady: Report</a><div class="muted small">Reports suggest quick commerce is cannibalizing traditional delivery as it matures into a primary shopping mode.</div></td><td>Commerce, Quick Commerce &amp; D2C</td><td>6</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_95"/><input type="hidden" name="$ACTION_95:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_95:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kb52a29a04838ee1f03e7429fd9cf3ebd"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="568"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">68</td><td><a href="https://news.google.com/rss/articles/CBMi1gFBVV95cUxOYnctMndvVlEwOFZYYThqZXdjVlBwTWZaNWFIcDJZRVVOQmhKWkd4QzJsc0Q4RS1Xc1d2ZmtSc1FwSUcyNVM0aGpzNjYzMDUzdDRZOFJNVjZTQ2V2YWV2bW00SDM2OGxtZW50Vk43TG1nR1BVeEZCY1NLMUpwb3hpY3VhMG16Q1RQNGs2TFBiT2pQbGlTSUxiRHVoWHlTaUowZ3pORWg2WV8zS1BYZkZQaGYtMXJiakZVczZQQUMtQVFWRTR3eTU3N3Q0bDhjM09rQXh3eVF3?oc=5" target="_blank" rel="noreferrer">Paytm Shares Fall: Worst Day Since February Amid UPI Fee Delay</a><div class="muted small">UPI MDR deferral dashes market hopes for near-term payment monetisation, sparking a heavy selloff.</div></td><td>Fintech</td><td>4</td><td class="nowrap"><span class="chip">On bench</span></td></tr><tr><td class="num">68</td><td><a href="https://news.google.com/rss/articles/CBMi2wFBVV95cUxPQVBzbFFyN0k5d1lSem5GbFo1NGFZa1lWQ0U2UzhIZXhEMFZ4VDd5SU9WbUc2dk5LcEVPU2gwbE14NlZnU0U4Z0paYjJTRHlYUHNqZV9KblEwSFBxQXc3ckRfWnJvUDd3VkZsaktsZDMtRVFMbm5NOG5IQlFNWld1c05JLVdMekRIVjJ3SHdndzRUY2ozc3hzZlBhYkNrcWF4NnUxanRXMHBXVGI4WEp0QURodFNRdnhTZEFRX2ZpVXZDZHd2cjZmNXV4RjBqemluNTFlRkFpQnBhc2fSAeABQVVfeXFMTXpzVW1kVFQ0X1JQcEVOOVJWZ3JFT1dUWkV1X21veUU2S0NadWNwV3FNT1VfRHM3REZ5dndFOEJHbW1LNkcwcHFyQmhlTlBkS0dNT3NDbmpZUmFoNGJZRC1tV0J5QWpFVFFLRWk2bW5mSTc0YXIzV3E4SXptOWlMMzZucm9QUVBjT1VSY2VqcG5HbkxlZ3JXbjNGMUtDQlBRbUVUaUJwelJUa1IyZU9XLU1lRUhIY203ZEZ1b1RmanJJMVV1RUwzZVJoQTlhenBSRnZCa1owNHYySGxaV2RQRlg?oc=5" target="_blank" rel="noreferrer">Starlink services in India need to be affordable: SpaceX CEO Elon Musk</a><div class="muted small">Musk&#x27;s affordability focus is a strategic play to win over Indian regulators and users against local incumbents.</div></td><td>Policy &amp; Regulation</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_96"/><input type="hidden" name="$ACTION_96:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_96:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k41c1ba2bcd74b205a9c4c4488e93df5c"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="577"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">68</td><td><a href="https://news.google.com/rss/articles/CBMi3wFBVV95cUxPaXByVGxPVEM4RzRQU0JQRlhmMHFEeUFmVDBrSGtTeWZ3QmxnMlVXZWs3cG4zbTBINEFDR0labkZfdzRIemZibHpfeEQ0aDRnanFwR2lzR25aM2s5NXhRNEk1dTVDb3lDUk1XYTBuOER4bXpXYWVqV1E3SU9ENElIQ0Y0d3lrZkxxUnIwVXdrNF85RUxlQm5fY0hyUGtCY1Qtel9qdVk4NEZYRkp5cFpmcklUZTFYQkFMc0Fjdkx2ZkdwQnIyQmUwNi1uWS1XZjZvS3VvRk5iTjR3TklmbklZ0gHkAUFVX3lxTFAwN2JZSU42UGZiM0FSdV83enJHdmxwbDFack9jWHlPRTRxZk12S3RVZ3RGMHlRTmx4VUFneU5sZEpYbTlVcUY1OEw4VmpUblJTZG56ZllyWmlPcjM1OUN0WHk5WHFtb2JIdVFlTk9sU1FjZUlOTElTLVFiWmtXTVNrb1VXekhXX0ZMa29oYlduMElTMG16WDIxeUU5Qm40dDJ4TENKTl95aXpSRTVMWFItTWRWR0NwcmJKZjQ5a3pGTTFFWmUzWUJwdTJoRDdYaDJ1VnZhUzdKWl9lcDNYWGp5NXN3SQ?oc=5" target="_blank" rel="noreferrer">Successful GPU bidders likely to offer compute capacity to global firms</a><div class="muted small">Explains how India&#x27;s GPU capacity might serve global demand, making India a cloud export hub.</div></td><td>AI &amp; Deeptech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_97"/><input type="hidden" name="$ACTION_97:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_97:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k8e0a9dfd6b4f1b358b9079c85a59d46e"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="579"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">67</td><td><a href="https://news.google.com/rss/articles/CBMiqgFBVV95cUxON2hnczhHSGZ0Z29CaUhEazFRdlVhcm5RVDRyMG9JSk94bHVMempnbjBtUG0yd1pwRUE2c0hCeDBFTDNURGo3SkV0Slhid1VzYUZ1N1ROSi1xZ3A2MDUzX0x1U1VIV1g2ZXdGZ1pZQk1PUm5XX2xqV0NCX2czUUlMMFdMOHBXckFQNDVnTVE0Z2FEUk5FWVZhaTBjd0Q1bEx0WG9MRVBtUE1Ed9IBqgFBVV95cUxON2hnczhHSGZ0Z29CaUhEazFRdlVhcm5RVDRyMG9JSk94bHVMempnbjBtUG0yd1pwRUE2c0hCeDBFTDNURGo3SkV0Slhid1VzYUZ1N1ROSi1xZ3A2MDUzX0x1U1VIV1g2ZXdGZ1pZQk1PUm5XX2xqV0NCX2czUUlMMFdMOHBXckFQNDVnTVE0Z2FEUk5FWVZhaTBjd0Q1bEx0WG9MRVBtUE1Edw?oc=5" target="_blank" rel="noreferrer">BofA cuts PB Fintech price target by 19%; anticipates strong Q2 for Paytm</a><div class="muted small">Brokerage target cut reflects growing regulatory and margin headwinds across public fintechs.</div></td><td>Fintech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_98"/><input type="hidden" name="$ACTION_98:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_98:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k6503b8d492179f3c89e23864b3873c3f"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="384"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">67</td><td><a href="https://news.google.com/rss/articles/CBMiUkFVX3lxTE9IRUg1RHkwZ09nbV9MT1JjdTd5b20waFQyUUlCcHZfRUpFa0ZRaVIwUVFna0dKX3JpbGwwbjRWOU5icC1oYzhkVzBiczY1OHdhVHc?oc=5" target="_blank" rel="noreferrer">Sarvam AI, India&#x27;s sovereign AI unicorn, has appointed Sashikumar Sreedharan, ex-managing director of Google Cloud India, as president and chief business officer (CBO). The appointment comes as the Bengaluru-based company expands its enterprise AI b</a><div class="muted small">Hiring ex-Google Cloud head signals Sarvam&#x27;s pivot from research to aggressive enterprise AI commercialization.</div></td><td>AI &amp; Deeptech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_99"/><input type="hidden" name="$ACTION_99:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_99:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k7912622db644ff3524588b1e3d603d0e"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="447"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">67</td><td><a href="https://news.google.com/rss/articles/CBMi0wFBVV95cUxOaVozSzRRQjMwNmd5Mk5pMkNFa1puRGV3VFpuUzhVNXRDSEZiRlhnSFNyMzhyV0VKekVuS2dLRk5CVzZfcXpmNHFQQUFxeEJtWDhPMmtQYm01WmdtYzRwUmJKZk9DcnItUGNsSkFybXhWcXcwZndwSmZlZjFDN0o5TFpDeVUyV2ZBUmtFRFNuU0I3WTE4RmlEUTg5cmFEal9Ed3RSWndDRlFMN1FrQlZpcWFleFZqNnE3NHpWX3drUkh3SUhnczVac3JfZ1ZJM25aZHkw0gHTAUFVX3lxTE5pWjNLNFFCMzA2Z3kyTmkyQ0VrWm5EZXdUWm5TOFU1dENIRmJGWGdIU3IzOHJXRUp6RW5LZ0tGTkJXNl9xemY0cVBBQXF4Qm1YOE8ya1BibTVaZ21jNHBSYkpmT0Nyci1QY2xKQXJteFZxdzBmd3BKZmVmMUM3SjlMWkN5VTJXZkFSa0VEU25TQjdZMThGaURRODlyYURqX0R3dFJad0NGUUw3UWtCVmlxYWV4Vmo2cTc0elZfd2tSSHdJSGdzNVpzcl9nVkkzblpkeTA?oc=5" target="_blank" rel="noreferrer">AI cloud firm CoreWeave enters India, plans 240 MW data centre in Navi Mumbai with AdaniConneX</a><div class="muted small">A massive inflection point for India&#x27;s AI compute infrastructure via the Adani partnership.</div></td><td>AI &amp; Deeptech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_100"/><input type="hidden" name="$ACTION_100:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_100:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k2119e6281b0e7af058932e42853e93d4"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="561"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">66</td><td><a href="https://yourstory.com/2026/10/ecomm-firms-goods-worth-rs-24k-cr-first-two-days-festive-sales-redseer" target="_blank" rel="noreferrer">E-commerce platforms report strong start to festive sales, led by smaller towns</a><div class="muted small">Huge early festive sales numbers prove that rural India is now the primary growth engine for e-commerce.</div></td><td>Commerce, Quick Commerce &amp; D2C</td><td>3</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_101"/><input type="hidden" name="$ACTION_101:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_101:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k74f3b00c1dfe38e087d0233ed6348a1b"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="563"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">66</td><td><a href="https://news.google.com/rss/articles/CBMinAFBVV95cUxQbzVfVTJUYTcwYko1eHJxM3dndVBpSWdkR21OV3YwcXJUYk1Xd1dsMjUwYU1IS1FvRlFLUndwNGpIRGFUaHRxdGJWb0dhejNwcGtVMmVMUFo5MFRTNHotaFJDT1VfZkF3eGUyd2g0VEhqc1pLdDVPYU50N1VjLV83N2dOcHV1S1kzVVNlS0tTQ01vM0xWR2RpN2tzUHI?oc=5" target="_blank" rel="noreferrer">India&#x27;s quick commerce market likely to touch $90 billion by FY31</a><div class="muted small">Massive long-term market size estimates underline the rapid cannibalization of traditional ecommerce.</div></td><td>Commerce, Quick Commerce &amp; D2C</td><td>2</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_102"/><input type="hidden" name="$ACTION_102:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_102:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k6300ee732678c8aff67769d78d8c96ed"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="417"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">66</td><td><a href="https://news.google.com/rss/articles/CBMixAFBVV95cUxOTXpxd3phdVFhSk0ycTZtVXc0Zi1FQm1yR2RaSFhsa0RuUXhDSmdRZnhkZVM2LThPblBCSjVsOElOdzZMLWlqRXE0NVM2NGp2dVhYUHpFeUx3WlJQSWJoVVUyTktibHlYNnFPbXdMSmNnY2xTMFdldDNkZnBrZGVMY3JUMlc3UjV3dWtzWjZFWDdDa3UwczVQLWNXWF9JRUdJalpTQ0JQdlVHMjVDUm9tS0JTcjc3WGs3N0ZLTTRuMnQ1MzZ6?oc=5" target="_blank" rel="noreferrer">India’s soda brands starting to look alike. Is quick commerce to blame?</a><div class="muted small">Argues that quick commerce is homogenizing brands by forcing them to optimize for small-screen visibility.</div></td><td>Commerce, Quick Commerce &amp; D2C</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_103"/><input type="hidden" name="$ACTION_103:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_103:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k90c0128f071c3d7bef0af882b9efe682"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="539"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">65</td><td><a href="https://news.google.com/rss/articles/CBMixwFBVV95cUxOaE8wT0pFek5EdHliQktqSGotREhtSHhHR3I2Uy0tLV94bF80U2w2d2paNm9wMWo2Ni1wN1lTTVBiRzd6REZIQnl6UURQcEJZZXQ1cm5PcFZUeXdXSk1GRGpFRmY0TTN5MHFyZUNxSVZ2cGk2elNXbFNNd1FDSkpxbmIzcU9LbWlZUEhYQW8zNkVZX3dtRjg4N0hGLXV5c21nQ0J6VmhIUWJmY3NCQm52ZGxDMzNZZnhHSzlQVnNTaEZHVnZISTZB?oc=5" target="_blank" rel="noreferrer">Quick commerce is moving from top-ups to the main basket</a><div class="muted small">Crucial inflection point as dark stores expand AOV by replacing planned monthly groceries.</div></td><td>Commerce, Quick Commerce &amp; D2C</td><td>2</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_104"/><input type="hidden" name="$ACTION_104:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_104:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="ked78132140d879e3e743fce48fff25ff"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="429"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">65</td><td><a href="https://economictimes.indiatimes.com/tech/funding/gccs-allocate-just-4-of-csr-spend-to-innovation-report/articleshow/134848136.cms" target="_blank" rel="noreferrer">GCCs allocate just 4% of CSR spend to innovation: Report</a><div class="muted small">Counterintuitive finding: GCCs spend heavily on CSR but ignore innovation, missing a key ecosystem lever.</div></td><td>Other</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_105"/><input type="hidden" name="$ACTION_105:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_105:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k4be7439c0f9cf748d2b0a55d4f133e97"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="543"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">65</td><td><a href="https://news.google.com/rss/articles/CBMi6AFBVV95cUxQOXI2eGxGSFZxSzRYRHpiQlJRcW84V3hZaUU3UmRwbUlBTmhOZTgyZ1BYcDVxZlV5Rm9lVjF1aVNGOHM0ZDNVdk5ncTlPU1ZueHNWUjg5WnRSTVlCMV8tVU5idU1DTlBBZzQwamQ4R2JKYTJCWEZrUHlJU2ZQV2VvQllrbXBpcHpicEtsM08xTmVTSnBraE5nVDBmVFVtUG9ZX3FCYTVnc0QwS0ZPNFdWZ05TaVlaTDA2dVYzbzFxRkpLZGhvRlhQNHpXSm1rV1U4NVh5WUFXV0dtMmcwQW1VUDVsb2M3dHlJ0gHuAUFVX3lxTE9WM1ZaaDVYNVJsVEFXQnFKYzFHb1NuOGlBUV9kZVljY2k5UHluY1BGbVlxZi1Tc0pqSG9yZnRlekpSNFFIdnBqOFZwQW9HNjRlOWZIUS1rV05MOVFmanpmVno2RlNSLUxqREdzMlREaDZ1ZXZYcjZyT1VtS2NrNFBrMmFsdlNVZlp3Qm5paWFpMDhqWEEyLWlqZXQzTUFSOTIzWlNmTWJiRmFlT0gwbjlHaVgxVUlPcWVPUG54aUVERFZKeTR2UkJNU3BIQlcySk5tV1JEOHk5ZC0wZUI5LThwb045cG45R29nS01hRUE?oc=5" target="_blank" rel="noreferrer">Swiggy&#x27;s Instamart looks to expand private-brand play beyond food, explores new categories</a><div class="muted small">Swiggy expanding private labels beyond food is a direct threat to mid-tier D2C brands.</div></td><td>Commerce, Quick Commerce &amp; D2C</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_106"/><input type="hidden" name="$ACTION_106:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_106:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k9e9c7bd0df11c831fc7ef2f19eeb163b"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="481"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">64</td><td><a href="https://www.thehindu.com/business/Industry/elon-musk-ups-ante-in-starlink-row-sarcastically-calls-ambani-prime-minister-alleges-monopoly/article71565795.ece" target="_blank" rel="noreferrer">Elon Musk alleges ‘oligarch’ interference in Starlink’s India launch</a><div class="muted small">Musk openly takes on Ambani over satellite spectrum allocation, putting telecom policy in the global spotlight.</div></td><td>Policy &amp; Regulation</td><td>2</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_107"/><input type="hidden" name="$ACTION_107:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_107:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k379fb90ef52976e6813a755a1234425d"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="440"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">64</td><td><a href="https://inc42.com/features/payments-vs-lending-the-tale-of-paytms-two-engines/" target="_blank" rel="noreferrer">Payments Vs Lending: The Tale Of Paytm’s Two Engines</a><div class="muted small">Analysis of the critical shift from high-volume payments to high-margin lending for Paytm.</div></td><td>Fintech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_108"/><input type="hidden" name="$ACTION_108:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_108:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k104ae7ce91b62adb4ec6685ecdfcf4c5"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="513"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">64</td><td><a href="https://news.google.com/rss/articles/CBMiogFBVV95cUxQUmRGX2RJamdic3dLU3o4Tnk3SGNnUGRHbWlKWk13ejdETXMwQ05DOW8xWWVndHplTUVyRWFDbnVxdm45TnFqWjBIQUE5UkowSHV4cGVoOUZWRFdScHl6TmNQakIzRjctS2Y4dEVTNDB2TkRHV3Z1SUllS3pYTElZbDhEV21vVTFuclNzQW1PMFNFcy1XdHJJVGRDVHVtLWVNUHfSAaoBQVVfeXFMTXA3R3FmS2tZWmV5THFQelZFSHdwQVQyS1JzWnlZTWZJSktSQnB3Zk9IUnZpdm8yc1FJdFA3TVk5LUZ5c3YtYV81UnRZM3p3OWdpVW5kZ21USTZoRE5QdzRySERQLWdWZkstZWE1bmtic3lVUlVyRml2aERHSHBLWWtOZEZpNUp5bmJZcUtSbDlGODJmS0NwYjRCTUVSTF9URlVUSERLREc3M0E?oc=5" target="_blank" rel="noreferrer">Bottomline: Aavishkaar-backed Altum Credo’s loan growth moderates, NPAs inch up</a><div class="muted small">Moderating growth and inching NPAs signal rising credit stress across niche retail NBFCs.</div></td><td>Fintech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_109"/><input type="hidden" name="$ACTION_109:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_109:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="keb576dd980b26f725c5b7767544960dd"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="584"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">63</td><td><a href="https://news.google.com/rss/articles/CBMi3gFBVV95cUxPeWVkUFB0a2hLUUQwT2FzTGV2bFFUQVVqdDdJYmVlRl95emVURUdqRHZjTzVTU0JYenJMT29iRnZqYWQxTmFibzRVd0ZEMFJUeTRPZHA5M3drbDBoWEpzWlVtS1JKVXNpMHRwcGxKc0FzT0tRZVhqM0M0NlBIaWVoaHNxbWlEUGt2WTdTMHprOW81bC1hMkxDWUJjbFYyZkQzV3J5ODNGRU9SVHhESGpORmdBYURuZ1BBN2pQaUF5ajV5QkI0LVdwT2RJZ3R1ZmdTcnF3VExCLWhwLVVqZlHSAeQBQVVfeXFMTlJKaGpRWkw4UjZ1bmdjXy1nX2dhQzEtc3I1OENWcVV3OVlXLXdOY2F0ZlVLWXZuall2bmszZzZMa2dGMVAxVXZVcGh1eGZIVUc5UDhUajJIWm9KUjRuM0REbHQxZFExQTE0UlhyWldpaUhVdk9SN1VROWV1Vk9DMzNfd1JJZXRyMmlkbE5rUUJyTF9obnNUUnNuWlFfVG9paTBwVVRRU2lWVE5nSS1wNkhBS0tmZWZGa1dKejhJWEY5T0NKVGdoUkdTa2hHbGsyVGRIWE80ZTVNbi1neHRfamVMTjlO?oc=5" target="_blank" rel="noreferrer">India’s AI-native startups grow 167% annually as AI costs fall: AWS</a><div class="muted small">The 167% growth in AI-native startups quantifies the speed of the shift in the ecosystem.</div></td><td>AI &amp; Deeptech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_110"/><input type="hidden" name="$ACTION_110:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_110:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k232d7d5af233a6a906320a2193229692"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="471"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">63</td><td><a href="https://economictimes.indiatimes.com/tech/technology/google-faces-backlash-against-india-data-centre/articleshow/134868659.cms" target="_blank" rel="noreferrer">Google faces backlash against India data centre</a><div class="muted small">The &#x27;water vs data&#x27; conflict in Vizag signals emerging ESG hurdles for India&#x27;s AI infrastructure push.</div></td><td>Policy &amp; Regulation</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_111"/><input type="hidden" name="$ACTION_111:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_111:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k633c15f22a2c7388861cc28b76cf109e"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="571"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">62</td><td><a href="https://economictimes.indiatimes.com/tech/technology/former-flipkart-group-employees-launch-petition-seeking-inclusion-in-proposed-2-billion-esop-buyback/articleshow/134871396.cms" target="_blank" rel="noreferrer">Flipkart ESOP tussle: Former CXOs seek ‘fair treatment’ from Walmart amid IPO uncertainty</a><div class="muted small">Former CXOs revolt over ESOP liquidity creates uncomfortable governance debate for Walmart.</div></td><td>People, Leadership &amp; Governance</td><td>4</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_112"/><input type="hidden" name="$ACTION_112:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_112:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kf1c7be8132e534bd9836af97c71dbc41"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="399"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">62</td><td><a href="https://news.google.com/rss/articles/CBMiqwFBVV95cUxOVXV0VFU5ZzBkSUZoV3VCRkowX29ndkM3czM0LVBaeGVCMDY1UTc4ZVV0QVRtaTlqcmdtLVBNbXVBb21fbkxYYUliREVaQUlNUnp3bVgzMDkyLXFqVGdLNTBvV2k2REJqQzlhRVU4TVJUUWlMcUJxRllEZml2WW9yWWgtNnVib3dpUnhWdk94aEtOVWRjYUQzVk1nZlJrX0hSZnF1RUpPX0oxXzTSAbMBQVVfeXFMTWZrUG5lc3JjX3JWYW94aFlSeUZNcTRBZDhPcEdpQUlNTEJ5cWQ3VWphTENLcjRhOHdzUVJmMm82Z3NQeVdoUUxUdzRNU3dSTUhkV1poeDlNNm5salFRTXNGNF9hVFNKUkVSWU03bXp6U1lyQ2xBM0RuQ3I1ZWpmWjg3VnMzOFJ4RmoxZVBrQUFMdXA3bWEzUDZmUHFHZkxReHpjbU9VVWxudFROYUNuTHV4MlU?oc=5" target="_blank" rel="noreferrer">Bottomline: Fintech lender Vivifi slips into loss as product pivot shrinks loan book</a><div class="muted small">Digital lender slips into losses after product pivot, exposing risks in mid-tier fintech models.</div></td><td>Fintech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_113"/><input type="hidden" name="$ACTION_113:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_113:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kd5af3478d807e340394166ee0a99e55e"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="599"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">62</td><td><a href="https://news.google.com/rss/articles/CBMiigJBVV95cUxNVzNyWGRWOFc3aVRyS2FXWHR0WlhBU1V2NkxsRnlVWE0zWDBkY0JHOURqNHdPM3hPVUVQTmdFYUpLQ3RJTjh4NWNRR1YyWG1GcjhpOUZVbmRyT05PeVZpWXBKM1JVbDBYaWJhSjFoVG1mTTRNZGI0dGdyWEl2TlBrQUVtLVdIYkZMR0VqMmhoUXJhN0s5X1JIX3RWMU84R3h5aEhvUHJpZEo2eG5yVzAwRFVaTk9zeW0wNVRFc2VXSnB5UXV5c2hycXpURHhqNl9jeWMxTmVBNEdTMUprM2NvZ2lDcHpnM3VaelUya2JxaW5XZk1wVXh6MHpKcjYyT1hUUEhxYVQzOW15QQ?oc=5" target="_blank" rel="noreferrer">Tech3 | PM Modi calls for a global framework to tackle deepfakes, fraud; UPI MDR pushed to Jan 2027?; and more</a><div class="muted small">Delaying UPI MDR framework protects growth but hurts fintech profitability in the short term.</div></td><td>Policy &amp; Regulation</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_114"/><input type="hidden" name="$ACTION_114:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_114:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k58c7f87f6dc2aeb37d76f3b3946f116c"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="460"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">59</td><td><a href="https://economictimes.indiatimes.com/tech/funding/quanfluence-raises-10-million-to-build-full-stack-photonic-quantum-computer/articleshow/134746276.cms" target="_blank" rel="noreferrer">Quanfluence raises $10 million to build full-stack photonic quantum computer</a><div class="muted small">Rare institutional venture capital check backing domestic quantum computing hardware.</div></td><td>AI &amp; Deeptech</td><td>3</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_115"/><input type="hidden" name="$ACTION_115:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_115:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k1c25841a3a9f6a1e3ade7c43a3e4b504"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="395"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">58</td><td><a href="https://news.google.com/rss/articles/CBMi1wFBVV95cUxPVzlnUUlDdDgwRVFKRTd2VmhlWXNJUWxEYTJkU0EwUkk3emVEaWVMb2cyLWZuSDNqWXFRT3dwdk9xUTZXMU1VOVd1ZUt2VE50c0MyUHJaNDBqRER5WTlNckZuTTBPbUt5SHBhLTMxelU5VjJEVUpBaHUwODVHWDZfckw4WTBpQU15NnpVT2FsX3Ywd0FPMWI1WmlmTlJwWjhqMnBNV3hfSEtQS1ZWNUd2Zjk4bDFiSWczQVV2dER2ZmRiLUVRM2lEVk45blRrRUJ0TDFUcFZ0VdIB3AFBVV95cUxPSXdhaGdFQUM1OUxSd2VOOS1yc2dkMXFXRENlSkl1RExYMmhBZTFxdkJGb1FFRFloRzd1bDJPMmVUUzZ2QTdtenR6RDJCZV9MMHZhNllQTGNLYlRlNTRJcWJJRGZoaFBDNmI5ZVUtTXZkLUZaWG9icmdTTjd3NnJTem9NdXBDaXdSMmgyaG9PS0RqUkphNlpNdGhkdElBSG9yT0FSWWZUQWxwZDUtVEtsbkNXR1M2X3RfOWlxM25mN0FwU3psS1U5a293OVoyODE0TkVUYkNYbjV4OHla?oc=5" target="_blank" rel="noreferrer">BT BIG STORY: How India’s space startups are building on Isro’s blueprint</a><div class="muted small">Feature on private spacetech startups commercialising ISRO technology and orbital capabilities.</div></td><td>AI &amp; Deeptech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_116"/><input type="hidden" name="$ACTION_116:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_116:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k4a8c265b9c1ba2da18edc11678f90669"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="592"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">58</td><td><a href="https://news.google.com/rss/articles/CBMikwFBVV95cUxNV1R5anprOTFuWHpXN1BXem1SR1k5Q3lDT2doYnJiT2NGNENyclFpc1c5ZmZRNnNCSVhxMGh1eHEySDNIczh5RVBsVm1DdlZxellCLVBGclU5X3k4RTFBaG9PNklBQ05BRHBibHlXYXhfR3kyclBadENqTDM5MDRpNVA2cmdVMGljQjhWbVVzankwd0U?oc=5" target="_blank" rel="noreferrer">Apple Pay Enters India as Asia Fintech Records a Bumper Week</a><div class="muted small">Apple Pay&#x27;s entry into India could finally challenge the dominant domestic UPI wallet players.</div></td><td>Fintech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_117"/><input type="hidden" name="$ACTION_117:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_117:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k5ed9e34267a1508cfb8dbc6a7669b292"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="535"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">57</td><td><a href="https://yourstory.com/2026/10/nat-habit-raises-rs-142-cr-in-series-c-led-by-trident-growth-partners" target="_blank" rel="noreferrer">Exclusive: Nat Habit to kick off $15 Mn funding round led by Trident Growth Partners</a><div class="muted small">Successful Series C for Nat Habit contrasts with failures of other Ayurveda over-expanders.</div></td><td>Commerce, Quick Commerce &amp; D2C</td><td>2</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_118"/><input type="hidden" name="$ACTION_118:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_118:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kb006d72b3213f4b5a2ef5bb122fb0059"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="504"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">57</td><td><a href="https://news.google.com/rss/articles/CBMixAFBVV95cUxQeU9RSUlMS3JNaEdUSWtXY3FCVnFieExybmMxTzM0S0VHMXo3a1RBVWlNcFh6SnpDZHcxYS1zOGc5S05NYm41a3k5MmJpRmo3UngxSDZOVGhyY0RLczZxell3VFNvX08xZExjUXRyYzJRdlN3UGFLUUxrRi1ydEdMNDZLQmZLa0ZRYnhsWUR5MkJFQk1hRm4xS1Y4YnVlRng0UUptdGh1MFZZQVZPNWxQTkdHZXhYWklCNUJCeHJERmQxazk4?oc=5" target="_blank" rel="noreferrer">Indian startup claims over 1,500 cycles for sodium-ion cell with Prussian white cathode</a><div class="muted small">Significant technical breakthrough if commercialized, reducing critical reliance on lithium imports.</div></td><td>AI &amp; Deeptech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_119"/><input type="hidden" name="$ACTION_119:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_119:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k8338da9801de66166e3bb7746c9b11b0"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="388"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">57</td><td><a href="https://news.google.com/rss/articles/CBMixAFBVV95cUxPb2JhRVV6cG5uem1RWUFjM21GMEc0NUNJZHgyd3daazlURjAySS1CaHVpdnI0bjVYM3pZTlpNQWJkQk52YTcwQS1SVHgxTFVLaFhONlhwVk9iQmIwVTF6OUMxRi1QOFlTS2ZqUjdyYldNalZESjVhNW1FMWc1WTdWSWY1eWZpVU5LUEdTZkwwdFhNeTE0cG44ZkUtOVozM3ZjTm5GdkZNQ3dSeHk0MklXMElhTXlwTVdlWkd6VjdqYS1PdEot0gHKAUFVX3lxTE9XaVlXNjVraEtPelhVdERLd1R2XzFiQURicjc2eVplMkRkX0Q0UFhyalFRaHFJYzRpdTJ0YUM2RGZxMzllTHF6cXd0Y005WmU0YzZGMW1DS0xzZTVzTk96X0RYMUFmS3dHOHF1MFp6WTJ4OTNRQXd1OWRxdXhJcHg1RkJid1dERFFjdlp5RjNBMUhPU1JtVjV6NkZTVDVhUmR0MHhGY2Q1Q3ZXMGw1VW5ibW1vUjZERk51aE4yS0FRU0J3Wkl1QW13d3c?oc=5" target="_blank" rel="noreferrer">From UPI to the world: Sameer Nigam on PhonePe’s next 10 years</a><div class="muted small">PhonePe outlines global ambition beyond zero-margin domestic UPI processing.</div></td><td>Fintech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_120"/><input type="hidden" name="$ACTION_120:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_120:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k2ad2cdbf2cf07831799b600a7c57cbc0"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="387"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">57</td><td><a href="https://news.google.com/rss/articles/CBMi0wFBVV95cUxNcGJybm1uMUhPaXNqeC0wNnlzTTI5Q2JNWHRacFNYNjlSUm1yWVBfV0VSOVF0aFlBUThrWVdIbUFlRnVHYnUwYU9xNTBTeDVjMkFHcjZWTjBjOXhobURTUE51TXU0RzZQOVdoaWZGNEg3Z3Zwb1ZwSFBGNmwyMHFYb0NzUkxfRXlqcUVUREJ3LTdiUE5jZUlhZG83U1FNZ1p0eHJudDRuTy1CRUhvM3ZtckNXMzVDXzRzMU1uMFFzWnF3X3JlaHhweW9qX3BXSXd0YUxn0gHYAUFVX3lxTE9saVhSN2U3UXhVc2RyN0YyOHNrY0NaeVJBcmFxYjQ2eW1FS3ZlYWUwcHhzQjFBSTRkeVdiamNJXzhEZG5tZkNLaU95OW9LWXd0a1o2Q3dTM2czLTF0VGtuY3RRS3NhUVl4dnBETENoMm9ycFBSU2FzWGVXM1QyMkVqSWg4elNscWRZampBYUwwWXNiZEx3OG5GelpSYmdCRmdENVhaaGxGZ3REVUVFX2FHWlgzWUNsamswY1hOUUhxdlhjU0ktaGM3Z2RaZTE4UHFjRGt2TG9YNQ?oc=5" target="_blank" rel="noreferrer">Tanumanasa - Building Sovereign, Multilingual AI for Bharat</a><div class="muted small">A project targeting &#x27;sovereign AI&#x27; through multilingual models, reflecting India&#x27;s push for linguistic digital independence.</div></td><td>AI &amp; Deeptech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_121"/><input type="hidden" name="$ACTION_121:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_121:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kef74ab9f1b4d5a98eeb7d4ca27d8270c"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="532"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">57</td><td><a href="https://www.medianama.com/2026/10/223-aitmc-ipo-govt-schemes-drhp/" target="_blank" rel="noreferrer">AITMC IPO: Defence pivot, over dependence on govt schemes and other risk factors from DRHP</a><div class="muted small">DRHP highlights significant risks of relying on government drone schemes.</div></td><td>IPOs &amp; Public Markets</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_122"/><input type="hidden" name="$ACTION_122:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_122:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kdc611b45379ffc26c7d66034d5eb1c08"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="509"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">57</td><td><a href="https://news.google.com/rss/articles/CBMi1wFBVV95cUxNQnhULXpwQlc2YTM3azRwY0dGOW5TX0RVWjZ1aWZjUVI5bzZuOENwRDJVYlhrSDZWT1FkbHhUN25ZeTBoZ2FmVnhiVF9iWnhWYml3VHZ3dDhyVkh1WUtGbjY3YnRCMHF0SDVsTDR0Sno0V3ZFVW1xRkRuUDRCYXBiSXVHM0FJTGh2ejB1ZXQ1TVlLUzA2S1ZGVVJrdnpQaW4xajhidDJGUWZrMjFEa0dCTkRMWlVoamZPXzc5cks2Tm5GR3ZrLWZHaTByRFZYR3ZubVQxMzdxOA?oc=5" target="_blank" rel="noreferrer">The Ayurveda Co Shuts Down After Overexpansion Derails Business</a><div class="muted small">A cautionary tale of overexpansion in the D2C space leading to complete business collapse.</div></td><td>Commerce, Quick Commerce &amp; D2C</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_123"/><input type="hidden" name="$ACTION_123:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_123:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kc40427b5e802fd11707278bfb7235c0b"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="558"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">56</td><td><a href="https://news.google.com/rss/articles/CBMi3gFBVV95cUxPZnpQU1NsdXJFWEpBZjdiLVctSXNwcGIzTjhMQW5vM0xrdHJlX2plQU9xR01sQzh4cDVvU0FYNEo0WkpvVmY1OHhvcm1oMk43S0VQd19zUDBQbGZEc0xLRFlsdUpTYVI5Z1RCM2dkSFpoS3hJNHdWS0V1QmlmeEpaQUF3eU1ZX2NxZ1N3dndnQkczNHBuajkzWjNWdzNNTmJPNVBHVzJOVDA4SGFiWWJiQ3RsNnl1eVRHVDc5cXl5UVUxc0FlWGhIdllNSUltbkRWaU9EWUp6SEZIN2ExdkHSAd4BQVVfeXFMT2Z6UFNTbHVyRVhKQWY3Yi1XLUlzcHBiM044TEFubzNMa3RyZV9qZUFPcUdNbEM4eHA1b1NBWDRKNFpKb1ZmNTh4b3JtaDJON0tFUHdfc1AwUGxmRHNMS0RZbHVKU2FSOWdUQjNnZEhaaEt4STR3VktFdUJpZnhKWkFBd3lNWV9jcWdTd3Z3Z0JHMzRwbmo5M1ozVnczTU5iTzVQR1cyTlQwOEhhYlliYkN0bDZ5dXlUR1Q3OXF5eVFVMXNBZVhoSHZZTUlJbW5EVmlPRFlKekhGSDdhMXZB?oc=5" target="_blank" rel="noreferrer">Recur Club launches ~$51.7M fund to finance Indian D2C brands for festive season</a><div class="muted small">Provides the working capital debt to fuel the surge in quick commerce festive ad spends.</div></td><td>Fintech</td><td>3</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_124"/><input type="hidden" name="$ACTION_124:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_124:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kbac639648734fd1749657c3451eb6bc8"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="419"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">56</td><td><a href="https://economictimes.indiatimes.com/tech/startups/etsa-champions-show-the-great-indian-dream-is-all-home-brewed-and-visa-free/articleshow/134875670.cms" target="_blank" rel="noreferrer">ETSA champions show the great Indian dream is all home-brewed and visa-free: Union Minister Piyush Goyal</a><div class="muted small">Minister spins US immigration curbs as a domestic startup advantage, echoing political talking points.</div></td><td>Policy &amp; Regulation</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_125"/><input type="hidden" name="$ACTION_125:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_125:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k5a7c75b3ce7fe7774c7e7cc469fd2bcf"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="588"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">56</td><td><a href="https://news.google.com/rss/articles/CBMi7gFBVV95cUxPODl5cFVBT3gyZGpCQUNXaGU1Tk5iUTdEQXdYYzBTWUJwVUtfWHdwNm9XelVXa2JWV2RSR1hBbXNBNk1SeDB0UUlKd0l6SlhpZGRYM2laTDVjWmo1QTZEZ3NkN1JWeTBIa1BPODB6ZkhFTmxwdmNYa0lJNy1kbHFPX0NVNl9tTkRrSl90SmJ1Z1pLdy1YZ1E5QnZkbTFETlFmNWF0YjRUSnBjZWhYSTE5NlpQYlozUk1HN202eDkxc1ZDc2ZaQWZjd0tQYnBfLWxxbFIyTndNeFltSWVCWnpEMEEyZ3JKcEQ2RkkwN1l30gHzAUFVX3lxTFBWSkNsQ0NKbWM1QVdHazJCU0EtNXRXUmNpTUVXNDBJOEZQNVZkQ2ViOTZ3bFpHdTZxMUdxTXNhdDVHcFJ4RXFKSUhVQWNPX3ItYkd3ZG1lOElQWUtFYjdhdlFEQW90bDVoM2dDU3JwZU9XUEg5OVJPSHZQdmRuV09hUmJzQjNsWFhjbmJOdjJma1Zyb2xtcFhRdm94Z2kwb01WblVzTDk3LVBsSjUyTWZ6TGp1TzJqZTBEOWxhYmpnZEwyZHZFWWJzQ19MY2cwOUEzYS1KaUkxeC1sUVVrZWJKN1BfM2dWaC03c3UyakFOUlFsaw?oc=5" target="_blank" rel="noreferrer">Piyush Goyal backs global growth push for Indian startups; Gajwani flags AI gap</a><div class="muted small">Gajwani contrasts optimistic government rhetoric with the stark gap in Indian AI model funding.</div></td><td>AI &amp; Deeptech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_126"/><input type="hidden" name="$ACTION_126:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_126:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k9d23b4bd6e1960c21e427dc0fe93e770"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="597"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">55</td><td><a href="https://economictimes.indiatimes.com/tech/funding/lifestyle-accessories-brand-dailyobjects-raises-rs-332-crore-funding-at-rs-1050-crore-valuation/articleshow/134789153.cms" target="_blank" rel="noreferrer">Lifestyle accessories brand DailyObjects raises Rs 332 crore funding at Rs 1,050 crore valuation</a><div class="muted small">Large Series C and high valuation prove sustained investor interest in premium lifestyle accessories.</div></td><td>Commerce, Quick Commerce &amp; D2C</td><td>5</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_127"/><input type="hidden" name="$ACTION_127:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_127:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k7c6f010a122505d35a9868acb268055e"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="450"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">55</td><td><a href="https://news.google.com/rss/articles/CBMiiwFBVV95cUxPNTNFTnBWQzdoRTEtdlVQMU11c3BPTlJHZ1AwNDRxUDJKRUd6cTlYbnhySTctdjVkZGtuSXdabjRQMzdTaXdPRUwyT2V1RlZMMVA3Zjh4amxsY0tSLS1LNVZ1TW9pYmI5WmlCYlFESzF6UVRBdmxMZW1EZnRJemp5dTFEOUsweTd5WmpJ?oc=5" target="_blank" rel="noreferrer">AI food images on quick commerce apps</a><div class="muted small">AI food images on apps are becoming a point of consumer friction and quality concern.</div></td><td>AI &amp; Deeptech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_128"/><input type="hidden" name="$ACTION_128:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_128:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k875d46adcb82c929fe234cafcf3072a1"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="484"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">55</td><td><a href="https://news.google.com/rss/articles/CBMi4wFBVV95cUxPR0tTbFBhWjRBSUFPNDh1SlRMdU9zRk5BenFVUzB2SDdMR3ZQTDJoVUt0OGVfeUwybFdYZl9Qb2Y1YjhrT1NfTVlXMzFSUXhjRDNxZ0NSQkZZazAxQnJ4N1JRODBsWkpVWjBsRXJrT2Z3c284QjhEZDFRWGJKbF92UjZlbFg2MTZqbktDQTFoUTB1dEROUjZQVlR2WVdSNXdXZ1h2TkZaZzFxOFpwc05iZHliZHZldjVUcUhoRTRna1c0d3d3eE81NlR4RTRWNldMcXN5dk4tWlJmVGVWbTFRWkZaa9IB4wFBVV95cUxPR0tTbFBhWjRBSUFPNDh1SlRMdU9zRk5BenFVUzB2SDdMR3ZQTDJoVUt0OGVfeUwybFdYZl9Qb2Y1YjhrT1NfTVlXMzFSUXhjRDNxZ0NSQkZZazAxQnJ4N1JRODBsWkpVWjBsRXJrT2Z3c284QjhEZDFRWGJKbF92UjZlbFg2MTZqbktDQTFoUTB1dEROUjZQVlR2WVdSNXdXZ1h2TkZaZzFxOFpwc05iZHliZHZldjVUcUhoRTRna1c0d3d3eE81NlR4RTRWNldMcXN5dk4tWlJmVGVWbTFRWkZaaw?oc=5" target="_blank" rel="noreferrer">The rational business decisions behind reverse flipping</a><div class="muted small">Analysis unpacking hefty tax bills versus rich domestic market valuations in reverse flips.</div></td><td>Policy &amp; Regulation</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_129"/><input type="hidden" name="$ACTION_129:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_129:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k6c921811f733c0e6cbad0adc0ee2c30b"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="594"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">55</td><td><a href="https://economictimes.indiatimes.com/tech/information-tech/indias-infosys-does-not-expect-material-impact-from-us-perm-suspension/articleshow/134858725.cms" target="_blank" rel="noreferrer">India&#x27;s Infosys does not expect material impact from US PERM suspension</a><div class="muted small">Infosys downplays the impact of US immigration policy shifts on its permanent residency sponsorship.</div></td><td>SaaS &amp; Enterprise</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_130"/><input type="hidden" name="$ACTION_130:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_130:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k9fb062160bf37b9c645e0523437d7807"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="562"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">55</td><td><a href="https://news.google.com/rss/articles/CBMijwFBVV95cUxQSGpwZ1d1bUxmdjZ3X0dJZzhxT1VwMDItNXVNZDl0UmhWbHMyZGhucUJuVkJRUjRfcE5CUHVlSXJGUVlvWXVrNW1qLXZPUERFekZ6djN1cDIzaXFEa1psaDRMREd1SUExMEJNY3dfejVDeExSc2d5RFhIdmdibk85bUhVNlFLUUgxSnlPaFJyNA?oc=5" target="_blank" rel="noreferrer">Alakh Pandey’s uphill task to dominate the south</a><div class="muted small">PhysicsWallah faces regional cultural and linguistic moats while expanding beyond its Hindi heartland base.</div></td><td>Healthtech &amp; Edtech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_131"/><input type="hidden" name="$ACTION_131:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_131:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="ka35d18e77bdb598d6f07f96a954a6157"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="374"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">55</td><td><a href="https://news.google.com/rss/articles/CBMimgFBVV95cUxQNVpMazd3NFdEaXhqSlRsOVpEV0xmVGExU2NJTUNiUV9uSy0ydHZtbEJsYzdpZjY5ZEt2dTFKN3lMRENveDktWTNRLTRKeGRMR0RwQWc4ckNEZTJFd0JTb2dDLXlCVGV3bGs3dlQ4RW5EZDFLamhJMHdWd1gwMW4zVVpfZHdVWi1HM0NkRHJLSDV4U2kwN1M1WTNB?oc=5" target="_blank" rel="noreferrer">Why Growth Stage Startup Funding Outpaced Late Stage Investments In Q3</a><div class="muted small">Trend analysis showing institutional capital clustering around proven growth traction over late-stage mega rounds.</div></td><td>Funding &amp; VC</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_132"/><input type="hidden" name="$ACTION_132:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_132:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k23af39879ef942b4e6b942ae3378e567"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="415"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">55</td><td><a href="https://yourstory.com/2026/10/juspay-fy26-revenue-rises-30-percent-rs-664-crore-international-business-ai-bets-scale" target="_blank" rel="noreferrer">Juspay FY26 revenue rises 30% to Rs 664 Cr as international business and AI bets scale</a><div class="muted small">Juspay&#x27;s 30% revenue growth paired with widened losses highlights the high cost of global AI bets.</div></td><td>Fintech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_133"/><input type="hidden" name="$ACTION_133:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_133:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kb2ebd171d7e9a6721a233e533e7404b7"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="499"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">55</td><td><a href="https://news.google.com/rss/articles/CBMitgFBVV95cUxQR0VUa1hqWnFBcVdyLWEtZlV3Ui16MHF3V0cyVDBHUDl4bjBGOGkzZldlelNMc0g2cDN2aGRjT0lRS0pEenhLRUtYT1RKS1dwZTNBRUpvRmJteDU5WWRzaHdhRnV3OTR3Rzh0U21ZZVVZRlNfRTdqeVNJVUhsekxtTGZVNWp1OTV5bkY1WVMwT1pZQ2RMWWN6Uml2bE5zdnk5Qm5hTXZxbC1Hcmpyd3d5d0JORV9YUdIBuwFBVV95cUxQR3ZTX2poejF4U3cxYWVjM2h4bE1nVllCWHFleEk5WXNwakFtVmJVMFJkRWZMTm9OUElrNXZRM3VTa1JuUW9SeUZFa0V4cG5Kb0FiUFdTVTJnX3cwZVJ3RGcwMUN0cmxrc1pHZG90VGl6eERURkhma0VrVlBNYTQ2LUVTMTJkYy1hSVFyaGJKTmMta0hOUzQyRVUydkZwV01ZM1lZV0ZPVFRFUjlhNGhCLTdFVGh1b2hVbFQ0?oc=5" target="_blank" rel="noreferrer">India’s AI Unicorns: Models, Moats &amp; the Race to Scale</a><div class="muted small">Explores the fundamental question of defensible technological moats for India&#x27;s AI unicorns.</div></td><td>AI &amp; Deeptech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_134"/><input type="hidden" name="$ACTION_134:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_134:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k301b458df799bf4dddc56b11e5d11f51"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="407"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">55</td><td><a href="https://news.google.com/rss/articles/CBMiwwFBVV95cUxQTU5Dbm9URGhmR3VPcEZNa1l5R01PWEF0Ylh6c0hXQmR0Rm5XVlJHd19NdW1qNHVRWGQxY2FCbFdYaEpJZXU1NDZ1ZzBzYW9Lbl9fUkxJSHlKTFBrTWE2YTQ2V0RJRkRZRkZJcTRmMUxTZndGczRtMkt4QXZ3azlSWjRTTDNLNTdibXFLTnJNdFBjN2xsWDhyeFR3eGtXVXhNM1lveUdTWldwV1lQQUVmS0hXTkRnbUtOOGlaSzdOcVFIUVnSAcMBQVVfeXFMUE1OQ25vVERoZkd1T3BGTWtZeUdNT1hBdGJYenNIV0JkdEZuV1ZSR3dfTXVtajR1UVhkMWNhQmxXWGhKSWV1NTQ2dWcwc2FvS25fX1JMSUh5SkxQa01hNmE0NldESUZEWUZGSXE0ZjFMU2Z3RnM0bTJLeEF2d2s5Ulo0U0wzSzU3Ym1xS05yTXRQYzdsbFg4cnhUd3hrV1V4TTNZb3lHU1pXcFdZUEFFZktIV05EZ21LTjhpWks3TnFRSFFZ?oc=5" target="_blank" rel="noreferrer">FMCG major Marico acquires additional 24.09% stake in Plix parent for Rs 1,012 crore</a><div class="muted small">Major FMCG consolidation confirming strategic buyouts as the primary exit route for D2C brands.</div></td><td>M&amp;A &amp; Consolidation</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_135"/><input type="hidden" name="$ACTION_135:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_135:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k221b3f25a23ac856ded7c3e006a7e4e5"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="390"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">55</td><td><a href="https://yourstory.com/2026/10/up-cabinet-approves-startup-procurement-scheme" target="_blank" rel="noreferrer">UP cabinet approves startup procurement scheme</a><div class="muted small">A strategic move by UP to become a customer for startups, potentially bypassing traditional procurement hurdles.</div></td><td>Policy &amp; Regulation</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_136"/><input type="hidden" name="$ACTION_136:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_136:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k38ea48dbe31290443829cfa93b89c9dd"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="554"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">54</td><td><a href="https://economictimes.indiatimes.com/tech/technology/indias-semiconductor-push-agentic-ai-set-to-reshape-telecom-and-connected-devices-industry-leaders/articleshow/134795824.cms" target="_blank" rel="noreferrer">India&#x27;s semiconductor push, agentic AI set to reshape telecom and connected devices: Industry leaders</a><div class="muted small">High-level alignment of semiconductor and AI strategies is crucial for India&#x27;s hardware self-reliance.</div></td><td>AI &amp; Deeptech</td><td>4</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_137"/><input type="hidden" name="$ACTION_137:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_137:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k144570336424eaf402833ee8e1bbfc36"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="462"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">54</td><td><a href="https://news.google.com/rss/articles/CBMipgFBVV95cUxQbmQ5eGtpb3VJY1E4R2pYYUFuU2x5dHJmelFDVVI3VnV3TFByaXFIcTB3QUlreDgxbFZFcVdUY0VSRzJZQjBlclJRbFFBMWNfOHRTMUVQT25OSE4zSGhpSUhsM2dZYjJsUGlINFBJTUdFcFlYNGFEUGNvMnJvUEJ3NEE0bklDR2lHMzNuUlJkWEdpNnJGb0xBTU9VNy00bS02bEt0NXln?oc=5" target="_blank" rel="noreferrer">India’s semiconductor startup ecosystem attracts $1B in five years</a><div class="muted small">Semiconductor startups cross $1B funding, tracking India&#x27;s gradual push beyond chip assembly.</div></td><td>AI &amp; Deeptech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_138"/><input type="hidden" name="$ACTION_138:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_138:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kbe3857b9a2bb203b7e5fc2f5d2597962"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="596"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">53</td><td><a href="https://inc42.com/features/indian-ai-startup-funding-surges-265-yoy-in-q3-will-momentum-continue/" target="_blank" rel="noreferrer">Indian AI Startup Funding Surges 265% YoY In Q3, Will Momentum Continue?</a><div class="muted small">265% YoY growth in AI funding confirms the capital shift from general SaaS to AI-first.</div></td><td>AI &amp; Deeptech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_139"/><input type="hidden" name="$ACTION_139:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_139:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k6af112c975b575ad8565607a1d6a3539"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="494"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">53</td><td><a href="https://news.google.com/rss/articles/CBMi_wFBVV95cUxQVzFJYmV4MmpZVzQxbjk0ZEQ0NXdNRW9MOWZ6UE5FRFRzWWh1Mmx5VWFYMDB4NWJDZ2VEclV6U0otYXpLdVNGZEotZGY5cUs3ZWpNV2F3RnVsWUpEa0J0WmlRaWhEeEhlNnFqU0U4azNHcDJIcVViczlEb2ZXNk1xRXFTMGRPUFhWOGl5aFpudF9VRlR1bXZObTlMTlVmMVl6b3ZhSlpHR0pvTExfWVlSalNxdThmZ1c0TmVTSktoejVQZUVDUF9fc05wTEpUR1FOWXU1Wld6czBRa1FHdTdEWXN3REJER2Z5TVZUNXdZSDRMekYtRjhLVE5iUW5Ua0HSAYQCQVVfeXFMTm9TUGFRUWk0bTdGQVhaRTRWYTY3aU9UejJCLUo0SngwUFJ6VjJWOFRsNXF6WUZkTE1QSlR6WWNVUW5vUVAtSjZ3bkJ6aVpvcFFiV2ZjMTRfTmxNci14ZzduRUlrMW9aTnNaYV85U2hlbU8tbUJQNHYzR3otVUh3d2RSZTFvYzhnRFZ6Z3l1Q3dpSGxFazI2OExDVS1vU3J1N2sta3F4dkFMUXZkYkhyNnUzOXo5MW83VWFncW5xcVozMTZiNzcxY1ZFZ3NPdXN6QW9RVGxvOGtDY1d0N1RieUFiX1RuRWpiTmNuRmY2cFNoNmsxY3paWTB5U3dWei1NWTA5MS0?oc=5" target="_blank" rel="noreferrer">CERT-In warns NBFCs and fintech firms of cyberattacks targeting payment APIs for unauthorised fund...</a><div class="muted small">Critical warning for fintechs as API-based vulnerabilities become a primary target for sophisticated cyberattacks.</div></td><td>Fintech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_140"/><input type="hidden" name="$ACTION_140:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_140:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k9e57317b71b8686904583d5054266e5a"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="537"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">53</td><td><a href="https://news.google.com/rss/articles/CBMirwFBVV95cUxNN1hUX3B3TG9jS0FsZWRzNjUzWGxUOUNYMHU2QnVQbU9rZXZBdXMxanZ5cThCZG1FZU1Ja19DbWVTendlazVfQndNSkFwMzFWaG5vOWc2WWFWYlhRZmFMYVJpNWVuTG1rN2VYaGpxeHI0X2lYTHlKR09UX205OHZiZEl2bFpIdXhQWHMtSXVzZVdzejZHR3J3ZUpXUWVrb29VaXU1Y0JoeTlQX1dQUVhz0gG3AUFVX3lxTFA3Uzh5V0hFd0QzM3B5M2o5QmtKak1QbEp2eXE2U1BUQjhsbEZhdmtSR0VqRWZEcGJSMzFTX1lCVnY0b3pvNElnUmpPT0dLaUVyY0k2bUZhcS1QeWxLdUpWSTV0R1d0cmw4X2w0YWY4cDFyYWNoeUM4TkRyb1dPelR2ZXVFXzRvZTZJeXNyektVckNqYS0wck0ycFpIMHBWV0t6QktPMnh4LWdDazRQaC1nMkotUEpNWQ?oc=5" target="_blank" rel="noreferrer">PE, VC industry making informal network to help angel funds meet accreditation deadline</a><div class="muted small">Informal syndication networks emerge as angel funds race to beat SEBI accreditation deadlines.</div></td><td>Policy &amp; Regulation</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_141"/><input type="hidden" name="$ACTION_141:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_141:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k1dafe1573a70ff31e7c656a55daf0c8e"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="604"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">53</td><td><a href="https://inc42.com/features/swiggy-zomato-have-a-new-fight-on-their-hands/" target="_blank" rel="noreferrer">Swiggy, Zomato Have A New Fight On Their Hands</a><div class="muted small">Analyzes new competitive threats in the foodtech duopoly, likely from quick commerce expansion into ready-to-eat.</div></td><td>Commerce, Quick Commerce &amp; D2C</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_142"/><input type="hidden" name="$ACTION_142:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_142:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kea37f974c75cb150a5f8b6ce67f23092"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="565"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">53</td><td><a href="https://news.google.com/rss/articles/CBMihAFBVV95cUxPX1I3cWJ6Q2pfSjZJZ1Z2WGRPYzJReFZrWldBZmJFTGVwWFRSbEJPNE5tY1E4THY2UUpCZlMtNW9qTDJpZGxYSmNkLWpmbndjbnRxOTFvcFF1dGVTQ2VYUlZlbzlZam5pUms5OThWYlgzV2V0VTJubXRnVUN0VlkzQ1Z4WEY?oc=5" target="_blank" rel="noreferrer">The Hardest Test for India’s AI Dream</a><div class="muted small">Discusses the high barriers for India to move from AI application to core model development.</div></td><td>AI &amp; Deeptech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_143"/><input type="hidden" name="$ACTION_143:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_143:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kdf864e50847cea0444ceadc8242265bf"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="542"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">51</td><td><a href="https://economictimes.indiatimes.com/tech/startups/where-will-indias-deep-tech-be-in-10-years-pixxel-agrani-labs-brainsight-ai-founders-explain/videoshow/134836290.cms" target="_blank" rel="noreferrer">Where will India&#x27;s deep tech be in 10 years? Pixxel, Agrani Labs, BrainSight AI founders explain</a><div class="muted small">Founders envision India moving from software services to core hardware and defense-tech leadership over the next decade.</div></td><td>AI &amp; Deeptech</td><td>2</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_144"/><input type="hidden" name="$ACTION_144:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_144:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kfff59864fdc376456263f79c55ab800e"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="519"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">51</td><td><a href="https://news.google.com/rss/articles/CBMivwFBVV95cUxNQ0Fvekc5WnRCSm1LNV82aEtRVEF3MWxTeEREY0R5SlEyQmFJVk9xWlNxWEtmZlBZMFVZMWcxLXRvYmNOYUVwYjAybGpIZkdiMXhCM2VadjhZZWdBc2Q3NXI3eWZzNHJrNkpqbW5nXzNnWEVLZlNTV0hLLThCdERfN3otbzl3S1FwWWNlejZmRm9EaURLVTBWV1JINFpFOE51NjhRRElUcFhFU1pGUFp6SHpvUkp6enNaajB6S1g0MA?oc=5" target="_blank" rel="noreferrer">Lightspeed Launches $250 Million India AI-First Fund, Betting Technology Will Outpace Internet Growth</a><div class="muted small">Lightspeed doubling down on &#x27;AI-first&#x27; indicates where the next massive cycle of Indian venture capital will flow.</div></td><td>Funding &amp; VC</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_145"/><input type="hidden" name="$ACTION_145:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_145:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k04db9b2cc15515cbfa8a4018dbb5bef3"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="550"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">51</td><td><a href="https://news.google.com/rss/articles/CBMi2wFBVV95cUxQMVpRNlZEVk9laUlCTjNYTkROMjcySHY5dlFrdjNfN1JKRDhNdG1wN3EtakdNd3pPaDNMVkY4V1Z0dWRFeEFwQWtoaGg5TmF6ODRmc2tfZGhiUTN5eURCbDRzbHNSVDRnejBEbEVKTmJnRjFaQ1BJSW83QWZkMTZwQzE4clJhcU9COTdwbEo1R0JyN3hjZG9KMDRhM0piMXRCOXpGZHpqSnFTSHZEU3U0STdFMXdJTEZfXzJndkRVN2ZrRGUxWnBQWk1HRVl0U0MtM3RYa3RSbC1kMXPSAeABQVVfeXFMT0NzYkcxdFVlWkh3YVNnYjBxc0cyUzZob1MzTnVuY0ViTFd1RW50NGtxei1aaEYzeWdRWjBsa1VrOXdvOEpRUXFENVY5SC1lNEh2cFd4Y2VrR0FtRGVzZEdWUXN0Qk1TZjVSeGozRE5EZWpsZTUzV3VJX2ozYVptWTA2b1hHYmxVZUY1Q2VQQnl5c0drMExGZkZuWkd5QnJqb2lvUUtDdENkZEtYTVBWS01nVHlrT01qV2NfVlpMbmpqQ0c2Sk5YLVM5TGoyZW8zV1BlUUVBelp5UHdMUnRrWVI?oc=5" target="_blank" rel="noreferrer">B2B ecom platform Udaan targets IPO by early 2028 as turnaround takes hold</a><div class="muted small">Udaan setting an IPO timeline signals that its aggressive turnaround and cost-cutting measures are taking hold.</div></td><td>IPOs &amp; Public Markets</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_146"/><input type="hidden" name="$ACTION_146:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_146:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k0e9fe178a1c1fba317d14554f7971e13"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="574"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">51</td><td><a href="https://inc42.com/buzz/govt-orders-suspension-of-internet-services-in-new-delhi-amid-protests/" target="_blank" rel="noreferrer">Govt Orders Suspension Of Internet Services in New Delhi Amid Protests</a><div class="muted small">Short-term internet shutdowns continue to be a blunt regulatory tool impacting the digital economy during protests.</div></td><td>Policy &amp; Regulation</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_147"/><input type="hidden" name="$ACTION_147:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_147:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kb58c3a6a2a3cdf7300c4e4c74de025e3"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="527"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">50</td><td><a href="https://yourstory.com/2026/10/festive-sales-playbook-how-amazon-flipkart-winning-indias-mega-sales" target="_blank" rel="noreferrer">The festive sales playbook: How Amazon and Flipkart are winning India’s mega sales</a><div class="muted small">100% order growth for Amazon shows the festive season remains an e-commerce juggernaut.</div></td><td>Commerce, Quick Commerce &amp; D2C</td><td>2</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_148"/><input type="hidden" name="$ACTION_148:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_148:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k3aa21df1bff7f916c5edd21f26324551"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="501"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">50</td><td><a href="https://inc42.com/buzz/vinfast-signs-deals-to-set-up-50-e-motorcycle-showrooms-across-india/" target="_blank" rel="noreferrer">VinFast signs letters of intent for over 50 electric two-wheeler showrooms in India</a><div class="muted small">Vietnamese EV giant&#x27;s aggressive retail expansion plan challenges domestic incumbents in the 2W space.</div></td><td>Mobility, EV &amp; Climate</td><td>2</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_149"/><input type="hidden" name="$ACTION_149:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_149:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="ka110cf76ead346969d0628b766a4981c"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="452"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">49</td><td><a href="https://news.google.com/rss/articles/CBMi2gFBVV95cUxOSDl1SkIzTGlXUkxoZU1JSFVFWTdIZ2hnd0E1U3oyeU9PSEhKUWk4UVFmbnA1aG16M2VkLVJURWVVWGp5T3RaZFl3elZZbC1Hd0RoQ2g0WENVVmMteU1tUGVXRGwyZlJNeXA4SHJvQ25ZOGh4akNSbEYxdlFjZ3pmZWtQS2FvTmw5UXFNLWxsa0xtMVM4dGdhaVkzajJKQVlFRUNZUFg0LUFyNjdSczZFcGpyc3NBVDRPeEhleVBjN3ZSRG1FSTJQY0hwXzNqRGhEckVZSDlXVEZvZ9IB3wFBVV95cUxPVTNxNllZal8xOUk5dVZ4dUUtQWV6UGZfWkhHTU5Mc3VKTmxtSUVGS19rZ3N4STM2R19GVnkzNV9ONk82ank2NDBQa0dISnF5Rk04NlA2NXQwakJ3S0owU2pnSUI3Z2Y4WTJfMzRFY0VFbll0SkxqVkZ4dmJ1OHR4YXY2dXM2dnJpbFJfdnBHMUFvTmlQNnctb3FPZWFRb2tvaWVVZkRabDBKY1dRYkFiM1U1VnBzOHVpSXNRUE9Dbzl0WEhtMWR4QjVwb1VGMGxJaWxiei03LXZTX1BvSUk0?oc=5" target="_blank" rel="noreferrer">Garuda Aerospace lands $10 million pre-IPO funding at $320 million valuation</a><div class="muted small">High private valuation ahead of planned listing raises scrutiny on underlying drone fundamentals.</div></td><td>Funding &amp; VC</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_150"/><input type="hidden" name="$ACTION_150:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_150:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kd0fb581c3030080bfef1c60c5f6c7a14"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="396"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">49</td><td><a href="https://news.google.com/rss/articles/CBMiyAFBVV95cUxQdjBNWUJSRlFkd2c3U2xKUkR1NW1iQkVjOUViWkY0S1BaNEhDS3RjU2lRNGdjRkFPQVFtTmVEa2tUQ1JHV283eWw1U01OanFBWmZYT2R1X1JiVnFZa3J4TnBCRjFzbndMUHA4aGppek01Vjk2NmJYcUZJc05ERDVYaUNsQVBOdHVmZE41a0RUS3JTLV94OEFEbWFNT3BaS2ZfUkw1TTZkMnNrdDFqNE9SOGFJVTBYWVlsUXhDN21DUElqcXZ5Qzg3b9IByAFBVV95cUxQdjBNWUJSRlFkd2c3U2xKUkR1NW1iQkVjOUViWkY0S1BaNEhDS3RjU2lRNGdjRkFPQVFtTmVEa2tUQ1JHV283eWw1U01OanFBWmZYT2R1X1JiVnFZa3J4TnBCRjFzbndMUHA4aGppek01Vjk2NmJYcUZJc05ERDVYaUNsQVBOdHVmZE41a0RUS3JTLV94OEFEbWFNT3BaS2ZfUkw1TTZkMnNrdDFqNE9SOGFJVTBYWVlsUXhDN21DUElqcXZ5Qzg3bw?oc=5" target="_blank" rel="noreferrer">Exclusive: Green SM parent infuses Rs 153 Cr in Indian subsidiary to scale EV ride-hailing</a><div class="muted small">Fresh capital infusion reflects continuing international commitment to India&#x27;s electric taxi fleets.</div></td><td>Mobility, EV &amp; Climate</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_151"/><input type="hidden" name="$ACTION_151:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_151:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kaffc13aca776c943cdfd3d9a4c849eee"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="413"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">48</td><td><a href="https://news.google.com/rss/articles/CBMi9gFBVV95cUxQNVJxY3pyRlN5T0ttcmota0RpWlg1M1NocEZDUE91cEFfSlhBUDJuX29IUDV6TFd2eEVKa3BnNjVSVEZzMm9PVVpaNUhGQ0Q2UG1BQ3ZWVXBkU1dWVy1IRmRfUk5leW5yQnMzdDFQUk1uLVVwZEwxcXhGUFg4T2FUQkU3RzVsSFNmcUVjR2RDUnIwTFBERGY5OTJhUkxESXoyS25VWVJicmVoVlN4aFRxTlVNWXQyQVdDNjNyRDNSSS1TbWRGcDdHUEtJMnpBNkp4UVZ4MjlzS29ub1E4TnpacGpOMVZXbkNLTUZzX251YXRzRzZCU3fSAfsBQVVfeXFMUGxrN3pOM21HQlFTXzBEaEFDQVRteEgweGJxSmlBeGg1ZWtqX0dKeFRLSjkzUDJEcFBFX0xzUnFRcG1ITWF1cE5xX1VHQXBmbk5DVGtDdG9OaUxxRkZ4NGpIWjcwUWtPWF8wMXFpN080cmJWb3BFMHctVzdWS1Z4OVVzdzVySVI1UC1KUnNZc3BlUWtOZllGaGpRdUFZZk9rNHFKNnk3VTlOMTR1NGhsQkZNc0Nvbm9BbGxOVkFDeGMyUjRvZHN1b0dZandEb0ZaekVUWmVKZGpNNlo3ajhUaDNQODFSM2dmc1hQd2tDYjNNOExCNzgtNGlnWVk?oc=5" target="_blank" rel="noreferrer">ETSA 2026: India’s strong medical, STEM talent can drive deeptech startups: BrainSight AI cofounder</a><div class="muted small">Emphasizes that India’s vast STEM pool is the primary engine for upcoming deeptech ventures.</div></td><td>AI &amp; Deeptech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_152"/><input type="hidden" name="$ACTION_152:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_152:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k492057d4a4bc4a98c703c1a998e76bf6"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="525"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">47</td><td><a href="https://news.google.com/rss/articles/CBMiqAFBVV95cUxOa3Y2WU1ZSWdkQi1faWZXOHVxYXVVcm5DTXRiZXh6cTR5bVFFLURiSjdWLU9rWWhLN25mVUloUFVrRjZOLU1mc0tXNU9JMGhPUG40a3J3V0JIWi14VkEzd0s3VmtUbmpTVUxlVC1udnRRTENmb21mS3FTdlIyaVBYVXVZQ21ZQllrSkFKd1NKS1JkZnVfNWJNWWZpQWFlbE14eVZDckJqeU_SAagBQVVfeXFMTmt2NllNWUlnZEItX2lmVzh1cWF1VXJuQ010YmV4enE0eW1RRS1EYko3Vi1Pa1loSzduZlVJaFBVa0Y2Ti1NZnNLVzVPSTBoT1BuNGtyd1dCSFoteFZBM3dLN1ZrVG5qU1VMZVQtbnZ0UUxDZm9tZktxU3ZSMmlQWFV1WUNtWUJZa0pBSndTSktSZGZ1XzViTVlmaUFhZWxNeHlWQ3JCanlP?oc=5" target="_blank" rel="noreferrer">Med-tech startup Sunfox Technologies raises $7 Mn in Series A round</a><div class="muted small">Domestic hardware ECG diagnostic startup scores growth capital to commercialize pocket medical devices.</div></td><td>Healthtech &amp; Edtech</td><td>3</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_153"/><input type="hidden" name="$ACTION_153:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_153:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kd8e176426ec0827a0c0fe6f891770c23"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="405"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">47</td><td><a href="https://inc42.com/buzz/ev-bets-drive-indias-cleantech-funding-surge-in-q3/" target="_blank" rel="noreferrer">EV Bets Drive India’s Cleantech Funding Surge In Q3</a><div class="muted small">Confirmed trend: Cleantech is now a major pillar of Indian VC, driven largely by EV adoption.</div></td><td>Mobility, EV &amp; Climate</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_154"/><input type="hidden" name="$ACTION_154:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_154:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k0643f5feba18dcc6cdc2e2392755d060"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="556"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">47</td><td><a href="https://economictimes.indiatimes.com/tech/startups/et-startup-awards-2026-indias-startups-ecosystem-has-grown-beyond-tech-hubs-idfc-first-banks-vaidyanathan/articleshow/134874067.cms" target="_blank" rel="noreferrer">ET Startup Awards 2026 | Tier-II cities rechart startup geography: IDFC First Bank’s Vaidyanathan</a><div class="muted small">Lender data demonstrates significant geographic expansion of formal startup banking into non-metros.</div></td><td>Funding &amp; VC</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_155"/><input type="hidden" name="$ACTION_155:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_155:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kcca17f80b8d5f99ee8870796a2f05e19"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="589"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">47</td><td><a href="https://news.google.com/rss/articles/CBMi2wFBVV95cUxPd0ZMcEpISGdOU0pvMkk5ZGFmQkdRb1NIWDQzMl9EODlXM2VmNFNJNTJacDRWZmhWenhodlV6UlZBbWpBREoxMURCTTQybUFjMzBpV2dkZnp5R21TSmxnSnhZcDJ4Z3ptaXpLUHZzSTZJUWJqOVFPbWM1U2pDYlMwTmxGTktIRDU2QUlTZVhheFlvTklpS1gyMG5wQnlSV1dqNmZiV3N0dXM3RTVHS0xzX092V1dQTF8zSFJyUllnVkptQWUtMnVCeWdFTndvNDYyWjdkVnZOQ3loWFXSAeABQVVfeXFMT21rUnF2RW9XcTg5UWlNNUV6aVNLQlFBdHpCMFdRRE9rSjZ4c2ttbkxJZEdlNWd2MVZicTdhbHYteVAwaWVOU1JocThaVS11b2xScDR6XzE1ZmxiM2NWTExfeVRySDZEaks5N2pONXJNZ0NqZVdGT0UwWUFtNEM0QlRHcldrOTlEZTdkdXFCN21SaUsxTVJRbDktZWxaTmdLZWRPLVFuRlJDM0ZyNkVkdjRmMERhTElmVEZqclZsdGxtUWRpYlhBQVJvZUJMME80UDhMVXZmbm43Y3J5UUxjUVQ?oc=5" target="_blank" rel="noreferrer">The telecom push: Scaling beyond assembly to advanced deep technology</a><div class="muted small">Discusses the transition of the telecom sector from simple hardware assembly to deep software innovation.</div></td><td>AI &amp; Deeptech</td><td>1</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_156"/><input type="hidden" name="$ACTION_156:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_156:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k453728cd331772fa31696eacfc54cc9b"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="576"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">46</td><td><a href="https://inc42.com/buzz/amazon-layoffs-at-least-100-employees-in-india-hit-by-latest-global-job-cuts/" target="_blank" rel="noreferrer">Amazon India layoffs: Pink slips handed to employees across retail, customer service functions</a><div class="muted small">Global retail pruning touches India, emphasizing ongoing cost discipline over pure market share grab.</div></td><td>Layoffs &amp; Shutdowns</td><td>5</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_157"/><input type="hidden" name="$ACTION_157:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_157:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k58e2d3aa6f380e2d4a44372c5944a45a"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="436"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">46</td><td><a href="https://inc42.com/buzz/bewakoofs-fy26-net-loss-jumps-nearly-20-to-%e2%82%b987-4-cr-revenue-crosses-%e2%82%b9200-cr-mark/" target="_blank" rel="noreferrer">Bewakoof’s FY26 Net Loss Jumps Nearly 20% To ₹87.4 Cr; Revenue Crosses ₹200 Cr Mark</a><div class="muted small">Financials show a reversal in bottom-line improvement, highlighting the difficulty of scaling D2C fashion profitably.</div></td><td>Commerce, Quick Commerce &amp; D2C</td><td>2</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_158"/><input type="hidden" name="$ACTION_158:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_158:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k477fc82eabd249544c3b4c5b67eb5399"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="520"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">46</td><td><a href="https://inc42.com/buzz/peak-xv-sells-awfis-shares-via-%e2%82%b930-cr-bulk-deal/" target="_blank" rel="noreferrer">TPG-backed NewQuest offloads Rs 115 Cr Shadowfax stake in bulk deal</a><div class="muted small">Secondary block trade demonstrates ongoing investor liquidity events in pre-IPO logistics platforms.</div></td><td>Funding &amp; VC</td><td>2</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_159"/><input type="hidden" name="$ACTION_159:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_159:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kef2f4b4ba4257b5f1fd0fefe67eb2989"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="398"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr><tr><td class="num">45</td><td><a href="https://inc42.com/buzz/d2c-brand-nat-habit-raises-%e2%82%b9142-cr-to-scale-offline-expansion/" target="_blank" rel="noreferrer">Menswear Brand KISAH Nets ₹35.9 Cr To Scale Retail Footprint</a><div class="muted small">Fireside leading a round in ethnic menswear shows the &#x27;premiumization&#x27; trend in apparel.</div></td><td>Commerce, Quick Commerce &amp; D2C</td><td>2</td><td class="nowrap"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_160"/><input type="hidden" name="$ACTION_160:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_160:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k83f8fcd1dcafbef33ed7c7f55b892c7a"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="story" value="487"/><input type="hidden" name="op" value="add-to-bench"/><button class="btn secondary">Add to bench</button></form></td></tr></tbody></table></div></section></main><!--$--><!--/$--></body></html>

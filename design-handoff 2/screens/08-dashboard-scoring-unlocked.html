@@ -1,0 +1,1259 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><style>/* [project]/app/globals.css [app-client] (css) */
+:root {
+  --bg: #fafaf9;
+  --surface: #fff;
+  --text: #1c1917;
+  --muted: #78716c;
+  --border: #e7e5e4;
+  --accent: #b45309;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0c0a09;
+    --surface: #1c1917;
+    --text: #f5f5f4;
+    --muted: #a8a29e;
+    --border: #292524;
+    --accent: #f59e0b;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  font: 15px / 1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 16px 64px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 26px;
+}
+
+h2 {
+  margin: 32px 0 12px;
+  font-size: 17px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.stats {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+  display: grid;
+}
+
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.stat b {
+  font-size: 24px;
+  display: block;
+}
+
+table {
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  width: 100%;
+  overflow: hidden;
+}
+
+th, td {
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  padding: 9px 12px;
+}
+
+th {
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+a {
+  color: var(--accent);
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.narrow {
+  max-width: 480px;
+}
+
+section {
+  margin-top: 36px;
+}
+
+.eyebrow {
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.display {
+  margin: 6px 0 10px;
+  font-family: Georgia, Times New Roman, serif;
+  font-size: clamp(36px, 8vw, 56px);
+}
+
+.lede {
+  max-width: 620px;
+  font-family: Georgia, Times New Roman, serif;
+  font-size: 18px;
+}
+
+.hero {
+  padding-bottom: 8px;
+}
+
+.small {
+  font-size: 13px;
+}
+
+.row-between {
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  display: flex;
+}
+
+.stack {
+  gap: 12px;
+  display: grid;
+}
+
+label {
+  gap: 6px;
+  font-size: 14px;
+  display: grid;
+}
+
+input, textarea {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  min-width: 0;
+  padding: 9px 12px;
+}
+
+textarea {
+  width: 100%;
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.inline-form {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+  display: flex;
+}
+
+.inline-form input[type="email"] {
+  flex: 220px;
+}
+
+.btn {
+  font: inherit;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-weight: 600;
+}
+
+.btn.secondary {
+  color: var(--text);
+  border-color: var(--border);
+  background: none;
+}
+
+.btn:disabled {
+  opacity: .6;
+  cursor: progress;
+}
+
+.link-btn {
+  font: inherit;
+  color: var(--accent);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 13px;
+}
+
+.ok {
+  color: #15803d;
+  margin: 0;
+}
+
+.error {
+  color: #b91c1c;
+  margin: 0;
+}
+
+.hp {
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  left: -9999px;
+}
+
+.jobs {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  display: grid;
+}
+
+.job {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  align-content: start;
+  gap: 6px;
+  padding: 14px;
+  display: grid;
+}
+
+.steps {
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.steps li {
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.steps li.done {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+tr.dim td {
+  opacity: .45;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.archive {
+  padding-left: 18px;
+}
+
+footer {
+  margin-top: 48px;
+}
+
+:root {
+  --good: #15803d;
+  --good-bg: #dcfce7;
+  --warn: #b45309;
+  --warn-bg: #fef3c7;
+  --bad: #b91c1c;
+  --info-bg: #e0f2fe;
+  --info: #0369a1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --good: #4ade80;
+    --good-bg: #14532d;
+    --warn: #fbbf24;
+    --warn-bg: #422006;
+    --bad: #f87171;
+    --info-bg: #082f49;
+    --info: #7dd3fc;
+  }
+}
+
+.dash {
+  max-width: 1200px;
+}
+
+.dash-head {
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  display: flex;
+}
+
+.strip {
+  color: var(--muted);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  margin: 8px 0 0;
+  font-size: 14px;
+  display: flex;
+}
+
+.pill {
+  background: var(--border);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pill.info {
+  background: var(--info-bg);
+  color: var(--info);
+}
+
+.pill.good {
+  background: var(--good-bg);
+  color: var(--good);
+}
+
+.pill.bad {
+  color: var(--bad);
+  background: #fee2e2;
+}
+
+.tabs {
+  border-bottom: 1px solid var(--border);
+  gap: 4px;
+  margin: 22px 0 4px;
+  display: flex;
+  overflow-x: auto;
+}
+
+.tabs a {
+  color: var(--muted);
+  white-space: nowrap;
+  border-bottom: 2px solid #0000;
+  margin-bottom: -1px;
+  padding: 10px 14px;
+  text-decoration: none;
+}
+
+.tabs a.active {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+
+.issue-layout {
+  grid-template-columns: minmax(0, 1fr) 330px;
+  align-items: start;
+  gap: 28px;
+  display: grid;
+}
+
+.issue-side {
+  gap: 14px;
+  margin-top: 36px;
+  display: grid;
+  position: sticky;
+  top: 16px;
+}
+
+@media (max-width: 900px) {
+  .issue-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .issue-side {
+    order: -1;
+    margin-top: 20px;
+    position: static;
+  }
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin: 0;
+  padding: 16px;
+}
+
+.panel h3 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.section-head {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  display: flex;
+}
+
+.section-head h2 {
+  margin-bottom: 8px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 14px;
+  padding: 16px 18px;
+}
+
+.card.approved {
+  border-left: 4px solid var(--good);
+}
+
+.card.pending {
+  border-left: 4px solid var(--border);
+}
+
+.card.removed {
+  opacity: .75;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  display: flex;
+}
+
+.card-top {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  display: flex;
+}
+
+.pos {
+  background: var(--text);
+  width: 26px;
+  height: 26px;
+  color: var(--bg);
+  border-radius: 50%;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-grid;
+}
+
+.chip {
+  border: 1px solid var(--border);
+  color: var(--muted);
+  white-space: nowrap;
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: 12px;
+}
+
+.chip.good {
+  background: var(--good-bg);
+  color: var(--good);
+  border-color: #0000;
+}
+
+.chip.warn {
+  background: var(--warn-bg);
+  color: var(--warn);
+  border-color: #0000;
+}
+
+.reorder {
+  gap: 2px;
+  margin-left: auto;
+  display: flex;
+}
+
+.headline {
+  margin: 10px 0 2px;
+  font: 600 19px / 1.35 Georgia, Times New Roman, serif;
+}
+
+.headline a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.headline a:hover {
+  text-decoration: underline;
+}
+
+.warn {
+  color: var(--warn);
+}
+
+.editor {
+  margin-top: 10px;
+}
+
+textarea.commentary {
+  resize: vertical;
+  field-sizing: content;
+  min-height: 5lh;
+  font-family: Georgia, Times New Roman, serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.editor-bar {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin-top: 6px;
+  font-size: 13px;
+  display: flex;
+}
+
+.meter {
+  color: var(--muted);
+}
+
+.meter.warn {
+  color: var(--warn);
+}
+
+.editor-actions {
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-left: auto;
+  display: flex;
+}
+
+.ai-form {
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  display: flex;
+}
+
+.ai-form input {
+  flex: 260px;
+}
+
+.rubric {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.rubric summary {
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.bars {
+  gap: 6px;
+  margin: 8px 0;
+  display: grid;
+}
+
+.bar-row {
+  grid-template-columns: minmax(150px, 1fr) minmax(80px, 2fr) 34px;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  display: grid;
+}
+
+.bar {
+  background: var(--border);
+  border-radius: 4px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.bar > span {
+  background: var(--accent);
+  height: 100%;
+  display: block;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.card-actions {
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  display: flex;
+}
+
+.action {
+  flex-direction: column;
+  gap: 4px;
+  display: inline-flex;
+}
+
+.swap {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  display: flex;
+}
+
+select {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-width: 100%;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+.swap {
+  flex-direction: column;
+  flex: 260px;
+  align-items: flex-end;
+}
+
+.swap.open {
+  flex-basis: 100%;
+}
+
+.card-actions {
+  align-items: flex-start;
+}
+
+.swap-panel {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: 10px;
+  width: 100%;
+  padding: 10px 12px;
+}
+
+.swap-panel ul {
+  gap: 8px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+}
+
+.swap-panel li {
+  border-top: 1px solid var(--border);
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  display: grid;
+}
+
+.swap-score {
+  justify-items: center;
+  line-height: 1.1;
+  display: grid;
+}
+
+.swap-score b {
+  font-variant-numeric: tabular-nums;
+  font-size: 20px;
+}
+
+.swap-score span {
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+}
+
+.swap-title {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.swap-criteria {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+  display: flex;
+}
+
+.crit {
+  background: var(--border);
+  color: var(--muted);
+  white-space: nowrap;
+  border-radius: 999px;
+  padding: 1px 7px;
+  font-size: 11px;
+}
+
+.crit b {
+  color: var(--text);
+}
+
+.crit.s4, .crit.s5 {
+  background: var(--good-bg);
+  color: var(--good);
+}
+
+.crit.s4 b, .crit.s5 b {
+  color: var(--good);
+}
+
+@media (max-width: 560px) {
+  .swap-panel li {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+
+  .swap-panel li form {
+    grid-column: 2;
+  }
+}
+
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.btn.ghost {
+  color: var(--muted);
+  background: none;
+  border-color: #0000;
+  padding: 7px 10px;
+}
+
+.btn.ghost:hover {
+  color: var(--text);
+  background: var(--border);
+}
+
+.btn.danger {
+  border-color: var(--border);
+  color: var(--bad);
+  background: none;
+}
+
+.btn.big {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+}
+
+.result {
+  margin: 4px 0 0;
+  font-size: 13px;
+}
+
+.checklist {
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 0;
+  font-size: 14px;
+  list-style: none;
+  display: grid;
+}
+
+.checklist li {
+  grid-template-columns: 18px 1fr;
+  gap: 6px;
+  display: grid;
+}
+
+.checklist li.ok > span:first-child {
+  color: var(--good);
+  font-weight: 700;
+}
+
+.checklist li.todo > span:first-child {
+  color: var(--muted);
+}
+
+.confirm {
+  gap: 8px;
+  display: grid;
+}
+
+.confirm.armed {
+  background: var(--warn-bg);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.confirm.armed p {
+  margin: 0;
+}
+
+.row {
+  flex-wrap: wrap;
+  gap: 8px;
+  display: flex;
+}
+
+.side-links {
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  display: flex;
+}
+
+.side-links a.btn {
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.timeline {
+  gap: 4px;
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+}
+
+.stats.compact {
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 0;
+}
+
+.stats a.stat {
+  color: inherit;
+  text-decoration: none;
+}
+
+details.bench summary {
+  cursor: pointer;
+  align-items: center;
+  gap: 10px;
+  list-style: none;
+  display: flex;
+}
+
+details.bench summary::-webkit-details-marker {
+  display: none;
+}
+
+.bench-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.filters {
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 14px;
+  display: flex;
+}
+
+.filters a {
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.filters a.active {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+.empty {
+  max-width: 560px;
+}
+
+textarea.mono {
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 13px;
+}
+
+.steps.progress {
+  margin: 20px 0 0;
+}
+
+.stats.overview {
+  margin-top: 14px;
+}
+
+.notice {
+  background: var(--info-bg);
+  border-radius: 10px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0;
+  padding: 12px 14px;
+  display: flex;
+}
+
+.notice .job {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.narrow-panel {
+  max-width: 560px;
+}
+
+.explainer section {
+  max-width: 900px;
+}
+
+.lede-small {
+  max-width: 720px;
+  font-size: 16px;
+}
+
+.flow {
+  gap: 10px;
+  max-width: 760px;
+  padding-left: 22px;
+  display: grid;
+}
+
+.flow code {
+  background: var(--border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 13px;
+}
+
+.criteria {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  display: grid;
+}
+
+.criterion {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.criterion-head {
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  display: flex;
+}
+
+.criterion-head h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.weight {
+  color: var(--accent);
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.question {
+  margin: 8px 0 4px;
+  font-family: Georgia, Times New Roman, serif;
+  font-size: 15px;
+}
+
+.scale {
+  gap: 6px;
+  margin: 10px 0;
+  padding: 0;
+  font-size: 14px;
+  list-style: none;
+  display: grid;
+}
+
+.scale li {
+  grid-template-columns: 24px 1fr;
+  align-items: start;
+  gap: 8px;
+  display: grid;
+}
+
+.score-dot {
+  border: 1px solid var(--accent);
+  width: 22px;
+  height: 22px;
+  color: var(--accent);
+  border-radius: 50%;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-grid;
+}
+
+table.mini {
+  font-size: 13px;
+}
+
+table.mini th, table.mini td {
+  text-align: center;
+  padding: 5px 8px;
+}
+
+.bar-row.points {
+  grid-template-columns: minmax(150px, 1fr) minmax(80px, 2fr) 34px 40px;
+}
+
+.dist {
+  gap: 8px;
+  max-width: 640px;
+  display: grid;
+}
+
+.dist .bar-row {
+  grid-template-columns: minmax(190px, 1fr) minmax(80px, 2fr) 34px;
+}
+
+.two-col {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  display: grid;
+}
+
+.tight {
+  gap: 4px;
+  padding-left: 18px;
+  font-size: 14px;
+  display: grid;
+}
+
+.rubric-lock, .rubric-open {
+  margin-top: 28px;
+}
+
+.rubric-open {
+  border-color: var(--accent);
+}
+
+.rubric-editor {
+  gap: 4px;
+  display: grid;
+}
+
+.rubric-editor section {
+  margin-top: 18px;
+}
+
+.rubric-editor h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.weights {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+  display: grid;
+}
+
+.weight-field input {
+  width: 80px;
+}
+
+.sum {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.criterion-edit {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  gap: 8px;
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  display: grid;
+}
+
+.criterion-edit legend {
+  padding: 0 4px;
+  font-weight: 600;
+}
+
+.criterion-edit input {
+  width: 100%;
+}
+
+.criterion-edit input[readonly] {
+  color: var(--muted);
+}
+
+.anchors {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 8px;
+  display: grid;
+}
+
+.num-grid {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+  display: grid;
+}
+
+.num-field input {
+  width: 100%;
+}
+
+.save-row {
+  flex-wrap: wrap;
+  gap: 8px;
+  display: flex;
+}
+
+.save-row input {
+  flex: 280px;
+}
+
+.tabs .badge {
+  background: var(--accent);
+  min-width: 18px;
+  color: var(--bg);
+  text-align: center;
+  border-radius: 999px;
+  margin-left: 6px;
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  display: inline-block;
+}
+
+.stat.active {
+  border-color: var(--accent);
+}
+
+td .chip {
+  margin-left: 6px;
+}
+
+.row-actions {
+  justify-content: flex-end;
+  gap: 6px;
+  display: flex;
+}
+
+.add-link {
+  margin: 12px 0 18px;
+}
+
+.add-link .inline-form input[type="url"] {
+  flex: 2 260px;
+}
+
+.add-link .inline-form input[type="text"] {
+  flex: 200px;
+}
+
+.edits {
+  gap: 12px;
+  display: grid;
+}
+
+.edit-pair .pair {
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  display: grid;
+}
+
+.edit-pair .pair p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.edit-pair .before {
+  color: var(--muted);
+  text-decoration: line-through;
+  -webkit-text-decoration-color: color-mix(in srgb, var(--muted) 45%, transparent);
+  text-decoration-color: color-mix(in srgb, var(--muted) 45%, transparent);
+}
+
+.replies {
+  gap: 12px;
+  margin-top: 16px;
+  display: grid;
+}
+
+.reply.unread {
+  border-left: 3px solid var(--accent);
+}
+
+.reply-head {
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  display: flex;
+}
+
+.reply-chips {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  display: flex;
+}
+
+.reply-body {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 12px 0;
+  line-height: 1.55;
+}
+
+@media (max-width: 640px) {
+  .edit-pair .pair {
+    grid-template-columns: 1fr;
+  }
+
+  .reply-head {
+    flex-direction: column;
+  }
+
+  .reply-chips {
+    justify-content: flex-start;
+  }
+}
+
+a.btn {
+  align-items: center;
+  text-decoration: none;
+  display: inline-flex;
+}
+
+/*# sourceMappingURL=app_globals_0yg4wg8plh8sv.css.map*/</style><title>The Dispatch — Newsletter Engine</title><meta name="description" content="Newsletter intelligence and delivery pipeline for The Dispatch"/></head><body><div hidden=""><!--$--><!--/$--></div><main class="dash"><header class="dash-head"><div><p class="eyebrow">The Dispatch · Editor</p><h1>Good to see you, Shreya</h1><p class="strip"><span class="pill info">In review</span><span>Issue #<!-- -->105</span><span>Confirm before <!-- -->Wed, 14 Oct, 10:00 PM IST</span><span>Sends <!-- -->Thu, 15 Oct, 8:00 AM IST</span></p></div><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_ID_0080f1f538bc948391f039b475d86cf5c627cc0599"/><button class="btn ghost">Log out</button></form></header><nav class="tabs" aria-label="Sections"><a class="" href="02-dashboard-this-weeks-issue.html">This week&#x27;s issue</a><a class="" href="03-dashboard-story-pool.html">Story pool</a><a class="" href="04-dashboard-subscribers.html">Subscribers</a><a class="" href="05-dashboard-reader-replies.html">Reader replies<span class="badge" aria-label="2 unread">2</span></a><a class="" href="06-dashboard-voice-guide.html">Voice guide</a><a class="active" aria-current="page" href="07-dashboard-how-scoring-works.html">How scoring works</a><a class="" href="09-dashboard-past-issues.html">Past issues</a><a class="" href="10-dashboard-pipeline.html">Pipeline</a></nav><div class="explainer"><section class="panel rubric-open"><div class="section-head"><h3>🔓 Editing the scoring rubric</h3><span class="row"><button class="btn ghost">Restore defaults…</button><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_ID_0011f15dd448a6998c67ff916900a2aca08cbb533f"/><button class="btn secondary">Lock</button></form></span></div><p class="muted small">Saving re-ranks this week&#x27;s stories with the new weights immediately (no AI calls) and updates the scores in Telegram. The current lineup isn&#x27;t changed; use “Start over with a fresh draft” if you want a new selection under the new rules.</p><form class="rubric-editor" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_3"/><input type="hidden" name="$ACTION_3:0" value="{&quot;id&quot;:&quot;603a8270b49f86a7b84a8b41baf15cf172b336d335&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_3:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kc61a1e35f1891813e4715ec8f3329660"/><section><div class="section-head"><h3>Weights</h3><span class="sum ok">Total <!-- -->100<!-- -->% <!-- -->✓</span></div><p class="muted small">How much each criterion counts. A story&#x27;s points on a criterion are weight × score ÷ 5.</p><div class="weights"><label class="weight-field"><span>Signal</span><span class="row"><input type="number" min="0" max="100" step="1" required="" name="w_signal" value="30"/><span class="muted">%</span></span></label><label class="weight-field"><span>Counterintuitive</span><span class="row"><input type="number" min="0" max="100" step="1" required="" name="w_counterintuitive" value="20"/><span class="muted">%</span></span></label><label class="weight-field"><span>Under-reported</span><span class="row"><input type="number" min="0" max="100" step="1" required="" name="w_under_reported" value="15"/><span class="muted">%</span></span></label><label class="weight-field"><span>Connects trends</span><span class="row"><input type="number" min="0" max="100" step="1" required="" name="w_connects" value="15"/><span class="muted">%</span></span></label><label class="weight-field"><span>India relevance</span><span class="row"><input type="number" min="0" max="100" step="1" required="" name="w_india" value="10"/><span class="muted">%</span></span></label><label class="weight-field"><span>Commentary potential</span><span class="row"><input type="number" min="0" max="100" step="1" required="" name="w_commentary_potential" value="10"/><span class="muted">%</span></span></label></div></section><section><h3>What each criterion means</h3><p class="muted small">This wording is sent to Gemini word for word when it scores stories, and shown in “How scoring works”. Changes apply the next time stories are scored.</p><fieldset class="criterion-edit"><legend>Signal<!-- --> <span class="muted small">· <!-- -->30<!-- -->% · scored by <!-- -->Gemini Flash</span></legend><label>Question<input maxLength="240" name="q_signal" value="Does this change where money, regulation, talent or users are actually moving?"/></label><label>Why it matters<input maxLength="240" name="why_signal" value="Shreya&#x27;s readers want developments that matter, not press releases. Signal carries the most weight."/></label><div class="anchors"><label>A <!-- -->0<!-- --> looks like<input maxLength="240" name="a0_signal" value="PR, a routine update or a minor announcement"/></label><label>A <!-- -->3<!-- --> looks like<input maxLength="240" name="a3_signal" value="a notable move for one company"/></label><label>A <!-- -->5<!-- --> looks like<input maxLength="240" name="a5_signal" value="a sector-level shift, a precedent or an inflection point"/></label></div></fieldset><fieldset class="criterion-edit"><legend>Counterintuitive<!-- --> <span class="muted small">· <!-- -->20<!-- -->% · scored by <!-- -->Gemini Flash</span></legend><label>Question<input maxLength="240" name="q_counterintuitive" value="Does it cut against what most people in the ecosystem currently believe?"/></label><label>Why it matters<input maxLength="240" name="why_counterintuitive" value="Stories that surprise are the core of The Dispatch&#x27;s curation."/></label><div class="anchors"><label>A <!-- -->0<!-- --> looks like<input maxLength="240" name="a0_counterintuitive" value="confirms the obvious"/></label><label>A <!-- -->3<!-- --> looks like<input maxLength="240" name="a3_counterintuitive" value="adds a twist to the usual narrative"/></label><label>A <!-- -->5<!-- --> looks like<input maxLength="240" name="a5_counterintuitive" value="flips a common belief, with evidence"/></label></div></fieldset><fieldset class="criterion-edit"><legend>Under-reported<!-- --> <span class="muted small">· <!-- -->15<!-- -->% · scored by <!-- -->Code</span></legend><p class="muted small">Counted by code from the number of outlets, so its wording is descriptive only.</p><label>Question<input readOnly="" maxLength="240" name="q_under_reported" value="How many different outlets covered it this week?"/></label><label>Why it matters<input readOnly="" maxLength="240" name="why_under_reported" value="If everyone ran it, the reader has already seen it. Fewer outlets means more value in surfacing it."/></label><div class="anchors"><label>A <!-- -->0<!-- --> looks like<input readOnly="" maxLength="240" name="a0_under_reported" value="10 or more outlets covered it"/></label><label>A <!-- -->3<!-- --> looks like<input readOnly="" maxLength="240" name="a3_under_reported" value="3 outlets covered it"/></label><label>A <!-- -->5<!-- --> looks like<input readOnly="" maxLength="240" name="a5_under_reported" value="only 1 outlet covered it"/></label></div></fieldset><fieldset class="criterion-edit"><legend>Connects trends<!-- --> <span class="muted small">· <!-- -->15<!-- -->% · scored by <!-- -->Gemini Flash</span></legend><label>Question<input maxLength="240" name="q_connects" value="Does it link to another story this week, or to a trend nobody has put side by side with it?"/></label><label>Why it matters<input maxLength="240" name="why_connects" value="Connecting two trends nobody else has linked is one of Shreya&#x27;s signatures."/></label><div class="anchors"><label>A <!-- -->0<!-- --> looks like<input maxLength="240" name="a0_connects" value="stands alone"/></label><label>A <!-- -->3<!-- --> looks like<input maxLength="240" name="a3_connects" value="fits a known trend"/></label><label>A <!-- -->5<!-- --> looks like<input maxLength="240" name="a5_connects" value="links to another story in this week&#x27;s list that nobody has paired it with"/></label></div></fieldset><fieldset class="criterion-edit"><legend>India relevance<!-- --> <span class="muted small">· <!-- -->10<!-- -->% · scored by <!-- -->Gemini Flash</span></legend><label>Question<input maxLength="240" name="q_india" value="How directly does it affect Indian founders, investors or users?"/></label><label>Why it matters<input maxLength="240" name="why_india" value="The Dispatch covers the Indian startup ecosystem; global stories need a real India angle."/></label><div class="anchors"><label>A <!-- -->0<!-- --> looks like<input maxLength="240" name="a0_india" value="barely touches India"/></label><label>A <!-- -->3<!-- --> looks like<input maxLength="240" name="a3_india" value="affects one Indian segment"/></label><label>A <!-- -->5<!-- --> looks like<input maxLength="240" name="a5_india" value="directly changes things for Indian founders, investors or users"/></label></div></fieldset><fieldset class="criterion-edit"><legend>Commentary potential<!-- --> <span class="muted small">· <!-- -->10<!-- -->% · scored by <!-- -->Gemini Flash</span></legend><label>Question<input maxLength="240" name="q_commentary_potential" value="Is there a sharp, specific take to write in two or three lines?"/></label><label>Why it matters<input maxLength="240" name="why_commentary_potential" value="Every story needs commentary worth forwarding; some stories leave nothing to add."/></label><div class="anchors"><label>A <!-- -->0<!-- --> looks like<input maxLength="240" name="a0_commentary_potential" value="nothing to add beyond the headline"/></label><label>A <!-- -->3<!-- --> looks like<input maxLength="240" name="a3_commentary_potential" value="a decent angle exists"/></label><label>A <!-- -->5<!-- --> looks like<input maxLength="240" name="a5_commentary_potential" value="concrete numbers and names, and a sharp take is obvious"/></label></div></fieldset></section><section><h3>Penalty</h3><div class="num-grid"><label class="num-field"><span>Weak-sourcing penalty (points)</span><input type="number" required="" min="0" max="50" name="penalty" value="10"/></label></div></section><section><h3>Lineup rules</h3><div class="num-grid"><label class="num-field"><span>Min stories</span><input type="number" required="" min="1" max="15" name="sel_min" value="8"/></label><label class="num-field"><span>Max stories</span><input type="number" required="" min="1" max="15" name="sel_max" value="10"/></label><label class="num-field"><span>Target stories</span><input type="number" required="" min="1" max="15" name="sel_target" value="9"/></label><label class="num-field"><span>Min topics</span><input type="number" required="" min="1" max="15" name="sel_minTopics" value="3"/></label><label class="num-field"><span>Max per topic</span><input type="number" required="" min="1" max="15" name="sel_maxPerTopic" value="3"/></label><label class="num-field"><span>Max per company</span><input type="number" required="" min="1" max="15" name="sel_maxPerCompany" value="1"/></label><label class="num-field"><span>Shortlist size</span><input type="number" required="" min="1" max="60" name="sel_shortlist" value="25"/></label><label class="num-field"><span>Bench size</span><input type="number" required="" min="0" max="20" name="sel_bench" value="10"/></label><label class="num-field"><span>No repeats from last N issues</span><input type="number" required="" min="0" max="12" name="sel_lookbackIssues" value="4"/></label></div></section><section><h3>Commentary limits</h3><div class="num-grid"><label class="num-field"><span>Min sentences</span><input type="number" required="" min="1" max="8" name="com_minSentences" value="2"/></label><label class="num-field"><span>Max sentences</span><input type="number" required="" min="1" max="8" name="com_maxSentences" value="3"/></label><label class="num-field"><span>Min words</span><input type="number" required="" min="10" max="200" name="com_minWords" value="40"/></label><label class="num-field"><span>Max words</span><input type="number" required="" min="10" max="200" name="com_maxWords" value="70"/></label><label class="num-field"><span>AI review bar (1–5)</span><input type="number" required="" min="1" max="5" step="0.25" name="com_minReviewAverage" value="4"/></label></div></section><section class="save-row"><input placeholder="What changed and why (optional, shown in the history)" maxLength="200" name="note"/><button class="btn primary">Save rubric</button></section></form><h3>History</h3><ul class="tight"><li>Mon, 12 Oct, 1:14 PM IST<!-- --> · <!-- -->Restored the default rubric<!-- --> <span class="muted small">(<!-- -->Signal 30%, Counterintuitive 20%, Under-reported 15%, Connects trends 15%, India relevance 10%, Commentary potential 10%<!-- -->)</span></li><li>Mon, 12 Oct, 1:14 PM IST<!-- --> · <!-- -->Test: weight signal over counterintuitive<!-- --> <span class="muted small">(<!-- -->Signal 35%, Counterintuitive 15%, Under-reported 15%, Connects trends 15%, India relevance 10%, Commentary potential 10%<!-- -->)</span></li></ul></section><section><h2>How a story gets its score</h2><p class="lede-small">Every relevant story this week gets a score out of 100. It measures how well the story fits what The Dispatch is known for: news that is counterintuitive, under-reported, or connects two trends nobody else has linked. The score decides the shortlist; you make the final call.</p><ol class="flow"><li><b>Gemini reads the week.</b> Stories go to Gemini Flash in batches of 70, together with the headline of every other story this week, so it can spot connections between them.</li><li><b>Five criteria are scored 0–5 by Gemini; one is counted by code.</b> Gemini also writes the one-line &quot;why it was picked&quot; you see on each story. Under-reported is not a judgement call: the code counts how many different outlets ran the story.</li><li><b>Scores become points.</b> Each criterion has a weight. Its points are <code>weight × score ÷ 5</code>, so a 5/5 on Signal is worth 30 points and a 3/5 is worth 18. The six add up to a total out of 100.</li><li><b>Adjustments.</b> −<!-- -->10<!-- --> points if every article in the story comes from a little-known outlet. Stories already covered in the last <!-- -->4<!-- --> issues are excluded entirely.</li><li><b>Gemini is told to be a demanding editor:</b> most stories should land at 1–3 on each criterion, and 5 is for the exceptional. That keeps the top of the list meaningful.</li></ol></section><section><h2>The six criteria</h2><div class="criteria"><article class="criterion"><div class="criterion-head"><h3>Signal</h3><span class="weight">30<!-- -->% · up to <!-- -->30<!-- --> pts</span></div><p class="question">Does this change where money, regulation, talent or users are actually moving?</p><p class="muted small">Shreya&#x27;s readers want developments that matter, not press releases. Signal carries the most weight.</p><ul class="scale"><li><span class="score-dot">0</span>PR, a routine update or a minor announcement</li><li><span class="score-dot">3</span>a notable move for one company</li><li><span class="score-dot">5</span>a sector-level shift, a precedent or an inflection point</li></ul><p class="muted small">1, 2 and 4 sit in between. Scored by <b>Gemini Flash</b>.</p></article><article class="criterion"><div class="criterion-head"><h3>Counterintuitive</h3><span class="weight">20<!-- -->% · up to <!-- -->20<!-- --> pts</span></div><p class="question">Does it cut against what most people in the ecosystem currently believe?</p><p class="muted small">Stories that surprise are the core of The Dispatch&#x27;s curation.</p><ul class="scale"><li><span class="score-dot">0</span>confirms the obvious</li><li><span class="score-dot">3</span>adds a twist to the usual narrative</li><li><span class="score-dot">5</span>flips a common belief, with evidence</li></ul><p class="muted small">1, 2 and 4 sit in between. Scored by <b>Gemini Flash</b>.</p></article><article class="criterion"><div class="criterion-head"><h3>Under-reported</h3><span class="weight">15<!-- -->% · up to <!-- -->15<!-- --> pts</span></div><p class="question">How many different outlets covered it this week?</p><p class="muted small">If everyone ran it, the reader has already seen it. Fewer outlets means more value in surfacing it.</p><ul class="scale"><li><span class="score-dot">0</span>10 or more outlets covered it</li><li><span class="score-dot">3</span>3 outlets covered it</li><li><span class="score-dot">5</span>only 1 outlet covered it</li></ul><p class="muted small">1, 2 and 4 sit in between. Scored by <b>Code</b>.</p><table class="mini"><thead><tr><th>Outlets</th><th>1</th><th>2</th><th>3</th><th>4–5</th><th>6–9</th><th>10+</th></tr></thead><tbody><tr><td>Score</td><td>5</td><td>4</td><td>3</td><td>2</td><td>1</td><td>0</td></tr></tbody></table></article><article class="criterion"><div class="criterion-head"><h3>Connects trends</h3><span class="weight">15<!-- -->% · up to <!-- -->15<!-- --> pts</span></div><p class="question">Does it link to another story this week, or to a trend nobody has put side by side with it?</p><p class="muted small">Connecting two trends nobody else has linked is one of Shreya&#x27;s signatures.</p><ul class="scale"><li><span class="score-dot">0</span>stands alone</li><li><span class="score-dot">3</span>fits a known trend</li><li><span class="score-dot">5</span>links to another story in this week&#x27;s list that nobody has paired it with</li></ul><p class="muted small">1, 2 and 4 sit in between. Scored by <b>Gemini Flash</b>.</p></article><article class="criterion"><div class="criterion-head"><h3>India relevance</h3><span class="weight">10<!-- -->% · up to <!-- -->10<!-- --> pts</span></div><p class="question">How directly does it affect Indian founders, investors or users?</p><p class="muted small">The Dispatch covers the Indian startup ecosystem; global stories need a real India angle.</p><ul class="scale"><li><span class="score-dot">0</span>barely touches India</li><li><span class="score-dot">3</span>affects one Indian segment</li><li><span class="score-dot">5</span>directly changes things for Indian founders, investors or users</li></ul><p class="muted small">1, 2 and 4 sit in between. Scored by <b>Gemini Flash</b>.</p></article><article class="criterion"><div class="criterion-head"><h3>Commentary potential</h3><span class="weight">10<!-- -->% · up to <!-- -->10<!-- --> pts</span></div><p class="question">Is there a sharp, specific take to write in two or three lines?</p><p class="muted small">Every story needs commentary worth forwarding; some stories leave nothing to add.</p><ul class="scale"><li><span class="score-dot">0</span>nothing to add beyond the headline</li><li><span class="score-dot">3</span>a decent angle exists</li><li><span class="score-dot">5</span>concrete numbers and names, and a sharp take is obvious</li></ul><p class="muted small">1, 2 and 4 sit in between. Scored by <b>Gemini Flash</b>.</p></article></div></section><section><h2>Worked example: this week&#x27;s lead story</h2><p><b>Need &#x27;judicious mix&#x27; in use of open and proprietary AI models to protect data: IT Secy</b> <span class="muted small">· via <!-- -->ET Tech<!-- --> · <!-- -->1<!-- --> outlet(s)</span></p><div class="table-wrap"><table><thead><tr><th>Criterion</th><th>Score</th><th>Weight</th><th>Points</th></tr></thead><tbody><tr><td>Signal</td><td class="num">4<!-- -->/5</td><td class="num">30<!-- -->%</td><td class="num">30<!-- --> × <!-- -->4<!-- --> ÷ 5 = <b>24</b></td></tr><tr><td>Counterintuitive</td><td class="num">2<!-- -->/5</td><td class="num">20<!-- -->%</td><td class="num">20<!-- --> × <!-- -->2<!-- --> ÷ 5 = <b>8</b></td></tr><tr><td>Under-reported</td><td class="num">5<!-- -->/5</td><td class="num">15<!-- -->%</td><td class="num">15<!-- --> × <!-- -->5<!-- --> ÷ 5 = <b>15</b></td></tr><tr><td>Connects trends</td><td class="num">4<!-- -->/5</td><td class="num">15<!-- -->%</td><td class="num">15<!-- --> × <!-- -->4<!-- --> ÷ 5 = <b>12</b></td></tr><tr><td>India relevance</td><td class="num">5<!-- -->/5</td><td class="num">10<!-- -->%</td><td class="num">10<!-- --> × <!-- -->5<!-- --> ÷ 5 = <b>10</b></td></tr><tr><td>Commentary potential</td><td class="num">4<!-- -->/5</td><td class="num">10<!-- -->%</td><td class="num">10<!-- --> × <!-- -->4<!-- --> ÷ 5 = <b>8</b></td></tr><tr><td colSpan="3"><b>Total</b> (before any weak-sourcing penalty)</td><td class="num"><b>77</b> / 100 · stored score <!-- -->77</td></tr></tbody></table></div><p class="muted small">Gemini&#x27;s reason: “<!-- -->Government warming up to open-source AI models to avoid vendor lock-in and sovereignty risks.<!-- -->”</p></section><section><h2>This week&#x27;s spread</h2><p class="muted small">225<!-- --> scored stories · average <!-- -->45<!-- --> · highest <!-- -->94<!-- -->. Only the best few clear 80.</p><div class="dist"><div class="bar-row"><span>80–100 · front-page material</span><span class="bar"><span style="width:11.224489795918368%"></span></span><span class="num">11</span></div><div class="bar-row"><span>60–79 · strong</span><span class="bar"><span style="width:43.87755102040816%"></span></span><span class="num">43</span></div><div class="bar-row"><span>40–59 · ordinary news</span><span class="bar"><span style="width:74.48979591836735%"></span></span><span class="num">73</span></div><div class="bar-row"><span>0–39 · routine or noise</span><span class="bar"><span style="width:100%"></span></span><span class="num">98</span></div></div></section><section><h2>From scores to a lineup</h2><ol class="flow"><li>The top <!-- -->25<!-- --> stories by score form the shortlist.</li><li>Gemini, acting as editor, picks <!-- -->8<!-- -->–<!-- -->10<!-- --> of them (aiming for <!-- -->9<!-- -->) and puts them in running order. It weighs the scores but also variety and connections between stories, and avoids an issue that is all funding rounds.</li><li>Code then checks the hard rules: <!-- -->8<!-- -->–<!-- -->10<!-- --> stories, at least <!-- -->3<!-- --> topics, at most <!-- -->3<!-- --> per topic, at most <!-- -->1<!-- --> per company, nothing from the last <!-- -->4<!-- --> issues. If a rule is broken, Gemini is told exactly which one and tries again (up to <!-- -->2<!-- --> times); after that, code picks by score while enforcing the rules.</li><li>The next <!-- -->10<!-- --> best stories become the bench, your swap options.</li></ol></section><section><h2>How commentary is checked</h2><div class="two-col"><div class="panel"><h3>Automatic checks (pass / fail)</h3><ul class="tight"><li>2<!-- -->–<!-- -->3<!-- --> sentences, <!-- -->40<!-- -->–<!-- -->70<!-- --> words</li><li>The first sentence doesn&#x27;t just reword the headline</li><li>No banned words from your voice guide (game-changer, delve, landscape, leverage…)</li><li>No emojis, exclamation marks or hashtags</li><li>Money written as ₹ Cr / $ Mn / $ Bn</li></ul><p class="muted small">These run live as you type in the editor.</p></div><div class="panel"><h3>AI copy-editor review (1–5 each)</h3><ul class="tight"><li><b>Angle:</b> says something non-obvious, more than a summary</li><li><b>Voice:</b> sounds like your voice guide</li><li><b>Grounded:</b> every fact is in the source articles</li><li><b>Forwardable:</b> would a founder forward it to their co-founder?</li></ul><p class="muted small">The average must be at least <!-- -->4<!-- -->. Anything that fails is rewritten once; if it still fails it&#x27;s flagged ⚠ for you. Your own edits are never blocked.</p></div></div></section></div></main><!--$--><!--/$--></body></html>

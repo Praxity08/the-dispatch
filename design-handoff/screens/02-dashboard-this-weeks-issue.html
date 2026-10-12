@@ -1,0 +1,1313 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><style>/* [project]/app/globals.css [app-client] (css) */
+:root {
+  --bg: #fafaf9;
+  --surface: #fff;
+  --text: #1c1917;
+  --muted: #78716c;
+  --border: #e7e5e4;
+  --accent: #b45309;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0c0a09;
+    --surface: #1c1917;
+    --text: #f5f5f4;
+    --muted: #a8a29e;
+    --border: #292524;
+    --accent: #f59e0b;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+  font: 15px / 1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 32px 16px 64px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 26px;
+}
+
+h2 {
+  margin: 32px 0 12px;
+  font-size: 17px;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.stats {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+  display: grid;
+}
+
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.stat b {
+  font-size: 24px;
+  display: block;
+}
+
+table {
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  width: 100%;
+  overflow: hidden;
+}
+
+th, td {
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  padding: 9px 12px;
+}
+
+th {
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+a {
+  color: var(--accent);
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.narrow {
+  max-width: 480px;
+}
+
+section {
+  margin-top: 36px;
+}
+
+.eyebrow {
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.display {
+  margin: 6px 0 10px;
+  font-family: Georgia, Times New Roman, serif;
+  font-size: clamp(36px, 8vw, 56px);
+}
+
+.lede {
+  max-width: 620px;
+  font-family: Georgia, Times New Roman, serif;
+  font-size: 18px;
+}
+
+.hero {
+  padding-bottom: 8px;
+}
+
+.small {
+  font-size: 13px;
+}
+
+.row-between {
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  display: flex;
+}
+
+.stack {
+  gap: 12px;
+  display: grid;
+}
+
+label {
+  gap: 6px;
+  font-size: 14px;
+  display: grid;
+}
+
+input, textarea {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  min-width: 0;
+  padding: 9px 12px;
+}
+
+textarea {
+  width: 100%;
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.inline-form {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 12px 0;
+  display: flex;
+}
+
+.inline-form input[type="email"] {
+  flex: 220px;
+}
+
+.btn {
+  font: inherit;
+  border: 1px solid var(--accent);
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-weight: 600;
+}
+
+.btn.secondary {
+  color: var(--text);
+  border-color: var(--border);
+  background: none;
+}
+
+.btn:disabled {
+  opacity: .6;
+  cursor: progress;
+}
+
+.link-btn {
+  font: inherit;
+  color: var(--accent);
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 13px;
+}
+
+.ok {
+  color: #15803d;
+  margin: 0;
+}
+
+.error {
+  color: #b91c1c;
+  margin: 0;
+}
+
+.hp {
+  width: 1px;
+  height: 1px;
+  position: absolute;
+  left: -9999px;
+}
+
+.jobs {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  display: grid;
+}
+
+.job {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  align-content: start;
+  gap: 6px;
+  padding: 14px;
+  display: grid;
+}
+
+.steps {
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+}
+
+.steps li {
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.steps li.done {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+tr.dim td {
+  opacity: .45;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.archive {
+  padding-left: 18px;
+}
+
+footer {
+  margin-top: 48px;
+}
+
+:root {
+  --good: #15803d;
+  --good-bg: #dcfce7;
+  --warn: #b45309;
+  --warn-bg: #fef3c7;
+  --bad: #b91c1c;
+  --info-bg: #e0f2fe;
+  --info: #0369a1;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --good: #4ade80;
+    --good-bg: #14532d;
+    --warn: #fbbf24;
+    --warn-bg: #422006;
+    --bad: #f87171;
+    --info-bg: #082f49;
+    --info: #7dd3fc;
+  }
+}
+
+.dash {
+  max-width: 1200px;
+}
+
+.dash-head {
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  display: flex;
+}
+
+.strip {
+  color: var(--muted);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  margin: 8px 0 0;
+  font-size: 14px;
+  display: flex;
+}
+
+.pill {
+  background: var(--border);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pill.info {
+  background: var(--info-bg);
+  color: var(--info);
+}
+
+.pill.good {
+  background: var(--good-bg);
+  color: var(--good);
+}
+
+.pill.bad {
+  color: var(--bad);
+  background: #fee2e2;
+}
+
+.tabs {
+  border-bottom: 1px solid var(--border);
+  gap: 4px;
+  margin: 22px 0 4px;
+  display: flex;
+  overflow-x: auto;
+}
+
+.tabs a {
+  color: var(--muted);
+  white-space: nowrap;
+  border-bottom: 2px solid #0000;
+  margin-bottom: -1px;
+  padding: 10px 14px;
+  text-decoration: none;
+}
+
+.tabs a.active {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+
+.issue-layout {
+  grid-template-columns: minmax(0, 1fr) 330px;
+  align-items: start;
+  gap: 28px;
+  display: grid;
+}
+
+.issue-side {
+  gap: 14px;
+  margin-top: 36px;
+  display: grid;
+  position: sticky;
+  top: 16px;
+}
+
+@media (max-width: 900px) {
+  .issue-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .issue-side {
+    order: -1;
+    margin-top: 20px;
+    position: static;
+  }
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin: 0;
+  padding: 16px;
+}
+
+.panel h3 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.section-head {
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  display: flex;
+}
+
+.section-head h2 {
+  margin-bottom: 8px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 14px;
+  padding: 16px 18px;
+}
+
+.card.approved {
+  border-left: 4px solid var(--good);
+}
+
+.card.pending {
+  border-left: 4px solid var(--border);
+}
+
+.card.removed {
+  opacity: .75;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  display: flex;
+}
+
+.card-top {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  display: flex;
+}
+
+.pos {
+  background: var(--text);
+  width: 26px;
+  height: 26px;
+  color: var(--bg);
+  border-radius: 50%;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  display: inline-grid;
+}
+
+.chip {
+  border: 1px solid var(--border);
+  color: var(--muted);
+  white-space: nowrap;
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: 12px;
+}
+
+.chip.good {
+  background: var(--good-bg);
+  color: var(--good);
+  border-color: #0000;
+}
+
+.chip.warn {
+  background: var(--warn-bg);
+  color: var(--warn);
+  border-color: #0000;
+}
+
+.reorder {
+  gap: 2px;
+  margin-left: auto;
+  display: flex;
+}
+
+.headline {
+  margin: 10px 0 2px;
+  font: 600 19px / 1.35 Georgia, Times New Roman, serif;
+}
+
+.headline a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.headline a:hover {
+  text-decoration: underline;
+}
+
+.warn {
+  color: var(--warn);
+}
+
+.editor {
+  margin-top: 10px;
+}
+
+textarea.commentary {
+  resize: vertical;
+  field-sizing: content;
+  min-height: 5lh;
+  font-family: Georgia, Times New Roman, serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.editor-bar {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin-top: 6px;
+  font-size: 13px;
+  display: flex;
+}
+
+.meter {
+  color: var(--muted);
+}
+
+.meter.warn {
+  color: var(--warn);
+}
+
+.editor-actions {
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-left: auto;
+  display: flex;
+}
+
+.ai-form {
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+  display: flex;
+}
+
+.ai-form input {
+  flex: 260px;
+}
+
+.rubric {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.rubric summary {
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.bars {
+  gap: 6px;
+  margin: 8px 0;
+  display: grid;
+}
+
+.bar-row {
+  grid-template-columns: minmax(150px, 1fr) minmax(80px, 2fr) 34px;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  display: grid;
+}
+
+.bar {
+  background: var(--border);
+  border-radius: 4px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.bar > span {
+  background: var(--accent);
+  height: 100%;
+  display: block;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.card-actions {
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  display: flex;
+}
+
+.action {
+  flex-direction: column;
+  gap: 4px;
+  display: inline-flex;
+}
+
+.swap {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  display: flex;
+}
+
+select {
+  font: inherit;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  max-width: 100%;
+  padding: 8px 10px;
+  font-size: 14px;
+}
+
+.swap {
+  flex-direction: column;
+  flex: 260px;
+  align-items: flex-end;
+}
+
+.swap.open {
+  flex-basis: 100%;
+}
+
+.card-actions {
+  align-items: flex-start;
+}
+
+.swap-panel {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: 10px;
+  width: 100%;
+  padding: 10px 12px;
+}
+
+.swap-panel ul {
+  gap: 8px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+}
+
+.swap-panel li {
+  border-top: 1px solid var(--border);
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 0;
+  display: grid;
+}
+
+.swap-score {
+  justify-items: center;
+  line-height: 1.1;
+  display: grid;
+}
+
+.swap-score b {
+  font-variant-numeric: tabular-nums;
+  font-size: 20px;
+}
+
+.swap-score span {
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+}
+
+.swap-title {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.swap-criteria {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 5px;
+  display: flex;
+}
+
+.crit {
+  background: var(--border);
+  color: var(--muted);
+  white-space: nowrap;
+  border-radius: 999px;
+  padding: 1px 7px;
+  font-size: 11px;
+}
+
+.crit b {
+  color: var(--text);
+}
+
+.crit.s4, .crit.s5 {
+  background: var(--good-bg);
+  color: var(--good);
+}
+
+.crit.s4 b, .crit.s5 b {
+  color: var(--good);
+}
+
+@media (max-width: 560px) {
+  .swap-panel li {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+
+  .swap-panel li form {
+    grid-column: 2;
+  }
+}
+
+.btn.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.btn.ghost {
+  color: var(--muted);
+  background: none;
+  border-color: #0000;
+  padding: 7px 10px;
+}
+
+.btn.ghost:hover {
+  color: var(--text);
+  background: var(--border);
+}
+
+.btn.danger {
+  border-color: var(--border);
+  color: var(--bad);
+  background: none;
+}
+
+.btn.big {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 16px;
+}
+
+.result {
+  margin: 4px 0 0;
+  font-size: 13px;
+}
+
+.checklist {
+  gap: 8px;
+  margin: 0 0 14px;
+  padding: 0;
+  font-size: 14px;
+  list-style: none;
+  display: grid;
+}
+
+.checklist li {
+  grid-template-columns: 18px 1fr;
+  gap: 6px;
+  display: grid;
+}
+
+.checklist li.ok > span:first-child {
+  color: var(--good);
+  font-weight: 700;
+}
+
+.checklist li.todo > span:first-child {
+  color: var(--muted);
+}
+
+.confirm {
+  gap: 8px;
+  display: grid;
+}
+
+.confirm.armed {
+  background: var(--warn-bg);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.confirm.armed p {
+  margin: 0;
+}
+
+.row {
+  flex-wrap: wrap;
+  gap: 8px;
+  display: flex;
+}
+
+.side-links {
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  display: flex;
+}
+
+.side-links a.btn {
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.timeline {
+  gap: 4px;
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+}
+
+.stats.compact {
+  grid-template-columns: repeat(2, 1fr);
+  margin-top: 0;
+}
+
+.stats a.stat {
+  color: inherit;
+  text-decoration: none;
+}
+
+details.bench summary {
+  cursor: pointer;
+  align-items: center;
+  gap: 10px;
+  list-style: none;
+  display: flex;
+}
+
+details.bench summary::-webkit-details-marker {
+  display: none;
+}
+
+.bench-title {
+  flex: 1;
+  min-width: 0;
+}
+
+.filters {
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 10px 0 14px;
+  display: flex;
+}
+
+.filters a {
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.filters a.active {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+.empty {
+  max-width: 560px;
+}
+
+textarea.mono {
+  font-family: ui-monospace, Menlo, monospace;
+  font-size: 13px;
+}
+
+.steps.progress {
+  margin: 20px 0 0;
+}
+
+.stats.overview {
+  margin-top: 14px;
+}
+
+.notice {
+  background: var(--info-bg);
+  border-radius: 10px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0;
+  padding: 12px 14px;
+  display: flex;
+}
+
+.notice .job {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.narrow-panel {
+  max-width: 560px;
+}
+
+.explainer section {
+  max-width: 900px;
+}
+
+.lede-small {
+  max-width: 720px;
+  font-size: 16px;
+}
+
+.flow {
+  gap: 10px;
+  max-width: 760px;
+  padding-left: 22px;
+  display: grid;
+}
+
+.flow code {
+  background: var(--border);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 13px;
+}
+
+.criteria {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  display: grid;
+}
+
+.criterion {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.criterion-head {
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  display: flex;
+}
+
+.criterion-head h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.weight {
+  color: var(--accent);
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.question {
+  margin: 8px 0 4px;
+  font-family: Georgia, Times New Roman, serif;
+  font-size: 15px;
+}
+
+.scale {
+  gap: 6px;
+  margin: 10px 0;
+  padding: 0;
+  font-size: 14px;
+  list-style: none;
+  display: grid;
+}
+
+.scale li {
+  grid-template-columns: 24px 1fr;
+  align-items: start;
+  gap: 8px;
+  display: grid;
+}
+
+.score-dot {
+  border: 1px solid var(--accent);
+  width: 22px;
+  height: 22px;
+  color: var(--accent);
+  border-radius: 50%;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-grid;
+}
+
+table.mini {
+  font-size: 13px;
+}
+
+table.mini th, table.mini td {
+  text-align: center;
+  padding: 5px 8px;
+}
+
+.bar-row.points {
+  grid-template-columns: minmax(150px, 1fr) minmax(80px, 2fr) 34px 40px;
+}
+
+.dist {
+  gap: 8px;
+  max-width: 640px;
+  display: grid;
+}
+
+.dist .bar-row {
+  grid-template-columns: minmax(190px, 1fr) minmax(80px, 2fr) 34px;
+}
+
+.two-col {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 14px;
+  display: grid;
+}
+
+.tight {
+  gap: 4px;
+  padding-left: 18px;
+  font-size: 14px;
+  display: grid;
+}
+
+.rubric-lock, .rubric-open {
+  margin-top: 28px;
+}
+
+.rubric-open {
+  border-color: var(--accent);
+}
+
+.rubric-editor {
+  gap: 4px;
+  display: grid;
+}
+
+.rubric-editor section {
+  margin-top: 18px;
+}
+
+.rubric-editor h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.weights {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+  display: grid;
+}
+
+.weight-field input {
+  width: 80px;
+}
+
+.sum {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.criterion-edit {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  gap: 8px;
+  margin: 0 0 12px;
+  padding: 12px 14px;
+  display: grid;
+}
+
+.criterion-edit legend {
+  padding: 0 4px;
+  font-weight: 600;
+}
+
+.criterion-edit input {
+  width: 100%;
+}
+
+.criterion-edit input[readonly] {
+  color: var(--muted);
+}
+
+.anchors {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 8px;
+  display: grid;
+}
+
+.num-grid {
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px;
+  display: grid;
+}
+
+.num-field input {
+  width: 100%;
+}
+
+.save-row {
+  flex-wrap: wrap;
+  gap: 8px;
+  display: flex;
+}
+
+.save-row input {
+  flex: 280px;
+}
+
+.tabs .badge {
+  background: var(--accent);
+  min-width: 18px;
+  color: var(--bg);
+  text-align: center;
+  border-radius: 999px;
+  margin-left: 6px;
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  display: inline-block;
+}
+
+.stat.active {
+  border-color: var(--accent);
+}
+
+td .chip {
+  margin-left: 6px;
+}
+
+.row-actions {
+  justify-content: flex-end;
+  gap: 6px;
+  display: flex;
+}
+
+.add-link {
+  margin: 12px 0 18px;
+}
+
+.add-link .inline-form input[type="url"] {
+  flex: 2 260px;
+}
+
+.add-link .inline-form input[type="text"] {
+  flex: 200px;
+}
+
+.edits {
+  gap: 12px;
+  display: grid;
+}
+
+.edit-pair .pair {
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  display: grid;
+}
+
+.edit-pair .pair p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.edit-pair .before {
+  color: var(--muted);
+  text-decoration: line-through;
+  -webkit-text-decoration-color: color-mix(in srgb, var(--muted) 45%, transparent);
+  text-decoration-color: color-mix(in srgb, var(--muted) 45%, transparent);
+}
+
+.replies {
+  gap: 12px;
+  margin-top: 16px;
+  display: grid;
+}
+
+.reply.unread {
+  border-left: 3px solid var(--accent);
+}
+
+.reply-head {
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  display: flex;
+}
+
+.reply-chips {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  display: flex;
+}
+
+.reply-body {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 12px 0;
+  line-height: 1.55;
+}
+
+@media (max-width: 640px) {
+  .edit-pair .pair {
+    grid-template-columns: 1fr;
+  }
+
+  .reply-head {
+    flex-direction: column;
+  }
+
+  .reply-chips {
+    justify-content: flex-start;
+  }
+}
+
+a.btn {
+  align-items: center;
+  text-decoration: none;
+  display: inline-flex;
+}
+
+/*# sourceMappingURL=app_globals_0yg4wg8plh8sv.css.map*/</style><title>The Dispatch — Newsletter Engine</title><meta name="description" content="Newsletter intelligence and delivery pipeline for The Dispatch"/></head><body><div hidden=""><!--$--><!--/$--></div><main class="dash"><header class="dash-head"><div><p class="eyebrow">The Dispatch · Editor</p><h1>Good to see you, Shreya</h1><p class="strip"><span class="pill info">In review</span><span>Issue #<!-- -->105</span><span>Confirm before <!-- -->Wed, 14 Oct, 10:00 PM IST</span><span>Sends <!-- -->Thu, 15 Oct, 8:00 AM IST</span></p></div><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_ID_0080f1f538bc948391f039b475d86cf5c627cc0599"/><button class="btn ghost">Log out</button></form></header><nav class="tabs" aria-label="Sections"><a class="active" aria-current="page" href="02-dashboard-this-weeks-issue.html">This week&#x27;s issue</a><a class="" href="03-dashboard-story-pool.html">Story pool</a><a class="" href="04-dashboard-subscribers.html">Subscribers</a><a class="" href="05-dashboard-reader-replies.html">Reader replies<span class="badge" aria-label="2 unread">2</span></a><a class="" href="06-dashboard-voice-guide.html">Voice guide</a><a class="" href="07-dashboard-how-scoring-works.html">How scoring works</a><a class="" href="09-dashboard-past-issues.html">Past issues</a><a class="" href="10-dashboard-pipeline.html">Pipeline</a></nav><ol class="steps progress" aria-label="Issue progress"><li class="done">Collecting</li><li class="done">Drafted</li><li class="done">In review</li><li class="">Confirmed</li><li class="">Sending</li><li class="">Sent</li></ol><div class="stats overview"><div class="stat"><b>783</b><span class="muted">articles read</span></div><div class="stat"><b>363</b><span class="muted">relevant</span></div><div class="stat"><b>225</b><span class="muted">distinct stories</span></div><div class="stat"><b>225</b><span class="muted">scored</span></div><a class="stat" href="04-dashboard-subscribers.html"><b>0</b><span class="muted">active subscribers</span></a></div><div class="issue-layout"><div class="issue-main"><section><div class="section-head"><h2>Lineup <span class="muted">· <!-- -->9<!-- --> stories · <!-- -->6<!-- --> topics<!-- --> · ⚠ 1 flagged</span></h2><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_59"/><input type="hidden" name="$ACTION_59:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_59:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k0d2fcb533d90e612cf3756044431498c"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="approve-all"/><button class="btn secondary">Approve all pending</button></form></div><article class="card pending"><div class="card-top"><span class="pos">1</span><span class="chip">Policy &amp; Regulation</span><span class="chip ">Pending</span><span class="reorder"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_60"/><input type="hidden" name="$ACTION_60:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_60:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k40f9987eb805b5c08803ac8ad63d5a3f"/><input type="hidden" name="item" value="12"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="down"/><button class="btn ghost" title="Move down">↓</button></form></span></div><h3 class="headline"><a href="https://economictimes.indiatimes.com/tech/technology/need-judicious-mix-in-use-of-open-and-proprietary-ai-models-to-protect-data-it-secy/articleshow/134796854.cms" target="_blank" rel="noreferrer">Need &#x27;judicious mix&#x27; in use of open and proprietary AI models to protect data: IT Secy</a></h3><p class="muted small">via <!-- -->ET Tech</p><div class="editor"><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_61"/><input type="hidden" name="$ACTION_61:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_61:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kc4e0cae481cc392ad567d1c567ad0b31"/><input type="hidden" name="op" value="commentary"/><input type="hidden" name="item" value="12"/><input type="hidden" name="issue" value="1"/><textarea name="commentary" rows="7" aria-label="Commentary" class="commentary">For builders, balancing proprietary enterprise APIs with self-hosted open weights is quickly becoming a strict compliance mandate rather than an engineering preference. Regulators fear that foreign commercial models absorb domestic enterprise data during processing, exposing sensitive business intelligence. Teams relying entirely on closed endpoints now face the operational cost of managing on-premise open models to stay on the right side of policy.</textarea><div class="editor-bar"><span class="meter ">62<!-- --> words · <!-- -->3<!-- --> sentences</span><span class="ok small">✓ passes the voice-guide checks</span><span class="editor-actions"><button type="button" class="btn ghost" title="Restore the first AI draft">Original draft</button><button type="button" class="btn ghost">Rewrite with AI</button><button class="btn primary" disabled="">Save &amp; approve</button></span></div></form></div><details class="rubric"><summary>Why it was picked · score <!-- -->77<!-- -->/100</summary><p class="small">Government warming up to open-source AI models to avoid vendor lock-in and sovereignty risks.</p><div class="bars"><div class="bar-row points" title="Does this change where money, regulation, talent or users are actually moving?
+0 = PR, a routine update or a minor announcement · 3 = a notable move for one company · 5 = a sector-level shift, a precedent or an inflection point"><span>Signal<!-- --> <span class="muted">· <!-- -->30<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->24</span></div><div class="bar-row points" title="Does it cut against what most people in the ecosystem currently believe?
+0 = confirms the obvious · 3 = adds a twist to the usual narrative · 5 = flips a common belief, with evidence"><span>Counterintuitive<!-- --> <span class="muted">· <!-- -->20<!-- -->%</span></span><span class="bar" aria-label="2 out of 5"><span style="width:40%"></span></span><span class="num">2<!-- -->/5</span><span class="num muted">+<!-- -->8</span></div><div class="bar-row points" title="How many different outlets covered it this week?
+0 = 10 or more outlets covered it · 3 = 3 outlets covered it · 5 = only 1 outlet covered it"><span>Under-reported<!-- --> <span class="muted">· <!-- -->15<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->15</span></div><div class="bar-row points" title="Does it link to another story this week, or to a trend nobody has put side by side with it?
+0 = stands alone · 3 = fits a known trend · 5 = links to another story in this week&#x27;s list that nobody has paired it with"><span>Connects trends<!-- --> <span class="muted">· <!-- -->15<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->12</span></div><div class="bar-row points" title="How directly does it affect Indian founders, investors or users?
+0 = barely touches India · 3 = affects one Indian segment · 5 = directly changes things for Indian founders, investors or users"><span>India relevance<!-- --> <span class="muted">· <!-- -->10<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->10</span></div><div class="bar-row points" title="Is there a sharp, specific take to write in two or three lines?
+0 = nothing to add beyond the headline · 3 = a decent angle exists · 5 = concrete numbers and names, and a sharp take is obvious"><span>Commentary potential<!-- --> <span class="muted">· <!-- -->10<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->8</span></div></div><p class="muted small">Points = weight × score ÷ 5. Hover a row to see what 0, 3 and 5 mean, or read <a href="07-dashboard-how-scoring-works.html">how scoring works</a>.</p><p class="muted small">Covered by <!-- -->1<!-- --> outlet(s): <!-- -->ET Tech</p><p class="muted small">AI copy-edit review: angle <!-- -->4<!-- -->/5 · voice <!-- -->4<!-- -->/5 · grounded <!-- -->4<!-- -->/5 · forwardable<!-- --> <!-- -->4<!-- -->/5. <!-- -->Stretches an official&#x27;s general cautionary remark into an active, impending compliance mandate for builders.</p></details><div class="card-actions"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_62"/><input type="hidden" name="$ACTION_62:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_62:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k1a0538025c0cae4302e95f4f1e3e8c3b"/><input type="hidden" name="item" value="12"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="approve"/><button class="btn primary">Approve</button></form><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_63"/><input type="hidden" name="$ACTION_63:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_63:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k4063aecca40e73f230ca1a6096090c0d"/><input type="hidden" name="item" value="12"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="drop"/><button class="btn danger">Drop</button></form><div class="swap"><button type="button" class="btn secondary" aria-expanded="false">Swap… (9 on the bench)</button></div></div></article><article class="card approved"><div class="card-top"><span class="pos">2</span><span class="chip">Commerce, Quick Commerce &amp; D2C</span><span class="chip good">Approved</span><span class="reorder"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_64"/><input type="hidden" name="$ACTION_64:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_64:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k60d9b6cf8e31b22cc8144e4f66ddb89d"/><input type="hidden" name="item" value="11"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="up"/><button class="btn ghost" title="Move up">↑</button></form><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_65"/><input type="hidden" name="$ACTION_65:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_65:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kd7ee4c2dd573faa5c5f8d00c32e580dd"/><input type="hidden" name="item" value="11"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="down"/><button class="btn ghost" title="Move down">↓</button></form></span></div><h3 class="headline"><a href="https://news.google.com/rss/articles/CBMigwJBVV95cUxOblNoT1h1VGdUU1I1OWJmdWVhazU2YndnZm5ubjMzYm0ycVFLaVNYU3JvT3VPNFc3dWVQbDJNYXU5OFRBblBQWHBpd2RnUHYzTWxwczktLUEwVXM4QjM4d2V4Sk80cnh1cnFnS19WUEVKS2RqdE9wLUVRd1RwTUZJZEFETHVMYkpGbE1jVmxfemQ0dUZCWmtGckhlVklxVnRKWlFVc0F1dFBmZkxOaHcyWDhRX1RXQURuLWpfWF9hMzNIOU1vVjMwZjFBRUhGcU54bmh5VmZLbnFIVXBGVVhoMjVjV0VmOGVyOFpnMkh6ODZyUk5DdWtCbG1uc2lxTlVORHFV?oc=5" target="_blank" rel="noreferrer">#MCTech3 | Quick comm festive ad rates squeeze D2C brands; Fintech Oolka eyes $45 million funding; and more</a></h3><p class="muted small">via <!-- -->Moneycontrol.com</p><div class="editor"><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_66"/><input type="hidden" name="$ACTION_66:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_66:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="ka018aa8fd352b914a4c639369dbd6b52"/><input type="hidden" name="op" value="commentary"/><input type="hidden" name="item" value="11"/><input type="hidden" name="issue" value="1"/><textarea name="commentary" rows="6" aria-label="Commentary" class="commentary">Quick commerce platforms are turning into tollbooths where festive discovery comes directly out of brand contribution margins. When ad auction prices spike during peak demand, D2C labels must either pay surging platform fees or disappear from instant delivery search slots. The channel delivers rapid volume, but platform monetization is eating whatever operating profit brands hoped to harvest.</textarea><div class="editor-bar"><span class="meter ">57<!-- --> words · <!-- -->3<!-- --> sentences</span><span class="ok small">✓ passes the voice-guide checks</span><span class="editor-actions"><button type="button" class="btn ghost" title="Restore the first AI draft">Original draft</button><button type="button" class="btn ghost">Rewrite with AI</button><button class="btn primary" disabled="">Save &amp; approve</button></span></div></form></div><details class="rubric"><summary>Why it was picked · score <!-- -->78<!-- -->/100</summary><p class="small">Surging quick commerce ad rates squeeze D2C margins, forcing startups into expensive working capital.</p><div class="bars"><div class="bar-row points" title="Does this change where money, regulation, talent or users are actually moving?
+0 = PR, a routine update or a minor announcement · 3 = a notable move for one company · 5 = a sector-level shift, a precedent or an inflection point"><span>Signal<!-- --> <span class="muted">· <!-- -->30<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->24</span></div><div class="bar-row points" title="Does it cut against what most people in the ecosystem currently believe?
+0 = confirms the obvious · 3 = adds a twist to the usual narrative · 5 = flips a common belief, with evidence"><span>Counterintuitive<!-- --> <span class="muted">· <!-- -->20<!-- -->%</span></span><span class="bar" aria-label="3 out of 5"><span style="width:60%"></span></span><span class="num">3<!-- -->/5</span><span class="num muted">+<!-- -->12</span></div><div class="bar-row points" title="How many different outlets covered it this week?
+0 = 10 or more outlets covered it · 3 = 3 outlets covered it · 5 = only 1 outlet covered it"><span>Under-reported<!-- --> <span class="muted">· <!-- -->15<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->12</span></div><div class="bar-row points" title="Does it link to another story this week, or to a trend nobody has put side by side with it?
+0 = stands alone · 3 = fits a known trend · 5 = links to another story in this week&#x27;s list that nobody has paired it with"><span>Connects trends<!-- --> <span class="muted">· <!-- -->15<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->12</span></div><div class="bar-row points" title="How directly does it affect Indian founders, investors or users?
+0 = barely touches India · 3 = affects one Indian segment · 5 = directly changes things for Indian founders, investors or users"><span>India relevance<!-- --> <span class="muted">· <!-- -->10<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->10</span></div><div class="bar-row points" title="Is there a sharp, specific take to write in two or three lines?
+0 = nothing to add beyond the headline · 3 = a decent angle exists · 5 = concrete numbers and names, and a sharp take is obvious"><span>Commentary potential<!-- --> <span class="muted">· <!-- -->10<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->8</span></div></div><p class="muted small">Points = weight × score ÷ 5. Hover a row to see what 0, 3 and 5 mean, or read <a href="07-dashboard-how-scoring-works.html">how scoring works</a>.</p><p class="muted small">Covered by <!-- -->2<!-- --> outlet(s): <!-- -->LinkedIn, Moneycontrol.com</p><p class="muted small">AI copy-edit review: angle <!-- -->4<!-- -->/5 · voice <!-- -->5<!-- -->/5 · grounded <!-- -->5<!-- -->/5 · forwardable<!-- --> <!-- -->5<!-- -->/5. <!-- -->Direct, operator-level insight into festive unit economics that D2C founders will immediately forward to their growth teams.</p></details><div class="card-actions"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_67"/><input type="hidden" name="$ACTION_67:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_67:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k6014448d63e1f4986ad782d4344679eb"/><input type="hidden" name="item" value="11"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="unapprove"/><button class="btn secondary">Unapprove</button></form><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_68"/><input type="hidden" name="$ACTION_68:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_68:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="ke6ce00b50da4d9480201ea23818b0972"/><input type="hidden" name="item" value="11"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="drop"/><button class="btn danger">Drop</button></form><div class="swap"><button type="button" class="btn secondary" aria-expanded="false">Swap… (9 on the bench)</button></div></div></article><article class="card approved"><div class="card-top"><span class="pos">3</span><span class="chip">People, Leadership &amp; Governance</span><span class="chip good">Approved</span><span class="reorder"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_69"/><input type="hidden" name="$ACTION_69:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_69:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k1487bb31dd43a616b217d7e16990ec73"/><input type="hidden" name="item" value="2"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="up"/><button class="btn ghost" title="Move up">↑</button></form><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_70"/><input type="hidden" name="$ACTION_70:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_70:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kfe5a67c6df2e843806b0e3e25dda43a0"/><input type="hidden" name="item" value="2"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="down"/><button class="btn ghost" title="Move down">↓</button></form></span></div><h3 class="headline"><a href="https://news.google.com/rss/articles/CBMi5AFBVV95cUxQaDRoWHV1T0FUZW4zMjV3aG9hY004LTdpRFQ0cmhTZnEzVnNYNGhwWC1tZTJFaXJtMHNfTTVYdVBieUlyX1d2aGF0SGZ3QVkxX3c0LXAtS3JJbG1OVHZOMF83UnBZcUY2eHRLbzdkRmgwcmh2WWs2c1Zlc0R2R0toRVhLMlVYd2FJUDNTTzd4YWZjZy1UTTY2R1EtMTZrS1Aya2RLOEJtMFNnZFdXNzdMYmRWbXlTMmQ3R1IxWkVaVVJCd2dRUXpOOXdiSDV2eVNvTEtRc01PVVUxSm1vRXpmSXB2NEzSAeoBQVVfeXFMT3c1SWF0elBTNGFiNlRzNXY0Rmh4MTBacFk4R3VDQkNVR1dSV1NZam12ZUtHNmZLZzY4MnUyS0xqNWJDTDFBVDhXMlU2WDNwdURmYWZtczFuWDN6R0xXNzhJTnlpT0hLYUprTGtnX2JXYkV4TU1KM1QxcHZjQUM1YjVYeWZGUkhubVZ5NndydldvalJOQ2tBWVEtSnd6VVZfZm94Y0wzekhBYWpPa0gybENiMm1oWWFoc2hxLWRSeEROTkk1SnNZRC1XMWtnYklFZW5rMUw2ZnV4V25JcUp6dlJsMVJSUTIxcjNR?oc=5" target="_blank" rel="noreferrer">ETSA 2026: Not getting H-1B visas will boost our startup ecosystem, says Piyush Goyal</a></h3><p class="muted small">via <!-- -->The Economic Times</p><div class="editor"><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_71"/><input type="hidden" name="$ACTION_71:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_71:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kc2b7a06625accffc5b84ed84a09f2802"/><input type="hidden" name="op" value="commentary"/><input type="hidden" name="item" value="2"/><input type="hidden" name="issue" value="1"/><textarea name="commentary" rows="5" aria-label="Commentary" class="commentary">Turning visa rejections into an industrial talent strategy sounds neat, but retention by force rarely sparks innovation. Founders need capital and domestic enterprise demand to absorb top engineering talent, not just closed exits abroad. Brain gain requires fertile ground, not merely a closed door.</textarea><div class="editor-bar"><span class="meter ">44<!-- --> words · <!-- -->3<!-- --> sentences</span><span class="ok small">✓ passes the voice-guide checks</span><span class="editor-actions"><button type="button" class="btn ghost">Rewrite with AI</button><button class="btn primary" disabled="">Save &amp; approve</button></span></div></form></div><details class="rubric"><summary>Why it was picked · score <!-- -->91<!-- -->/100</summary><p class="small">A bold claim that H-1B restrictions actually benefit India by retaining elite talent for local startups.</p><div class="bars"><div class="bar-row points" title="Does this change where money, regulation, talent or users are actually moving?
+0 = PR, a routine update or a minor announcement · 3 = a notable move for one company · 5 = a sector-level shift, a precedent or an inflection point"><span>Signal<!-- --> <span class="muted">· <!-- -->30<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->24</span></div><div class="bar-row points" title="Does it cut against what most people in the ecosystem currently believe?
+0 = confirms the obvious · 3 = adds a twist to the usual narrative · 5 = flips a common belief, with evidence"><span>Counterintuitive<!-- --> <span class="muted">· <!-- -->20<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->20</span></div><div class="bar-row points" title="How many different outlets covered it this week?
+0 = 10 or more outlets covered it · 3 = 3 outlets covered it · 5 = only 1 outlet covered it"><span>Under-reported<!-- --> <span class="muted">· <!-- -->15<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->12</span></div><div class="bar-row points" title="Does it link to another story this week, or to a trend nobody has put side by side with it?
+0 = stands alone · 3 = fits a known trend · 5 = links to another story in this week&#x27;s list that nobody has paired it with"><span>Connects trends<!-- --> <span class="muted">· <!-- -->15<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->15</span></div><div class="bar-row points" title="How directly does it affect Indian founders, investors or users?
+0 = barely touches India · 3 = affects one Indian segment · 5 = directly changes things for Indian founders, investors or users"><span>India relevance<!-- --> <span class="muted">· <!-- -->10<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->10</span></div><div class="bar-row points" title="Is there a sharp, specific take to write in two or three lines?
+0 = nothing to add beyond the headline · 3 = a decent angle exists · 5 = concrete numbers and names, and a sharp take is obvious"><span>Commentary potential<!-- --> <span class="muted">· <!-- -->10<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->10</span></div></div><p class="muted small">Points = weight × score ÷ 5. Hover a row to see what 0, 3 and 5 mean, or read <a href="07-dashboard-how-scoring-works.html">how scoring works</a>.</p><p class="muted small">Covered by <!-- -->2<!-- --> outlet(s): <!-- -->TechGig, The Economic Times</p><p class="muted small">AI copy-edit review: angle <!-- -->4<!-- -->/5 · voice <!-- -->4<!-- -->/5 · grounded <!-- -->5<!-- -->/5 · forwardable<!-- --> <!-- -->4<!-- -->/5. <!-- -->Good pushback against ministerial spin, but reads slightly rhetorical rather than data-driven.</p></details><div class="card-actions"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_72"/><input type="hidden" name="$ACTION_72:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_72:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kcec0571bbf5bcc84cc841be3973d0b2e"/><input type="hidden" name="item" value="2"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="unapprove"/><button class="btn secondary">Unapprove</button></form><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_73"/><input type="hidden" name="$ACTION_73:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_73:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k4b637ec6eba253dac11d2a9d892d2ca1"/><input type="hidden" name="item" value="2"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="drop"/><button class="btn danger">Drop</button></form><div class="swap"><button type="button" class="btn secondary" aria-expanded="false">Swap… (9 on the bench)</button></div></div></article><article class="card approved"><div class="card-top"><span class="pos">4</span><span class="chip">Policy &amp; Regulation</span><span class="chip good">Approved</span><span class="reorder"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_74"/><input type="hidden" name="$ACTION_74:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_74:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kc63eca6dd4c2fda950425c50775694ab"/><input type="hidden" name="item" value="4"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="up"/><button class="btn ghost" title="Move up">↑</button></form><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_75"/><input type="hidden" name="$ACTION_75:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_75:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k686af58f4966e8227618e694c12f49fa"/><input type="hidden" name="item" value="4"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="down"/><button class="btn ghost" title="Move down">↓</button></form></span></div><h3 class="headline"><a href="https://www.medianama.com/2026/10/223-data-residency-airtel-imc-2026/" target="_blank" rel="noreferrer">Data residency is not enough, says Airtel at IMC 2026, as Indian rules still focus on location</a></h3><p class="muted small">via <!-- -->MediaNama</p><div class="editor"><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_76"/><input type="hidden" name="$ACTION_76:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_76:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="ka2ba7b6c0e6f4063041dbe9712186b5c"/><input type="hidden" name="op" value="commentary"/><input type="hidden" name="item" value="4"/><input type="hidden" name="issue" value="1"/><textarea name="commentary" rows="7" aria-label="Commentary" class="commentary">Geographic storage mandates offer a false sense of security when foreign jurisdictions can still trigger remote service disruptions. Storing bytes in local data centres does nothing if the underlying control plane and software remain subject to overseas legal orders. For enterprises, building genuine sovereign infrastructure means facing significantly higher capital costs rather than just renting domestic server racks.</textarea><div class="editor-bar"><span class="meter ">58<!-- --> words · <!-- -->3<!-- --> sentences</span><span class="ok small">✓ passes the voice-guide checks</span><span class="editor-actions"><button type="button" class="btn ghost" title="Restore the first AI draft">Original draft</button><button type="button" class="btn ghost">Rewrite with AI</button><button class="btn primary" disabled="">Save &amp; approve</button></span></div></form></div><details class="rubric"><summary>Why it was picked · score <!-- -->85<!-- -->/100</summary><p class="small">Airtel&#x27;s warning that residency != sovereignty is a sophisticated nudge to data policy.</p><div class="bars"><div class="bar-row points" title="Does this change where money, regulation, talent or users are actually moving?
+0 = PR, a routine update or a minor announcement · 3 = a notable move for one company · 5 = a sector-level shift, a precedent or an inflection point"><span>Signal<!-- --> <span class="muted">· <!-- -->30<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->24</span></div><div class="bar-row points" title="Does it cut against what most people in the ecosystem currently believe?
+0 = confirms the obvious · 3 = adds a twist to the usual narrative · 5 = flips a common belief, with evidence"><span>Counterintuitive<!-- --> <span class="muted">· <!-- -->20<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->16</span></div><div class="bar-row points" title="How many different outlets covered it this week?
+0 = 10 or more outlets covered it · 3 = 3 outlets covered it · 5 = only 1 outlet covered it"><span>Under-reported<!-- --> <span class="muted">· <!-- -->15<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->15</span></div><div class="bar-row points" title="Does it link to another story this week, or to a trend nobody has put side by side with it?
+0 = stands alone · 3 = fits a known trend · 5 = links to another story in this week&#x27;s list that nobody has paired it with"><span>Connects trends<!-- --> <span class="muted">· <!-- -->15<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->12</span></div><div class="bar-row points" title="How directly does it affect Indian founders, investors or users?
+0 = barely touches India · 3 = affects one Indian segment · 5 = directly changes things for Indian founders, investors or users"><span>India relevance<!-- --> <span class="muted">· <!-- -->10<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->10</span></div><div class="bar-row points" title="Is there a sharp, specific take to write in two or three lines?
+0 = nothing to add beyond the headline · 3 = a decent angle exists · 5 = concrete numbers and names, and a sharp take is obvious"><span>Commentary potential<!-- --> <span class="muted">· <!-- -->10<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->8</span></div></div><p class="muted small">Points = weight × score ÷ 5. Hover a row to see what 0, 3 and 5 mean, or read <a href="07-dashboard-how-scoring-works.html">how scoring works</a>.</p><p class="muted small">Covered by <!-- -->1<!-- --> outlet(s): <!-- -->MediaNama</p><p class="muted small">AI copy-edit review: angle <!-- -->4<!-- -->/5 · voice <!-- -->4<!-- -->/5 · grounded <!-- -->5<!-- -->/5 · forwardable<!-- --> <!-- -->4<!-- -->/5. <!-- -->Good operational angle on control planes versus storage, but reads slightly abstract without naming specific enterprise workloads.</p></details><div class="card-actions"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_77"/><input type="hidden" name="$ACTION_77:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_77:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kbba83ffd79361991b8fe79c11170dd16"/><input type="hidden" name="item" value="4"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="unapprove"/><button class="btn secondary">Unapprove</button></form><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_78"/><input type="hidden" name="$ACTION_78:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_78:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k83be5b67c8cc123285be6081cf28e315"/><input type="hidden" name="item" value="4"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="drop"/><button class="btn danger">Drop</button></form><div class="swap"><button type="button" class="btn secondary" aria-expanded="false">Swap… (9 on the bench)</button></div></div></article><article class="card approved"><div class="card-top"><span class="pos">5</span><span class="chip">Policy &amp; Regulation</span><span class="chip good">Approved</span><span class="reorder"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_79"/><input type="hidden" name="$ACTION_79:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_79:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="ke8cda42630f16d2b6b4ccfca910d500a"/><input type="hidden" name="item" value="5"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="up"/><button class="btn ghost" title="Move up">↑</button></form><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_80"/><input type="hidden" name="$ACTION_80:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_80:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k78641bf30e8cf81a8395789186fe23b7"/><input type="hidden" name="item" value="5"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="down"/><button class="btn ghost" title="Move down">↓</button></form></span></div><h3 class="headline"><a href="https://news.google.com/rss/articles/CBMihgJBVV95cUxQQU54WjQ1OVFoRk9PZHZWUUF4cjYtMkRTYUs1dmJfLUVXV0ZHQkFEaEFiVUd5WUViM3NaQTVHc0F1eTNhSUxzazhtMGRWR3lLUGp6ZGptVm1qaWJkYmFqc1JPdVd1ekhFTkdMa3l4ZE8wSGhTcFRCOExDYTlpVUhKaVFEUERJR3VpNkxfNFI2UVJJVVRkRTV1TzFKbjY0LXY5Y3BUeWtkaHg2SUxQQ2M1TUtKYmFrY3ZhSUhwbEZaODc0ZGhfZmt1dVVsWjFUQmVJTEY4d0xybWstejBMWUVmVHp0X0VZQUF3Ymh0ZjU5THpPeG95TWMyQU5UakRTSkVBZmVVZHFR0gGLAkFVX3lxTFBzRl9ScmlaQ0J1eUtHM1EyNGg3U0FBdERpdFZqXzdDZkxPRTZlbFFqSE5DWVp1ZTY3cldXM1hlT3hnakh2bzRLVGlIQWdTZlZUYm9FZk8yQU1JbHBCNnhfaHBoUDBqVzlWYXFJd2t2bldWWlh3d0xMVjl6YzRsamdDZUNHSmdBSjVpMGRsbGtCVU1KdDlnQzRFT3B2SnZvclgxckRSWUM1ZTc0clRWS2FPS3pNUGVRMEN3OHpReTZlWU5MaW1xRFhjX3dqNkdId3BqOXQxMGxZbk0xSVpBVVZsUWo4dnNrU3FSa2d2S2JVSVJZNmdEMks0MDdhRnFjVDVNY2czT1VIX3JBMA?oc=5" target="_blank" rel="noreferrer">&#x27;These are facts Elon&#x27;: Zoho cofounder Sridhar Vembu takes on Musk&#x27;s claim of Starlink facing license hurd</a></h3><p class="muted small">via <!-- -->The Economic Times</p><div class="editor"><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_81"/><input type="hidden" name="$ACTION_81:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_81:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k997a10839c964e7df8a25e47b71f1f54"/><input type="hidden" name="op" value="commentary"/><input type="hidden" name="item" value="5"/><input type="hidden" name="issue" value="1"/><textarea name="commentary" rows="7" aria-label="Commentary" class="commentary">When a prominent enterprise SaaS founder steps into a satellite spectrum fight, it signals how deeply domestic tech leadership cares about foreign tech compliance. Vembu is not protecting a telecom balance sheet; he is enforcing the idea that global billionaires must follow local regulatory processes. This sets a clear precedent for how foreign tech giants will be challenged by India&#x27;s own software elite.</textarea><div class="editor-bar"><span class="meter ">63<!-- --> words · <!-- -->3<!-- --> sentences</span><span class="ok small">✓ passes the voice-guide checks</span><span class="editor-actions"><button type="button" class="btn ghost" title="Restore the first AI draft">Original draft</button><button type="button" class="btn ghost">Rewrite with AI</button><button class="btn primary" disabled="">Save &amp; approve</button></span></div></form></div><details class="rubric"><summary>Why it was picked · score <!-- -->80<!-- -->/100</summary><p class="small">Vembu&#x27;s public pushback against Musk highlights the intense local vs global friction in India&#x27;s satcom policy.</p><div class="bars"><div class="bar-row points" title="Does this change where money, regulation, talent or users are actually moving?
+0 = PR, a routine update or a minor announcement · 3 = a notable move for one company · 5 = a sector-level shift, a precedent or an inflection point"><span>Signal<!-- --> <span class="muted">· <!-- -->30<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->24</span></div><div class="bar-row points" title="Does it cut against what most people in the ecosystem currently believe?
+0 = confirms the obvious · 3 = adds a twist to the usual narrative · 5 = flips a common belief, with evidence"><span>Counterintuitive<!-- --> <span class="muted">· <!-- -->20<!-- -->%</span></span><span class="bar" aria-label="2 out of 5"><span style="width:40%"></span></span><span class="num">2<!-- -->/5</span><span class="num muted">+<!-- -->8</span></div><div class="bar-row points" title="How many different outlets covered it this week?
+0 = 10 or more outlets covered it · 3 = 3 outlets covered it · 5 = only 1 outlet covered it"><span>Under-reported<!-- --> <span class="muted">· <!-- -->15<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->15</span></div><div class="bar-row points" title="Does it link to another story this week, or to a trend nobody has put side by side with it?
+0 = stands alone · 3 = fits a known trend · 5 = links to another story in this week&#x27;s list that nobody has paired it with"><span>Connects trends<!-- --> <span class="muted">· <!-- -->15<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->15</span></div><div class="bar-row points" title="How directly does it affect Indian founders, investors or users?
+0 = barely touches India · 3 = affects one Indian segment · 5 = directly changes things for Indian founders, investors or users"><span>India relevance<!-- --> <span class="muted">· <!-- -->10<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->10</span></div><div class="bar-row points" title="Is there a sharp, specific take to write in two or three lines?
+0 = nothing to add beyond the headline · 3 = a decent angle exists · 5 = concrete numbers and names, and a sharp take is obvious"><span>Commentary potential<!-- --> <span class="muted">· <!-- -->10<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->8</span></div></div><p class="muted small">Points = weight × score ÷ 5. Hover a row to see what 0, 3 and 5 mean, or read <a href="07-dashboard-how-scoring-works.html">how scoring works</a>.</p><p class="muted small">Covered by <!-- -->1<!-- --> outlet(s): <!-- -->The Economic Times</p><p class="muted small">AI copy-edit review: angle <!-- -->4<!-- -->/5 · voice <!-- -->4<!-- -->/5 · grounded <!-- -->5<!-- -->/5 · forwardable<!-- --> <!-- -->4<!-- -->/5. <!-- -->Smart framing of SaaS leadership defending local regulatory moats, though treating a tweet as an institutional precedent overstates it slightly.</p></details><div class="card-actions"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_82"/><input type="hidden" name="$ACTION_82:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_82:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kd729f79e737f085270a98f411d8b3f88"/><input type="hidden" name="item" value="5"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="unapprove"/><button class="btn secondary">Unapprove</button></form><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_83"/><input type="hidden" name="$ACTION_83:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_83:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k41a71320ea257fd0ce5f9ac33612ae18"/><input type="hidden" name="item" value="5"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="drop"/><button class="btn danger">Drop</button></form><div class="swap"><button type="button" class="btn secondary" aria-expanded="false">Swap… (9 on the bench)</button></div></div></article><article class="card approved"><div class="card-top"><span class="pos">6</span><span class="chip">IPOs &amp; Public Markets</span><span class="chip good">Approved</span><span class="reorder"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_84"/><input type="hidden" name="$ACTION_84:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_84:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k90dd67b8290340ea3283f019514f8a5a"/><input type="hidden" name="item" value="6"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="up"/><button class="btn ghost" title="Move up">↑</button></form><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_85"/><input type="hidden" name="$ACTION_85:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_85:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k8ffee57ee13f5104522a2ff8df90b436"/><input type="hidden" name="item" value="6"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="down"/><button class="btn ghost" title="Move down">↓</button></form></span></div><h3 class="headline"><a href="https://economictimes.indiatimes.com/tech/technology/et-startup-awards-2026-meesho-groww-ceos-on-how-life-changes-after-an-ipo/articleshow/134837023.cms" target="_blank" rel="noreferrer">ETSA 2026: Indian founders eyeing early IPOs instead of private capital: Meesho CEO Vidit Aatrey</a></h3><p class="muted small">via <!-- -->ET Tech</p><div class="editor"><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_86"/><input type="hidden" name="$ACTION_86:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_86:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k5b6f00ea6b3f5c82c8835fe964967bd4"/><input type="hidden" name="op" value="commentary"/><input type="hidden" name="item" value="6"/><input type="hidden" name="issue" value="1"/><textarea name="commentary" rows="5" aria-label="Commentary" class="commentary">Trading soft venture metrics for quarterly public scrutiny shows how patient growth capital has dried up. Indian founders are realising that domestic retail and institutional investors now value predictability over perpetual private dilution. The question is how many boardrooms can handle ninety-day earnings cycles.</textarea><div class="editor-bar"><span class="meter ">44<!-- --> words · <!-- -->3<!-- --> sentences</span><span class="ok small">✓ passes the voice-guide checks</span><span class="editor-actions"><button type="button" class="btn ghost">Rewrite with AI</button><button class="btn primary" disabled="">Save &amp; approve</button></span></div></form></div><details class="rubric"><summary>Why it was picked · score <!-- -->81<!-- -->/100</summary><p class="small">Signals a massive shift as late-stage startups prioritize public market discipline over easy private capital.</p><div class="bars"><div class="bar-row points" title="Does this change where money, regulation, talent or users are actually moving?
+0 = PR, a routine update or a minor announcement · 3 = a notable move for one company · 5 = a sector-level shift, a precedent or an inflection point"><span>Signal<!-- --> <span class="muted">· <!-- -->30<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->24</span></div><div class="bar-row points" title="Does it cut against what most people in the ecosystem currently believe?
+0 = confirms the obvious · 3 = adds a twist to the usual narrative · 5 = flips a common belief, with evidence"><span>Counterintuitive<!-- --> <span class="muted">· <!-- -->20<!-- -->%</span></span><span class="bar" aria-label="3 out of 5"><span style="width:60%"></span></span><span class="num">3<!-- -->/5</span><span class="num muted">+<!-- -->12</span></div><div class="bar-row points" title="How many different outlets covered it this week?
+0 = 10 or more outlets covered it · 3 = 3 outlets covered it · 5 = only 1 outlet covered it"><span>Under-reported<!-- --> <span class="muted">· <!-- -->15<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->12</span></div><div class="bar-row points" title="Does it link to another story this week, or to a trend nobody has put side by side with it?
+0 = stands alone · 3 = fits a known trend · 5 = links to another story in this week&#x27;s list that nobody has paired it with"><span>Connects trends<!-- --> <span class="muted">· <!-- -->15<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->15</span></div><div class="bar-row points" title="How directly does it affect Indian founders, investors or users?
+0 = barely touches India · 3 = affects one Indian segment · 5 = directly changes things for Indian founders, investors or users"><span>India relevance<!-- --> <span class="muted">· <!-- -->10<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->10</span></div><div class="bar-row points" title="Is there a sharp, specific take to write in two or three lines?
+0 = nothing to add beyond the headline · 3 = a decent angle exists · 5 = concrete numbers and names, and a sharp take is obvious"><span>Commentary potential<!-- --> <span class="muted">· <!-- -->10<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->8</span></div></div><p class="muted small">Points = weight × score ÷ 5. Hover a row to see what 0, 3 and 5 mean, or read <a href="07-dashboard-how-scoring-works.html">how scoring works</a>.</p><p class="muted small">Covered by <!-- -->2<!-- --> outlet(s): <!-- -->ET Tech, The Economic Times</p><p class="muted small">AI copy-edit review: angle <!-- -->4<!-- -->/5 · voice <!-- -->4<!-- -->/5 · grounded <!-- -->5<!-- -->/5 · forwardable<!-- --> <!-- -->4<!-- -->/5. <!-- -->Good insight on quarterly earnings pressure versus venture dilution, though overstates the death of private capital.</p></details><div class="card-actions"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_87"/><input type="hidden" name="$ACTION_87:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_87:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k71cf7e3bcfc31374f15ed105e55d4b8d"/><input type="hidden" name="item" value="6"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="unapprove"/><button class="btn secondary">Unapprove</button></form><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_88"/><input type="hidden" name="$ACTION_88:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_88:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k7b5cfe714a2bbf63f36e17193efd024e"/><input type="hidden" name="item" value="6"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="drop"/><button class="btn danger">Drop</button></form><div class="swap"><button type="button" class="btn secondary" aria-expanded="false">Swap… (9 on the bench)</button></div></div></article><article class="card approved"><div class="card-top"><span class="pos">7</span><span class="chip">Funding &amp; VC</span><span class="chip good">Approved</span><span class="reorder"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_89"/><input type="hidden" name="$ACTION_89:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_89:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kfa1f0a44cd6586d1615412bdabb64d3a"/><input type="hidden" name="item" value="7"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="up"/><button class="btn ghost" title="Move up">↑</button></form><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_90"/><input type="hidden" name="$ACTION_90:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_90:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k289e84c8dd822f25f680744b5e977436"/><input type="hidden" name="item" value="7"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="down"/><button class="btn ghost" title="Move down">↓</button></form></span></div><h3 class="headline"><a href="https://news.google.com/rss/articles/CBMisAFBVV95cUxPeUxJMG5OeDJFb0FtNmN0UmNyemtFd2dvUG9qMFl3QTM3dldmQV9fLTEwQlNsVmlnOU9xNmZrUVZCTG1tNnlpWGhiMFlCZ1prTmdBNktuWW1kVWxNRDVTa2dYeVNsaG4zRFRZV0lxZ3N0TnQ5bVZFNGpWNU5WLW0xbnBHUFZlRHkzbjN4a2huQVYwT1UzRXpJZUVvdnNMZER4Y2ZFc25CeFJZdmE2OWVWLQ?oc=5" target="_blank" rel="noreferrer">Why IIT Madras is Shunning the YC Model for its ₹1,000 Cr Deeptech Fund</a></h3><p class="muted small">via <!-- -->Analytics India Magazine</p><div class="editor"><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_91"/><input type="hidden" name="$ACTION_91:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_91:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kc01ee238d56063f761710808092696e6"/><input type="hidden" name="op" value="commentary"/><input type="hidden" name="item" value="7"/><input type="hidden" name="issue" value="1"/><textarea name="commentary" rows="6" aria-label="Commentary" class="commentary">Academic engineering cannot run on ninety-day accelerator sprints designed for consumer apps. IIT Madras is structuring its ₹1,000 Cr corpus around extended development timelines and specialised laboratory infrastructure rather than quick demo days. If this institutional approach succeeds, it will rewrite how Indian universities convert campus research into commercial IP.</textarea><div class="editor-bar"><span class="meter ">50<!-- --> words · <!-- -->3<!-- --> sentences</span><span class="ok small">✓ passes the voice-guide checks</span><span class="editor-actions"><button type="button" class="btn ghost" title="Restore the first AI draft">Original draft</button><button type="button" class="btn ghost">Rewrite with AI</button><button class="btn primary" disabled="">Save &amp; approve</button></span></div></form></div><details class="rubric"><summary>Why it was picked · score <!-- -->80<!-- -->/100</summary><p class="small">Academic institution rejects quick software accelerator playbooks for patient deeptech capital.</p><div class="bars"><div class="bar-row points" title="Does this change where money, regulation, talent or users are actually moving?
+0 = PR, a routine update or a minor announcement · 3 = a notable move for one company · 5 = a sector-level shift, a precedent or an inflection point"><span>Signal<!-- --> <span class="muted">· <!-- -->30<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->24</span></div><div class="bar-row points" title="Does it cut against what most people in the ecosystem currently believe?
+0 = confirms the obvious · 3 = adds a twist to the usual narrative · 5 = flips a common belief, with evidence"><span>Counterintuitive<!-- --> <span class="muted">· <!-- -->20<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->16</span></div><div class="bar-row points" title="How many different outlets covered it this week?
+0 = 10 or more outlets covered it · 3 = 3 outlets covered it · 5 = only 1 outlet covered it"><span>Under-reported<!-- --> <span class="muted">· <!-- -->15<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->15</span></div><div class="bar-row points" title="Does it link to another story this week, or to a trend nobody has put side by side with it?
+0 = stands alone · 3 = fits a known trend · 5 = links to another story in this week&#x27;s list that nobody has paired it with"><span>Connects trends<!-- --> <span class="muted">· <!-- -->15<!-- -->%</span></span><span class="bar" aria-label="3 out of 5"><span style="width:60%"></span></span><span class="num">3<!-- -->/5</span><span class="num muted">+<!-- -->9</span></div><div class="bar-row points" title="How directly does it affect Indian founders, investors or users?
+0 = barely touches India · 3 = affects one Indian segment · 5 = directly changes things for Indian founders, investors or users"><span>India relevance<!-- --> <span class="muted">· <!-- -->10<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->8</span></div><div class="bar-row points" title="Is there a sharp, specific take to write in two or three lines?
+0 = nothing to add beyond the headline · 3 = a decent angle exists · 5 = concrete numbers and names, and a sharp take is obvious"><span>Commentary potential<!-- --> <span class="muted">· <!-- -->10<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->8</span></div></div><p class="muted small">Points = weight × score ÷ 5. Hover a row to see what 0, 3 and 5 mean, or read <a href="07-dashboard-how-scoring-works.html">how scoring works</a>.</p><p class="muted small">Covered by <!-- -->1<!-- --> outlet(s): <!-- -->Analytics India Magazine</p><p class="muted small">AI copy-edit review: angle <!-- -->4<!-- -->/5 · voice <!-- -->5<!-- -->/5 · grounded <!-- -->5<!-- -->/5 · forwardable<!-- --> <!-- -->4<!-- -->/5. <!-- -->Crisp distinction between 90-day app accelerators and deeptech timelines, though the conclusion lands on a standard ecosystem trope.</p></details><div class="card-actions"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_92"/><input type="hidden" name="$ACTION_92:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_92:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="ka641b8e30c83041fd4782bf1f29f6c9d"/><input type="hidden" name="item" value="7"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="unapprove"/><button class="btn secondary">Unapprove</button></form><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_93"/><input type="hidden" name="$ACTION_93:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_93:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k9bcc25cb310824bd7a6ca7586156b9b1"/><input type="hidden" name="item" value="7"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="drop"/><button class="btn danger">Drop</button></form><div class="swap"><button type="button" class="btn secondary" aria-expanded="false">Swap… (9 on the bench)</button></div></div></article><article class="card approved"><div class="card-top"><span class="pos">8</span><span class="chip">Commerce, Quick Commerce &amp; D2C</span><span class="chip good">Approved</span><span class="reorder"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_94"/><input type="hidden" name="$ACTION_94:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_94:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k8e150a99a5ee2ce97799fb20e001da88"/><input type="hidden" name="item" value="8"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="up"/><button class="btn ghost" title="Move up">↑</button></form><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_95"/><input type="hidden" name="$ACTION_95:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_95:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k187b78785546d8e572bd6b20d523c99a"/><input type="hidden" name="item" value="8"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="down"/><button class="btn ghost" title="Move down">↓</button></form></span></div><h3 class="headline"><a href="https://news.google.com/rss/articles/CBMi0gFBVV95cUxQeU1ZTE9CeHo0b0tfdkVvZGlCa1JWbF9xbEJFYnd5Q2duWlB5WFh1WTBfTTFVNGgtWnFWZzgzZ24zU1dpN0doSk1jRVdVRU1uT0llenF5S1JKbW1mOGIwWTJTT1JfYm53Y01ZLTZBRFMtWlRuT0RUa0xnMTRsakxhYlN6ODhxdEVjYXVJOVBqN21RaVJpNmdvakFZVFEzY0txNVIxRWNuTlRUZ1JROE5iS2lNYVh5TmFaN2YzUnllQ1JMajVRNkd0T25JVnZ4elFWcmfSAdIBQVVfeXFMUHlNWUxPQnh6NG9LX3ZFb2RpQmtSVmxfcWxCRWJ3eUNnblpQeVhYdVkwX00xVTRoLVpxVmc4M2duM1NXaTdHaEpNY0VXVUVNbk9JZXpxeUtSSm1tZjhiMFkyU09SX2Jud2NNWS02QURTLVpUbk9EVGtMZzE0bGpMYWJTejg4cXRFY2F1STlQajdtUWlSaTZnb2pBWVRRM2NLcTVSMUVjbk5UVGdSUThOYktpTWFYeU5hWjdmM1J5ZUNSTGo1UTZHdE9uSVZ2eHpRVnJn?oc=5" target="_blank" rel="noreferrer">UNIQLO India allocates 15% of media budget to CTV, rules out quick commerce entry</a></h3><p class="muted small">via <!-- -->Storyboard18</p><div class="editor"><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_96"/><input type="hidden" name="$ACTION_96:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_96:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kf23bf22f9690058d03edf54402309d05"/><input type="hidden" name="op" value="commentary"/><input type="hidden" name="item" value="8"/><input type="hidden" name="issue" value="1"/><textarea name="commentary" rows="5" aria-label="Commentary" class="commentary">Rejecting ten-minute delivery is a rare move against prevailing e-commerce orthodoxies. Pouring 15% of media spending into connected television instead reveals a classic focus on long-term brand equity over hurried discounts. Margin protection often means ignoring the fastest distribution channels.</textarea><div class="editor-bar"><span class="meter ">40<!-- --> words · <!-- -->3<!-- --> sentences</span><span class="ok small">✓ passes the voice-guide checks</span><span class="editor-actions"><button type="button" class="btn ghost">Rewrite with AI</button><button class="btn primary" disabled="">Save &amp; approve</button></span></div></form></div><details class="rubric"><summary>Why it was picked · score <!-- -->80<!-- -->/100</summary><p class="small">Uniqlo shunning quick commerce despite the $90B hype is a bold, brand-first counter-narrative.</p><div class="bars"><div class="bar-row points" title="Does this change where money, regulation, talent or users are actually moving?
+0 = PR, a routine update or a minor announcement · 3 = a notable move for one company · 5 = a sector-level shift, a precedent or an inflection point"><span>Signal<!-- --> <span class="muted">· <!-- -->30<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->24</span></div><div class="bar-row points" title="Does it cut against what most people in the ecosystem currently believe?
+0 = confirms the obvious · 3 = adds a twist to the usual narrative · 5 = flips a common belief, with evidence"><span>Counterintuitive<!-- --> <span class="muted">· <!-- -->20<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->20</span></div><div class="bar-row points" title="How many different outlets covered it this week?
+0 = 10 or more outlets covered it · 3 = 3 outlets covered it · 5 = only 1 outlet covered it"><span>Under-reported<!-- --> <span class="muted">· <!-- -->15<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->15</span></div><div class="bar-row points" title="Does it link to another story this week, or to a trend nobody has put side by side with it?
+0 = stands alone · 3 = fits a known trend · 5 = links to another story in this week&#x27;s list that nobody has paired it with"><span>Connects trends<!-- --> <span class="muted">· <!-- -->15<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->15</span></div><div class="bar-row points" title="How directly does it affect Indian founders, investors or users?
+0 = barely touches India · 3 = affects one Indian segment · 5 = directly changes things for Indian founders, investors or users"><span>India relevance<!-- --> <span class="muted">· <!-- -->10<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->8</span></div><div class="bar-row points" title="Is there a sharp, specific take to write in two or three lines?
+0 = nothing to add beyond the headline · 3 = a decent angle exists · 5 = concrete numbers and names, and a sharp take is obvious"><span>Commentary potential<!-- --> <span class="muted">· <!-- -->10<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->8</span></div></div><p class="muted small">Points = weight × score ÷ 5. Hover a row to see what 0, 3 and 5 mean, or read <a href="07-dashboard-how-scoring-works.html">how scoring works</a>.</p><p class="muted small">Covered by <!-- -->1<!-- --> outlet(s): <!-- -->Storyboard18</p><p class="muted small">AI copy-edit review: angle <!-- -->4<!-- -->/5 · voice <!-- -->4<!-- -->/5 · grounded <!-- -->5<!-- -->/5 · forwardable<!-- --> <!-- -->4<!-- -->/5. <!-- -->Sharp counter-trend insight on margin defense, though the tie-in between CTV and margins is loose.</p></details><div class="card-actions"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_97"/><input type="hidden" name="$ACTION_97:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_97:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="ka9608d6fdbf5f3231263658222275433"/><input type="hidden" name="item" value="8"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="unapprove"/><button class="btn secondary">Unapprove</button></form><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_98"/><input type="hidden" name="$ACTION_98:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_98:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k903e5b12429b642a7c0f6a4f08ffa319"/><input type="hidden" name="item" value="8"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="drop"/><button class="btn danger">Drop</button></form><div class="swap"><button type="button" class="btn secondary" aria-expanded="false">Swap… (9 on the bench)</button></div></div></article><article class="card approved"><div class="card-top"><span class="pos">9</span><span class="chip">Fintech</span><span class="chip good">Approved</span><span class="chip warn">⚠ Needs a look</span><span class="reorder"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_99"/><input type="hidden" name="$ACTION_99:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_99:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k78334486a33174a3a930ca565b0de12e"/><input type="hidden" name="item" value="9"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="up"/><button class="btn ghost" title="Move up">↑</button></form></span></div><h3 class="headline"><a href="https://economictimes.indiatimes.com/tech/technology/upi-mdr-framework-needs-rationalisation-to-protect-public-trust-report/articleshow/134870367.cms" target="_blank" rel="noreferrer">UPI MDR framework needs rationalisation to protect public trust: Report</a></h3><p class="muted small">via <!-- -->ET Tech</p><p class="warn small">⚠ <!-- -->The AI copy-editor rated it 3.8/5 — Sound economic critique, but the zero-MDR sustainability debate is already widely known among fintech founders.</p><div class="editor"><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_100"/><input type="hidden" name="$ACTION_100:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_100:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kbd7261bc979f6ab4e50ec774638e31a5"/><input type="hidden" name="op" value="commentary"/><input type="hidden" name="item" value="9"/><input type="hidden" name="issue" value="1"/><textarea name="commentary" rows="7" aria-label="Commentary" class="commentary">Treating payment rails purely as a public good ignores the friction between macro productivity gains and private system costs. While zero merchant fees drove unprecedented adoption across the economy, the debate is no longer about payment volumes but about who pays to keep the network dependable. Expect policy conversations to focus on whether public subsidy can permanently replace commercial revenue.</textarea><div class="editor-bar"><span class="meter ">60<!-- --> words · <!-- -->3<!-- --> sentences</span><span class="ok small">✓ passes the voice-guide checks</span><span class="editor-actions"><button type="button" class="btn ghost" title="Restore the first AI draft">Original draft</button><button type="button" class="btn ghost">Rewrite with AI</button><button class="btn primary" disabled="">Save &amp; approve</button></span></div></form></div><details class="rubric"><summary>Why it was picked · score <!-- -->79<!-- -->/100</summary><p class="small">Reignites the critical debate over UPI MDR, arguing current free models may stifle long-term infrastructure resilience.</p><div class="bars"><div class="bar-row points" title="Does this change where money, regulation, talent or users are actually moving?
+0 = PR, a routine update or a minor announcement · 3 = a notable move for one company · 5 = a sector-level shift, a precedent or an inflection point"><span>Signal<!-- --> <span class="muted">· <!-- -->30<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->24</span></div><div class="bar-row points" title="Does it cut against what most people in the ecosystem currently believe?
+0 = confirms the obvious · 3 = adds a twist to the usual narrative · 5 = flips a common belief, with evidence"><span>Counterintuitive<!-- --> <span class="muted">· <!-- -->20<!-- -->%</span></span><span class="bar" aria-label="2 out of 5"><span style="width:40%"></span></span><span class="num">2<!-- -->/5</span><span class="num muted">+<!-- -->8</span></div><div class="bar-row points" title="How many different outlets covered it this week?
+0 = 10 or more outlets covered it · 3 = 3 outlets covered it · 5 = only 1 outlet covered it"><span>Under-reported<!-- --> <span class="muted">· <!-- -->15<!-- -->%</span></span><span class="bar" aria-label="4 out of 5"><span style="width:80%"></span></span><span class="num">4<!-- -->/5</span><span class="num muted">+<!-- -->12</span></div><div class="bar-row points" title="Does it link to another story this week, or to a trend nobody has put side by side with it?
+0 = stands alone · 3 = fits a known trend · 5 = links to another story in this week&#x27;s list that nobody has paired it with"><span>Connects trends<!-- --> <span class="muted">· <!-- -->15<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->15</span></div><div class="bar-row points" title="How directly does it affect Indian founders, investors or users?
+0 = barely touches India · 3 = affects one Indian segment · 5 = directly changes things for Indian founders, investors or users"><span>India relevance<!-- --> <span class="muted">· <!-- -->10<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->10</span></div><div class="bar-row points" title="Is there a sharp, specific take to write in two or three lines?
+0 = nothing to add beyond the headline · 3 = a decent angle exists · 5 = concrete numbers and names, and a sharp take is obvious"><span>Commentary potential<!-- --> <span class="muted">· <!-- -->10<!-- -->%</span></span><span class="bar" aria-label="5 out of 5"><span style="width:100%"></span></span><span class="num">5<!-- -->/5</span><span class="num muted">+<!-- -->10</span></div></div><p class="muted small">Points = weight × score ÷ 5. Hover a row to see what 0, 3 and 5 mean, or read <a href="07-dashboard-how-scoring-works.html">how scoring works</a>.</p><p class="muted small">Covered by <!-- -->2<!-- --> outlet(s): <!-- -->Business Standard, ET Tech</p><p class="muted small">AI copy-edit review: angle <!-- -->3<!-- -->/5 · voice <!-- -->4<!-- -->/5 · grounded <!-- -->5<!-- -->/5 · forwardable<!-- --> <!-- -->3<!-- -->/5. <!-- -->Sound economic critique, but the zero-MDR sustainability debate is already widely known among fintech founders.</p></details><div class="card-actions"><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_101"/><input type="hidden" name="$ACTION_101:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_101:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k7e52a0fe60beae9e60c8ae7eba8fa651"/><input type="hidden" name="item" value="9"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="unapprove"/><button class="btn secondary">Unapprove</button></form><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_102"/><input type="hidden" name="$ACTION_102:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_102:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kca09766afb67212442bf1f84e83ffdb3"/><input type="hidden" name="item" value="9"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="drop"/><button class="btn danger">Drop</button></form><div class="swap"><button type="button" class="btn secondary" aria-expanded="false">Swap… (9 on the bench)</button></div></div></article></section><section><h2>Removed from this issue</h2><div class="card removed"><div class="card-top"><span class="chip">Swapped out</span><a href="https://news.google.com/rss/articles/CBMimgFBVV95cUxOa0pCYl9nc3M1M1JuZXJ6a2NwcHVpc2JnVmpOU0Z3S3REcEVMcnlFMjZMczdhUUk0alRyS3BSS0FuYXllUEp0WElzaElaM0dzSHQzQUNQODVOYWhMNjNxUlJQNmlSdjdHcTZYSVVYUGhkM1hqSWhmbEtSRDRERnhrYUFMSTNPeWFVRUp2QlpsRm1uU0NCSUhrV1hR?oc=5" target="_blank" rel="noreferrer">India’s semiconductor ambition is all packaging, no chips</a></div><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_103"/><input type="hidden" name="$ACTION_103:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_103:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k7edc9b456d1d6e5f141d5e701de5e938"/><input type="hidden" name="item" value="1"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="undo-swap"/><button class="btn secondary">Undo swap</button></form></div><div class="card removed"><div class="card-top"><span class="chip">Swapped out</span><a href="https://www.livemint.com/companies/news/sap-india-nayara-energy-delhi-high-court-11791532108416.html" target="_blank" rel="noreferrer">SAP India challenges order to restore software services to Nayara Energy</a></div></div><div class="card removed"><div class="card-top"><span class="chip">Swapped out</span><a href="https://www.medianama.com/2026/10/223-reliance-jio-network-slicing-india/" target="_blank" rel="noreferrer">Jio deployed Network Slicing while TRAI’s regulations are yet to be finalised</a></div><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_104"/><input type="hidden" name="$ACTION_104:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_104:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k1ee0bb05a1833ebbdaad57c699edd629"/><input type="hidden" name="item" value="10"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="undo-swap"/><button class="btn secondary">Undo swap</button></form></div></section><section><div class="section-head"><h2>Bench <span class="muted">· swap options</span></h2><a class="small" href="03-dashboard-story-pool.html">Find more in the story pool →</a></div><p class="muted small">The next-best stories. Edit their commentary here, then use “Swap” on a lineup story to bring one in.</p><form class="add-link" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_105"/><input type="hidden" name="$ACTION_105:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_105:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k3d3b0ff7734f26cf58ccfe72abd67b76"/><input type="hidden" name="op" value="add-link"/><div class="inline-form"><input type="url" placeholder="https://… a story the feeds missed" required="" aria-label="Story link" name="url"/><input type="text" placeholder="Headline (if paywalled)" aria-label="Headline" name="headline"/><button class="btn secondary">Add story</button></div><p class="muted small">Saw something the feeds missed? It&#x27;s scored, gets a draft commentary in your voice, and lands here on the bench.</p></form><details class="card bench"><summary><span class="chip">Policy &amp; Regulation</span><span class="num">75</span><span class="bench-title">IRDAI may roll out insurance commission caps from January, overhaul distribution rules</span></summary><p class="muted small"><a href="https://inc42.com/buzz/irdai-mulls-introducing-insurance-commission-caps-from-january-2027/" target="_blank" rel="noreferrer">Read the source</a> · via <!-- -->Inc42<!-- --> · <!-- -->Proposed commission caps could disrupt unit economics for digital insurance distributors like PolicyBazaar.</p><div class="editor"><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_106"/><input type="hidden" name="$ACTION_106:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_106:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kc807a420cd88183cc2d23d7889195a19"/><input type="hidden" name="op" value="commentary"/><input type="hidden" name="item" value="13"/><input type="hidden" name="issue" value="1"/><textarea name="commentary" rows="7" aria-label="Commentary" class="commentary">Capping distributor payouts strikes at the core revenue engine of online insurance platforms. Web aggregators built their customer acquisition funnels on high upfront insurer commissions, which cannot survive a regulatory clampdown on distribution fees. If broker remuneration is compressed, these platforms will have to rely on genuine organic renewals rather than buying traffic through paid marketing channels.</textarea><div class="editor-bar"><span class="meter ">57<!-- --> words · <!-- -->3<!-- --> sentences</span><span class="ok small">✓ passes the voice-guide checks</span><span class="editor-actions"><button type="button" class="btn ghost" title="Restore the first AI draft">Original draft</button><button type="button" class="btn ghost">Rewrite with AI</button><button class="btn primary" disabled="">Save</button></span></div></form></div></details><details class="card bench"><summary><span class="chip">Commerce, Quick Commerce &amp; D2C</span><span class="num">74</span><span class="bench-title">Quick commerce fuels festive credit demand as brands seek working capital</span></summary><p class="muted small"><a href="https://news.google.com/rss/articles/CBMi2wFBVV95cUxNdFJtVnZKdG1fWFRRVTNaU2VXa09uWFQ0bzQwZjB6QkRnWFNYcUhyd0hKdElpLWJQZXN1bXF3WTNlMjlpYnpUR3hiZG9xcmk5eHU2MFVCSFFTbVFrWnBtTDNnbGY3LW9QZ1NSZUtEX0JxSmhYWGlxaXFHN3htUkxxWjh5ZzBDM1doOHlNT3NEY3ZSODNwSXZzZUtPa0ZSakNTN0hJM1JMLTNXcXJUdm9VeVV4ZGdEWmhJblFyTVNBWGZGTGZuSlA5clpXZDRYUkRYVEVNWGpkRHk0WHPSAeABQVVfeXFMTnN2SXROSllUUXdwWDJYb3FVT3dvNE5CMXpuTnB1WnlvdGFBdnk2Z29HQnl4b3VnM1NhVmYxSWZra2lZbHJRNWx4NkRRWEdfYmVrb3E3bmN4b0o3eUxtdnpnZE9RNHctbUV3dzZ0bkdERWc3LVVBWjNVN0lhVEFyd2EwdjdSamliQ2VPcHhhUFRmZndiTHVKeTU3T3N2bTh2OGNwSUsyWTZFQnNLOXRoRFdSbFFmQ1ZHaDQ1RGNkQjM0dFluTUt5WEF3MWhiUXVXZVpLNW0zMnI5SmN2Rzhub1A?oc=5" target="_blank" rel="noreferrer">Read the source</a> · via <!-- -->The Economic Times<!-- --> · <!-- -->D2C brands resort to debt to feed the ruthless inventory and marketing demands of 10-minute delivery.</p><div class="editor"><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_107"/><input type="hidden" name="$ACTION_107:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_107:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k4ecf5e57a276dc2da024d9dbb164d708"/><input type="hidden" name="op" value="commentary"/><input type="hidden" name="item" value="14"/><input type="hidden" name="issue" value="1"/><textarea name="commentary" rows="5" aria-label="Commentary" class="commentary">Ten-minute fulfillment turns working capital into an expensive treadmill for young consumer brands. Meeting unpredictable surge demand forces direct-to-consumer businesses into festive debt cycles just to stock micro-warehouses. Fast delivery creates volume, but working capital lenders capture the real yield.</textarea><div class="editor-bar"><span class="meter ">40<!-- --> words · <!-- -->3<!-- --> sentences</span><span class="ok small">✓ passes the voice-guide checks</span><span class="editor-actions"><button type="button" class="btn ghost">Rewrite with AI</button><button class="btn primary" disabled="">Save</button></span></div></form></div></details><details class="card bench"><summary><span class="chip">Fintech</span><span class="num">74</span><span class="bench-title">RBI Removes Paytm Payments Bank From Scheduled Banks. Was Paytm’s Biggest Mistake Trying To Become A Bank, Or Did Its Ambitions Grow Faster Than Its Systems And Controls?</span></summary><p class="muted small"><a href="https://www.thehindu.com/business/rbi-removes-paytm-payments-bank-from-the-official-list-of-scheduled-banks/article71558512.ece" target="_blank" rel="noreferrer">Read the source</a> · via <!-- -->The Hindu Business<!-- --> · <!-- -->Formal scheduled bank removal shuts the door on PPBL, ending an era of aggressive bank-licence pursuit.</p><div class="editor"><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_108"/><input type="hidden" name="$ACTION_108:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_108:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k587e0b98c4bfe6617d1d5c3a25640457"/><input type="hidden" name="op" value="commentary"/><input type="hidden" name="item" value="15"/><input type="hidden" name="issue" value="1"/><textarea name="commentary" rows="7" aria-label="Commentary" class="commentary">Stripping Paytm Payments Bank from the second schedule formally closes the legal door on any recovery for the entity. While the licence cancellation in April had already ended operations, this official degazetting strips away remaining interbank privileges and ends its status as an institutional lender partner. It serves as a permanent reminder to fintech founders that central bank sanctions are final, not negotiable staging grounds.</textarea><div class="editor-bar"><span class="meter ">65<!-- --> words · <!-- -->3<!-- --> sentences</span><span class="ok small">✓ passes the voice-guide checks</span><span class="editor-actions"><button type="button" class="btn ghost" title="Restore the first AI draft">Original draft</button><button type="button" class="btn ghost">Rewrite with AI</button><button class="btn primary" disabled="">Save</button></span></div></form></div></details><details class="card bench"><summary><span class="chip">AI &amp; Deeptech</span><span class="num">73</span><span class="bench-title">Tessolve raises $75 million from US-based Vector Line Capital</span></summary><p class="muted small"><a href="https://economictimes.indiatimes.com/tech/funding/tessolve-raises-75-million-from-us-based-vector-line-capital/articleshow/134868349.cms" target="_blank" rel="noreferrer">Read the source</a> · via <!-- -->ET Startups<!-- --> · <!-- -->A rare, large strategic check in the semiconductor space, signaling investor confidence in India&#x27;s chip supply chain.</p><div class="editor"><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_109"/><input type="hidden" name="$ACTION_109:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_109:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k452b9e37a36be7b8c79cbab0a81fc5f6"/><input type="hidden" name="op" value="commentary"/><input type="hidden" name="item" value="16"/><input type="hidden" name="issue" value="1"/><textarea name="commentary" rows="5" aria-label="Commentary" class="commentary">Specialist global checks into domestic chip engineering show where real semiconductor value actually sits today. Backing testing and design services proves that technical capability exists outside fabrication plants. Testing and verification talent remains India&#x27;s most defensible wedge in the hardware supply chain.</textarea><div class="editor-bar"><span class="meter ">42<!-- --> words · <!-- -->3<!-- --> sentences</span><span class="ok small">✓ passes the voice-guide checks</span><span class="editor-actions"><button type="button" class="btn ghost">Rewrite with AI</button><button class="btn primary" disabled="">Save</button></span></div></form></div></details><details class="card bench"><summary><span class="chip">IPOs &amp; Public Markets</span><span class="num">69</span><span class="bench-title">Zetwerk eyes ₹27,000 crore IPO valuation as over 30 investors weigh anchor book</span></summary><p class="muted small"><a href="https://www.livemint.com/companies/news/zetwerk-eyes-27-000-crore-ipo-valuation-as-over-30-investors-weigh-anchor-book-11791532870989.html" target="_blank" rel="noreferrer">Read the source</a> · via <!-- -->Mint Companies<!-- --> · <!-- -->Zetwerk&#x27;s massive $3.2B valuation target for IPO marks a coming-of-age for India&#x27;s B2B manufacturing tech.</p><div class="editor"><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_110"/><input type="hidden" name="$ACTION_110:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_110:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k133225e61ccb03b62e76b7533687dee7"/><input type="hidden" name="op" value="commentary"/><input type="hidden" name="item" value="17"/><input type="hidden" name="issue" value="1"/><textarea name="commentary" rows="7" aria-label="Commentary" class="commentary">Assembling marquee anchor names like ADIA and Norway&#x27;s central bank creates great optics, but commanding a ₹27,000 Cr valuation requires convincing public markets that contract manufacturing deserves tech-grade multiples. Aggregating factory capacity remains an operationally heavy, margin-thin business compared to pure software. Dalal Street will scrutinise operating margins and cash conversion far more ruthlessly than private crossover funds ever did.</textarea><div class="editor-bar"><span class="meter ">60<!-- --> words · <!-- -->3<!-- --> sentences</span><span class="ok small">✓ passes the voice-guide checks</span><span class="editor-actions"><button type="button" class="btn ghost" title="Restore the first AI draft">Original draft</button><button type="button" class="btn ghost">Rewrite with AI</button><button class="btn primary" disabled="">Save</button></span></div></form></div></details><details class="card bench"><summary><span class="chip">People, Leadership &amp; Governance</span><span class="num">72</span><span class="bench-title">Google Cloud names Amit Kumar interim India head after Sreedharan exit</span></summary><p class="muted small"><a href="https://news.google.com/rss/articles/CBMiqAFBVV95cUxNbG1HVGE4ZlVZdkZWVFpoYUczNmR5eFNIclB4VkdSME9KdzgzT2FkLUlIcVpQNTdlUkZDYUFqSlpHT2NtUk9tbDdUcUk5bzdMMXQzajlkelM4aEtqaWNOYmZtOEJyRE5QY3ZDcXY5WHI3WFFiZmdaOEhWS3dlSlpGNEVIdjltel82bHE5LU1lZGZCTHl1Q2J4emJ2YTVuNTFEYkV4R2N2Z0nSAagBQVVfeXFMTWxtR1RhOGZVWXZGVlRaaGFHMzZkeXhTSHJQeFZHUjBPSnc4M09hZC1JSHFaUDU3ZVJGQ2FBakpaR09jbVJPbWw3VHFJOW83TDF0M2o5ZHpTOGhLamljTmJmbThCckROUGN2Q3F2OVhyN1hRYmZnWjhIVkt3ZUpaRjRFSHY5bXpfNmxxOS1NZWRmQkx5dUNieHpidmE1bjUxRGJFeEdjdmdJ?oc=5" target="_blank" rel="noreferrer">Read the source</a> · via <!-- -->Entrackr<!-- --> · <!-- -->Sreedharan departs Google Cloud India leadership to steer commercial operations at Sarvam AI.</p><div class="editor"><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_111"/><input type="hidden" name="$ACTION_111:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_111:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k63d21d37035009d0ca226837cd4ce3df"/><input type="hidden" name="op" value="commentary"/><input type="hidden" name="item" value="18"/><input type="hidden" name="issue" value="1"/><textarea name="commentary" rows="6" aria-label="Commentary" class="commentary">Leadership churn at the top of an enterprise cloud provider directly impacts its ability to lock in major domestic accounts. An interim appointment suggests an abrupt transition, leaving Amit Kumar to steady enterprise sales momentum while competitors push hard for Indian corporate workloads. The real challenge will be defending market share until a permanent country head takes charge.</textarea><div class="editor-bar"><span class="meter ">58<!-- --> words · <!-- -->3<!-- --> sentences</span><span class="ok small">✓ passes the voice-guide checks</span><span class="editor-actions"><button type="button" class="btn ghost" title="Restore the first AI draft">Original draft</button><button type="button" class="btn ghost">Rewrite with AI</button><button class="btn primary" disabled="">Save</button></span></div></form></div></details><details class="card bench"><summary><span class="chip">Mobility, EV &amp; Climate</span><span class="num">70</span><span class="bench-title">Ultraviolette and the quixotic allure of building an EV</span></summary><p class="muted small"><a href="https://news.google.com/rss/articles/CBMimgFBVV95cUxNSGJWMUpuZm94Ymg2bzNSdjllWkk5aUsyUVI4OHAxTi1mVGFlaU5ZTWlCV1NWMGdoYnJEaktLLUxwWG1HVVBmekpLVkZDYk1PSnhmeFkwY2ZGU1JwYy1iRGxNUm11QTdXSlFuMWFTVm1meTVGWnEyYlJDalk2cTZBLUtaQkVET25XZjU2dWYtRUg2cGhVbHlYZ0hn?oc=5" target="_blank" rel="noreferrer">Read the source</a> · via <!-- -->The Morning Context<!-- --> · <!-- -->High-end premium EV manufacturing faces severe capital intensity and market size challenges in India.</p><div class="editor"><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_112"/><input type="hidden" name="$ACTION_112:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_112:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kb52851ef549b42271dea25753abbeedf"/><input type="hidden" name="op" value="commentary"/><input type="hidden" name="item" value="19"/><input type="hidden" name="issue" value="1"/><textarea name="commentary" rows="7" aria-label="Commentary" class="commentary">Building high-performance electric motorcycles in India means chasing a razor-thin consumer segment with steep capital requirements. Ultraviolette chose the premium performance wedge over mass-market scooters, but niche volumes make it difficult to amortise bespoke tooling and battery development costs. Until the domestic market develops an appetite for expensive electric two-wheelers, scaling beyond enthusiast circles will remain an uphill fight.</textarea><div class="editor-bar"><span class="meter ">59<!-- --> words · <!-- -->3<!-- --> sentences</span><span class="ok small">✓ passes the voice-guide checks</span><span class="editor-actions"><button type="button" class="btn ghost" title="Restore the first AI draft">Original draft</button><button type="button" class="btn ghost">Rewrite with AI</button><button class="btn primary" disabled="">Save</button></span></div></form></div></details><details class="card bench"><summary><span class="chip">Fintech</span><span class="num">68</span><span class="bench-title">Paytm Shares Fall: Worst Day Since February Amid UPI Fee Delay</span></summary><p class="muted small"><a href="https://news.google.com/rss/articles/CBMi1gFBVV95cUxOYnctMndvVlEwOFZYYThqZXdjVlBwTWZaNWFIcDJZRVVOQmhKWkd4QzJsc0Q4RS1Xc1d2ZmtSc1FwSUcyNVM0aGpzNjYzMDUzdDRZOFJNVjZTQ2V2YWV2bW00SDM2OGxtZW50Vk43TG1nR1BVeEZCY1NLMUpwb3hpY3VhMG16Q1RQNGs2TFBiT2pQbGlTSUxiRHVoWHlTaUowZ3pORWg2WV8zS1BYZkZQaGYtMXJiakZVczZQQUMtQVFWRTR3eTU3N3Q0bDhjM09rQXh3eVF3?oc=5" target="_blank" rel="noreferrer">Read the source</a> · via <!-- -->Kalkine India<!-- --> · <!-- -->UPI MDR deferral dashes market hopes for near-term payment monetisation, sparking a heavy selloff.</p><div class="editor"><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_113"/><input type="hidden" name="$ACTION_113:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_113:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kb8ef22c60d6b773fb6cf2ca668e4e34e"/><input type="hidden" name="op" value="commentary"/><input type="hidden" name="item" value="29"/><input type="hidden" name="issue" value="1"/><textarea name="commentary" rows="5" aria-label="Commentary" class="commentary">Paytm&#x27;s worst day since February had little to do with Paytm. The market is pricing a simple fact: without a UPI fee, India&#x27;s biggest payment apps are running a public utility on private balance sheets. Every month the MDR decision slips, that subsidy gets more expensive to carry.</textarea><div class="editor-bar"><span class="meter ">48<!-- --> words · <!-- -->3<!-- --> sentences</span><span class="ok small">✓ passes the voice-guide checks</span><span class="editor-actions"><button type="button" class="btn ghost">Rewrite with AI</button><button class="btn primary" disabled="">Save</button></span></div></form></div></details><details class="card bench"><summary><span class="chip">IPOs &amp; Public Markets</span><span class="num">74</span><span class="bench-title">Tonbo Imaging’s Rs 852 Cr IPO offers investor exit</span></summary><p class="muted small"><a href="https://yourstory.com/2026/10/tonbo-imagings-rs-852-crore-ipo-offers-investor-exit" target="_blank" rel="noreferrer">Read the source</a> · via <!-- -->YourStory<!-- --> · <!-- -->Tonbo&#x27;s Rs 852 Cr IPO proves deeptech and defense startups can deliver public market exits for Indian VCs.</p><div class="editor"><form action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_114"/><input type="hidden" name="$ACTION_114:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_114:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k03a8dbed0a74701c65bf55221487db8c"/><input type="hidden" name="op" value="commentary"/><input type="hidden" name="item" value="50"/><input type="hidden" name="issue" value="1"/><textarea name="commentary" rows="6" aria-label="Commentary" class="commentary">Indian VCs have spent years treating defence and deeptech as illiquid bets with uncertain finish lines. An ₹852 Cr IPO rewrites that playbook, showing hardware and defence startups can deliver real public market liquidity to early backers. Watch whether this exit clears the path for more domestic funds to underwrite deeptech.</textarea><div class="editor-bar"><span class="meter ">51<!-- --> words · <!-- -->3<!-- --> sentences</span><span class="ok small">✓ passes the voice-guide checks</span><span class="editor-actions"><button type="button" class="btn ghost">Rewrite with AI</button><button class="btn primary" disabled="">Save</button></span></div></form></div></details></section></div><aside class="issue-side"><section class="panel"><h3>Send</h3><ul class="checklist"><li class="todo"><span aria-hidden="true">○</span><span>Every story approved<span class="muted small"> · <!-- -->1 pending</span></span></li><li class="ok"><span aria-hidden="true">✓</span><span>Lineup rules (8–10 stories, 3+ topics, ≤3 per topic, 1 per company)<span class="muted small"> · <!-- -->all met</span></span></li><li class="ok"><span aria-hidden="true">✓</span><span>Every story has commentary<span class="muted small"> · <!-- -->yes</span></span></li><li class="ok"><span aria-hidden="true">✓</span><span>Subject line and opening written</span></li></ul><div class="confirm"><button class="btn primary big" disabled="">Confirm final draft</button><span class="muted small">Finish the checklist above first.</span></div><p class="warn small">⚠ There are no active subscribers yet. <a href="04-dashboard-subscribers.html">Add some</a> before Thursday.</p><p class="muted small">Nothing is emailed until you confirm, here or in Telegram.</p><div class="side-links"><a href="/admin/preview" target="_blank" class="btn secondary">Preview email</a><form class="action" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_115"/><input type="hidden" name="$ACTION_115:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_115:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="kf41cb979986cc27158ff7b5767da2be4"/><input type="hidden" name="issue" value="1"/><input type="hidden" name="op" value="test-email"/><button class="btn secondary">Send test to me</button></form></div></section><section class="panel"><h3>Subject &amp; opening</h3><form class="stack" action="" encType="multipart/form-data" method="POST"><input type="hidden" name="$ACTION_REF_116"/><input type="hidden" name="$ACTION_116:0" value="{&quot;id&quot;:&quot;601d140de827fa6cada7bf392daff684596e229453&quot;,&quot;bound&quot;:&quot;$@1&quot;}"/><input type="hidden" name="$ACTION_116:1" value="[null]"/><input type="hidden" name="$ACTION_KEY" value="k7884d3f5e5feda8298caa83c7fee23af"/><input type="hidden" name="op" value="issue-text"/><input type="hidden" name="issue" value="1"/><label>Subject line<input maxLength="200" name="subject" value="The Dispatch #105 — Sovereignty debates meet public market realities"/></label><label>Opening (2–3 sentences)<textarea name="intro" rows="3" class="commentary">Indian tech is discovering that self-reliance is messy, whether that means wrestling over data sovereignty, chip packaging, or local public listings. From global SaaS contracts tested by geopolitics to founders swapping venture capital for Dalal Street scrutiny, the rules of engagement are changing. Growth at all costs is giving way to strategic control.</textarea></label><div><button class="btn secondary">Save subject &amp; opening</button></div></form></section><section class="panel muted small"><h3>Timeline</h3><ul class="timeline"><li>Drafted · <!-- -->Mon, 12 Oct, 11:52 AM IST</li><li>Sent to Telegram · <!-- -->Mon, 12 Oct, 11:58 AM IST</li><li>Reminder · <!-- -->—</li><li>Confirmed · <!-- -->—</li><li>Scheduled send · <!-- -->Thu, 15 Oct, 8:00 AM IST</li><li>Emailed · <!-- -->—</li></ul></section><section class="panel"><h3>Not happy with this draft?</h3><p class="muted small">Have the engine re-analyse every story this week and draft the issue again from scratch.</p><div class="stack"><button class="btn danger">Start over with a fresh draft</button></div></section></aside></div></main><!--$--><!--/$--></body></html>
