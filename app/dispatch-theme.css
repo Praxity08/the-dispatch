@@ -669,7 +669,7 @@ main.narrow.login h1 { margin: 2px 0 18px; }
   75% { transform: translateX(calc(var(--sx) * -1)) rotate(calc(var(--r) - 30deg)); }
 }
 /* The dashboard sits above the background layer. */
-.dash { position: relative; z-index: 1; }
+.dash, main.login { position: relative; z-index: 1; }
 @media (prefers-reduced-motion: reduce) { .dsp-f, .dsp-f > span { animation: none; } }
 /* Dark: follows the light/dark switch, and the system setting until one is picked. */
 :root[data-theme="dark"] .dsp-bg::before { background: #6B3F26; opacity: .35; }

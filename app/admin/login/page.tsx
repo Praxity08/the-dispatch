@@ -1,4 +1,5 @@
 import { samplePasswords } from "@/lib/admin";
+import { FloatingBackground } from "../../floating-background";
 import { LoginForm } from "./login-form";
 
 export const dynamic = "force-dynamic";
@@ -6,6 +7,8 @@ export const dynamic = "force-dynamic";
 export default function LoginPage() {
   const sample = samplePasswords();
   return (
+    <>
+    <FloatingBackground />
     <main className="narrow login">
       <a href="/" className="login-logo">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -20,5 +23,6 @@ export default function LoginPage() {
         </p>
       )}
     </main>
+    </>
   );
 }
