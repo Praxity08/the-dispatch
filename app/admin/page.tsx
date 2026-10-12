@@ -357,6 +357,7 @@ async function IssueTab({ issue }: { issue: EditorIssue | undefined }) {
               <p className="muted small">Nothing is emailed until you confirm, here or in Telegram.</p>
             </>
           )}
+          <DeliveryNote subscribers={subscribers} />
           {issue.status === "confirmed" && (
             <>
               <p>✅ Confirmed {fmt(issue.confirmed_at)}.</p>
@@ -1219,5 +1220,30 @@ function EmailDeliveryPanel() {
         <p className="muted small">Bounce and complaint webhook: <code>{appUrl()}/api/webhooks/resend</code> (events: email.bounced, email.complained).</p>
       )}
     </section>
+  );
+}
+
+/** Which service will send this issue, and the rule of thumb for when to move to Resend. */
+const GMAIL_COMFORT = 500;
+function DeliveryNote({ subscribers }: { subscribers: number }) {
+  const provider = emailProvider();
+  const nearLimit = provider === "gmail" && subscribers >= GMAIL_COMFORT * 0.9;
+  return (
+    <div className={`delivery-note${nearLimit ? " warn" : ""}`}>
+      <p className="delivery-now">
+        Sends via <b>{PROVIDER_INFO[provider].label}</b> · {subscribers} active subscriber{subscribers === 1 ? "" : "s"}
+      </p>
+      <ul className="delivery-guide">
+        <li className={provider === "gmail" ? "on" : ""}><b>Under {GMAIL_COMFORT}</b> · Gmail (free, set up)</li>
+        <li className={provider === "resend" ? "on" : ""}><b>{GMAIL_COMFORT}+</b> · Resend: needs your own domain and the Pro plan ($20/month)</li>
+      </ul>
+      {nearLimit && (
+        <p className="small">
+          {subscribers >= GMAIL_COMFORT ? "Your list is past" : "Your list is close to"} Gmail&apos;s limit of about {GMAIL_COMFORT} a day; the rest would wait for the next day.{" "}
+          <Link href="/admin?tab=pipeline">Switch to Resend</Link>
+        </p>
+      )}
+      {!nearLimit && <Link href="/admin?tab=pipeline" className="small">How to switch</Link>}
+    </div>
   );
 }

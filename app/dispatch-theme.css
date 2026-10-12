@@ -690,3 +690,16 @@ main.narrow.login h1 { margin: 2px 0 18px; }
 .delivery-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
 .delivery-row p { margin: 8px 0 0; }
 .delivery-row code, .email-delivery code { font-size: 12px; background: var(--surface-3); border-radius: 6px; padding: 1px 6px; overflow-wrap: anywhere; }
+
+/* ---- Delivery note in the Send panel ---- */
+.delivery-note { margin-top: 14px; padding: 12px 14px; border-radius: 18px; background: var(--bg); display: grid; gap: 6px; font-size: 13px; }
+.delivery-note p { margin: 0; }
+.delivery-now { color: var(--text); }
+.delivery-guide { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; color: var(--muted); font-size: 12.5px; }
+.delivery-guide li { padding-left: 14px; position: relative; }
+.delivery-guide li::before { content: ""; position: absolute; left: 0; top: 7px; width: 6px; height: 6px; border-radius: 50%; background: var(--faint); }
+.delivery-guide li.on { color: var(--text); }
+.delivery-guide li.on::before { background: var(--green-dot); }
+.delivery-note.warn { background: var(--butter-bg); color: var(--butter); }
+.delivery-note.warn .delivery-guide, .delivery-note.warn .delivery-now { color: inherit; }
+.delivery-note a { color: inherit; justify-self: start; }
