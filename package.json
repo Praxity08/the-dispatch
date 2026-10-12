@@ -1,0 +1,37 @@
+{
+  "name": "the-dispatch",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Newsletter Intelligence Engine for The Dispatch",
+  "scripts": {
+    "dev": "sh scripts/with-secrets.sh next dev",
+    "build": "next build",
+    "start": "next start",
+    "job": "sh scripts/with-secrets.sh tsx --env-file=.env.local scripts/job.ts",
+    "typecheck": "tsc --noEmit",
+    "telegram:poll": "sh scripts/with-secrets.sh tsx --env-file=.env.local scripts/telegram-poll.ts",
+    "e2e": "sh scripts/with-secrets.sh tsx --env-file=.env.local scripts/e2e.ts",
+    "e2e:send": "tsx --env-file=.env.local scripts/e2e-send.ts",
+    "test": "tsx scripts/check-rubric.ts && tsx scripts/check-bounces.mts && tsx scripts/check-rubric-rules.ts && tsx scripts/check-pins.ts"
+  },
+  "dependencies": {
+    "@google/genai": "^2.28.0",
+    "@neondatabase/serverless": "^1.2.0",
+    "imapflow": "^2.4.0",
+    "mailparser": "^3.9.38",
+    "next": "^16.4.0",
+    "nodemailer": "^10.1.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "rss-parser": "^3.13.0"
+  },
+  "devDependencies": {
+    "@types/mailparser": "^3.9.0",
+    "@types/node": "^24",
+    "@types/nodemailer": "^8.0.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19",
+    "tsx": "^4.23.15",
+    "typescript": "^5"
+  }
+}

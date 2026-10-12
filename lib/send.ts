@@ -1,0 +1,137 @@
+// Thursday send. The one hard rule: an issue is only ever emailed to subscribers if Shreya confirmed it
+// in Telegram (status 'confirmed'). There is no other path to 'sending'.
+import { logEvent, query } from "./db";
+import { dryRun, emailConfigured, loadEmailIssue, renderHtml, renderText, sendEmail } from "./email";
+import { appUrl, requireEnv } from "./env";
+import { oneClickUnsubscribeUrl, unsubscribePageUrl } from "./subscribers";
+import { esc, sendHtml } from "./telegram";
+import { formatIst, sendTimeFor, weekStart } from "./week";
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+const BATCH = 25;
+const GAP_MS = 250; // gentle pacing for Gmail
+
+type IssueRow = { id: number; issue_number: number; week_start: string; status: string };
+
+export function issueWebUrl(issueId: number): string {
+  return `${appUrl()}/issues/${issueId}`;
+}
+
+/**
+ * Sends the week's confirmed issue to every active subscriber. Resumable and idempotent:
+ * one `deliveries` row per (issue, subscriber), so re-runs never email anyone twice.
+ */
+export async function sendIssue({ budgetMs = Infinity, week = weekStart(), now = new Date() } = {}) {
+  const deadline = Date.now() + budgetMs;
+  const [issue] = await query<IssueRow>("select id, issue_number, week_start::text, status from issues where week_start = $1", [week]);
+  if (!issue) return { sent: false, complete: true, reason: "no issue this week" };
+  if (issue.status === "sent") return { sent: false, complete: true, reason: "already sent" };
+  if (issue.status !== "confirmed" && issue.status !== "sending") {
+    await logEvent("send_refused", { status: issue.status }, issue.id);
+    return { sent: false, complete: true, reason: `not confirmed by Shreya (status: ${issue.status})` };
+  }
+  if (issue.status === "confirmed" && now < sendTimeFor(week)) {
+    return { sent: false, complete: true, reason: `scheduled for ${formatIst(sendTimeFor(week))}` };
+  }
+  if (!emailConfigured()) return { sent: false, complete: true, reason: "Gmail credentials are not configured" };
+
+  // Claim: confirmed → sending happens exactly once.
+  if (issue.status === "confirmed") {
+    const [claimed] = await query("update issues set status = 'sending' where id = $1 and status = 'confirmed' returning id", [issue.id]);
+    if (!claimed) return { sent: false, complete: false, reason: "another run claimed this issue" };
+    const content = await loadEmailIssue(issue.id);
+    const web = renderHtml(content, { unsubscribeUrl: `${appUrl()}/#subscribe` });
+    await query("update issues set html = $2 where id = $1", [issue.id, web]);
+    await logEvent("sending_started", { stories: content.stories.length }, issue.id);
+  }
+
+  // Everyone active right now gets a delivery row (no-op for rows that already exist).
+  await query(
+    `insert into deliveries (issue_id, subscriber_id) select $1, id from subscribers where status = 'active'
+     on conflict (issue_id, subscriber_id) do nothing`,
+    [issue.id],
+  );
+
+  const content = await loadEmailIssue(issue.id);
+  const webUrl = issueWebUrl(issue.id);
+  let sent = 0;
+  let failed = 0;
+  let quotaHit = false;
+
+  while (Date.now() < deadline && !quotaHit) {
+    const batch = await query<{ delivery_id: number; subscriber_id: number; email: string; status: string }>(
+      `select d.id as delivery_id, s.id as subscriber_id, s.email, s.status
+       from deliveries d join subscribers s on s.id = d.subscriber_id
+       where d.issue_id = $1 and d.status = 'queued' order by d.id limit $2`,
+      [issue.id, BATCH],
+    );
+    if (batch.length === 0) break;
+
+    for (const d of batch) {
+      if (Date.now() >= deadline) break;
+      // Someone who unsubscribed or bounced after the send started is skipped.
+      if (d.status !== "active") {
+        await query("update deliveries set status = 'failed', error = $2 where id = $1", [d.delivery_id, `subscriber ${d.status}`]);
+        continue;
+      }
+      try {
+        const links = { unsubscribeUrl: unsubscribePageUrl(Number(d.subscriber_id)), webUrl };
+        const messageId = await sendEmail({
+          to: d.email,
+          subject: content.subject,
+          html: renderHtml(content, links),
+          text: renderText(content, links),
+          oneClickUrl: oneClickUnsubscribeUrl(Number(d.subscriber_id)),
+        });
+        await query("update deliveries set status = 'sent', message_id = $2, sent_at = now() where id = $1", [d.delivery_id, messageId]);
+        sent++;
+      } catch (err) {
+        const message = err instanceof Error ? err.message : String(err);
+        // Gmail's daily sending limit: stop and leave the rest queued for the next run.
+        if (/5\.4\.5|daily user sending limit|quota/i.test(message)) {
+          quotaHit = true;
+          break;
+        }
+        await query("update deliveries set status = 'failed', error = $2 where id = $1", [d.delivery_id, message.slice(0, 500)]);
+        failed++;
+      }
+      await sleep(GAP_MS);
+    }
+  }
+
+  const [{ queued }] = await query<{ queued: number }>(
+    "select count(*)::int as queued from deliveries where issue_id = $1 and status = 'queued'",
+    [issue.id],
+  );
+  if (queued === 0) {
+    const [done] = await query("update issues set status = 'sent', sent_at = now() where id = $1 and status = 'sending' returning id", [issue.id]);
+    if (done) {
+      const [totals] = await query<{ sent: number; failed: number }>(
+        `select count(*) filter (where status = 'sent')::int as sent, count(*) filter (where status = 'failed')::int as failed
+         from deliveries where issue_id = $1`,
+        [issue.id],
+      );
+      await logEvent("sent", { ...totals, dryRun: dryRun() }, issue.id);
+      if (!dryRun()) await sendHtml(
+        `✅ <b>The Dispatch #${issue.issue_number} is out.</b> Delivered to ${totals.sent} subscribers${totals.failed ? `, ${totals.failed} failed` : ""}.\n<a href="${esc(webUrl)}">View it in the browser</a>`,
+      ).catch(() => {});
+    }
+  } else if (quotaHit) {
+    await sendHtml(`⚠️ Gmail's daily sending limit was reached for #${issue.issue_number}. ${queued} emails are queued and will go out on the next run.`).catch(() => {});
+  }
+  return { sent: true, complete: queued === 0, issue: issue.id, sentNow: sent, failedNow: failed, queued, quotaHit };
+}
+
+/** Sends the current draft to the newsletter's own inbox only. Never touches subscribers or the issue status. */
+export async function sendTestEmail(issueId: number, to = requireEnv("GMAIL_USER")) {
+  const content = await loadEmailIssue(issueId);
+  const links = { unsubscribeUrl: `${appUrl()}/unsubscribe?test=1`, webUrl: `${appUrl()}/admin/preview` };
+  const messageId = await sendEmail({
+    to,
+    subject: `[TEST] ${content.subject}`,
+    html: renderHtml(content, links),
+    text: renderText(content, links),
+  });
+  await logEvent("test_email_sent", { to }, issueId);
+  return { to, messageId };
+}

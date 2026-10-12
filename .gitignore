@@ -1,0 +1,12 @@
+.env*
+!.env.example
+node_modules/
+.next/
+.vercel/
+.DS_Store
+.claude/
+tsconfig.tsbuildinfo
+# design handoff bundles (large screenshots; kept locally)
+design-handoff/
+design-handoff 2/
+design-handoff.zip

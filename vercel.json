@@ -1,0 +1,19 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "regions": ["sin1"],
+  "crons": [
+    { "path": "/api/cron/ingest", "schedule": "30 0 * * 1-3" },
+    { "path": "/api/cron/early-look", "schedule": "30 13 * * 1,2" },
+    { "path": "/api/cron/draft?run=1", "schedule": "30 8 * * 3" },
+    { "path": "/api/cron/draft?run=2", "schedule": "30 9 * * 3" },
+    { "path": "/api/cron/draft?run=3", "schedule": "30 10 * * 3" },
+    { "path": "/api/cron/deliver?run=1", "schedule": "30 12 * * 3" },
+    { "path": "/api/cron/deliver?run=2", "schedule": "30 13 * * 3" },
+    { "path": "/api/cron/remind", "schedule": "30 16 * * 3" },
+    { "path": "/api/cron/send?run=1", "schedule": "30 2 * * 4" },
+    { "path": "/api/cron/send?run=2", "schedule": "30 3 * * 4" },
+    { "path": "/api/cron/send?run=3", "schedule": "30 4 * * 4" },
+    { "path": "/api/cron/bounces", "schedule": "30 6 * * *" },
+    { "path": "/api/cron/bounces?run=2", "schedule": "30 14 * * *" }
+  ]
+}
