@@ -1195,9 +1195,16 @@ async function PipelineTab() {
         )}
       </section>
       <EmailDeliveryPanel />
-      <section className="panel">
-        <h2>Sources</h2>
-        <div className="table-wrap">
+      <details className="panel collapsible">
+        <summary>
+          <h2>Sources</h2>
+          <span className="collapsible-meta">
+            {sources.length} sources · {sources.filter((x) => x.active).length} active
+            {sources.some((x) => x.last_error) ? <span className="chip bad">{sources.filter((x) => x.last_error).length} with errors</span> : " · no errors"}
+          </span>
+          <span className="chevron" aria-hidden="true" />
+        </summary>
+        <div className="table-wrap collapsible-body">
           <table>
             <thead><tr><th>Source</th><th>Type</th><th>Last fetch</th><th>Items</th><th></th></tr></thead>
             <tbody>
@@ -1218,10 +1225,16 @@ async function PipelineTab() {
             </tbody>
           </table>
         </div>
-      </section>
-      <section className="panel">
-        <h2>Activity</h2>
-        <div className="table-wrap">
+      </details>
+      <details className="panel collapsible">
+        <summary>
+          <h2>Activity</h2>
+          <span className="collapsible-meta">
+            {events.length ? <>Last {events.length} events · latest {fmt(events[0].created_at)}</> : "No activity yet"}
+          </span>
+          <span className="chevron" aria-hidden="true" />
+        </summary>
+        <div className="table-wrap collapsible-body">
           <table>
             <tbody>
               {events.map((e, i) => (
@@ -1230,7 +1243,7 @@ async function PipelineTab() {
             </tbody>
           </table>
         </div>
-      </section>
+      </details>
     </>
   );
 }

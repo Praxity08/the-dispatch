@@ -863,3 +863,17 @@ main.narrow.login h1 { margin: 2px 0 18px; }
 .hero-intro { grid-column: 1; display: grid; gap: 14px; justify-items: start; }
 .hero-intro .statement { font-size: clamp(22px, 2.3vw, 30px); line-height: 1.28; margin: 0; }
 .hero-card > .flow { grid-row: auto; align-self: center; }
+
+/* ---- Collapsible panels (Pipeline: Sources, Activity) ---- */
+details.collapsible { padding: 0; }
+details.collapsible > summary { list-style: none; cursor: pointer; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; padding: 20px 22px; border-radius: 30px; }
+details.collapsible > summary::-webkit-details-marker { display: none; }
+details.collapsible > summary:hover { background: var(--surface-2); }
+details.collapsible > summary h2 { margin: 0; font-size: 21px; }
+.collapsible-meta { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; }
+.chevron { margin-left: auto; width: 30px; height: 30px; border-radius: 50%; background: var(--surface-3); position: relative; flex: none; transition: transform .3s ease, background-color .2s ease; }
+.chevron::before { content: ""; position: absolute; left: 50%; top: 45%; width: 8px; height: 8px; border-right: 2px solid var(--text-2); border-bottom: 2px solid var(--text-2); transform: translate(-50%, -50%) rotate(45deg); }
+details.collapsible[open] .chevron { transform: rotate(180deg); }
+details.collapsible[open] > summary { border-radius: 30px 30px 0 0; }
+.collapsible-body { padding: 0 22px 22px; animation: dispatch-reveal .28s ease both; }
+@media (prefers-reduced-motion: reduce) { .chevron { transition: none; } .collapsible-body { animation: none; } }
