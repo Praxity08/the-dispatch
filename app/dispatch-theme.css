@@ -682,3 +682,11 @@ main.narrow.login h1 { margin: 2px 0 18px; }
   :root:not([data-theme="light"]) .dsp-f.leaf > span { opacity: .42; filter: saturate(1.5) brightness(.9); }
   :root:not([data-theme="light"]) .dsp-f.bubble > span { background: radial-gradient(circle at 32% 30%, rgba(255,255,255,.14), transparent 65%) !important; border-color: rgba(255,255,255,.14); opacity: 1; }
 }
+
+/* ---- Email delivery (Pipeline tab) ---- */
+.delivery-rows { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; margin-top: 12px; }
+.delivery-row { background: var(--surface-2); border-radius: var(--r-md); padding: 16px 18px; }
+.delivery-row.active { box-shadow: 0 0 0 2px var(--green-dot); }
+.delivery-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.delivery-row p { margin: 8px 0 0; }
+.delivery-row code, .email-delivery code { font-size: 12px; background: var(--surface-3); border-radius: 6px; padding: 1px 6px; overflow-wrap: anywhere; }

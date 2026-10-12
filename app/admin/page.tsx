@@ -3,7 +3,8 @@ import { isRubricUnlocked, RUBRIC_UNLOCK_MINUTES_LABEL, requireAdmin, samplePass
 import { query } from "@/lib/db";
 import { editExamples, lineupDrift } from "@/lib/draft";
 import { EDITABLE, type EditorIssue, type EditorItem, isLive, latestIssue, loadEditorItems, readiness } from "@/lib/editor";
-import { emailConfigured } from "@/lib/email";
+import { emailConfigured, emailProvider, PROVIDER_INFO } from "@/lib/email";
+import { appUrl } from "@/lib/env";
 import { COMMENTARY, CRITERIA, CRITERION_KEYS, type Criterion, criterionPoints, SCORING, SELECTION, snapshotRubric, UNDER_REPORTED_SCALE } from "@/lib/rubric";
 import { loadRubric, rubricHistory } from "@/lib/rubric-store";
 import { getStyleGuide } from "@/lib/style";
@@ -372,7 +373,7 @@ async function IssueTab({ issue }: { issue: EditorIssue | undefined }) {
             ) : (
               <span className="action">
                 <button className="btn secondary" disabled title="Add the Gmail app password to enable">Send a test email</button>
-                <span className="muted small">Needs the Gmail app password</span>
+                <span className="muted small">{emailProvider() === "resend" ? "Needs RESEND_API_KEY and RESEND_FROM" : "Needs the Gmail app password"}</span>
               </span>
             )}
           </div>
@@ -1135,6 +1136,7 @@ async function PipelineTab() {
           </div>
         )}
       </section>
+      <EmailDeliveryPanel />
       <section className="panel">
         <h2>Sources</h2>
         <div className="table-wrap">
@@ -1172,5 +1174,50 @@ async function PipelineTab() {
         </div>
       </section>
     </>
+  );
+}
+
+/** Which service sends the newsletter, what it can handle, and how to switch to the other. */
+function EmailDeliveryPanel() {
+  const active = emailProvider();
+  const resendReady = !!process.env.RESEND_API_KEY && !!process.env.RESEND_FROM;
+  const rows = [
+    {
+      key: "gmail" as const,
+      what: "Free, uses the newsletter's Gmail account. Fine for a small list and for test sends.",
+      setup: "GMAIL_USER + GMAIL_APP_PASSWORD",
+      ready: !!process.env.GMAIL_USER && !!process.env.GMAIL_APP_PASSWORD,
+    },
+    {
+      key: "resend" as const,
+      what: "Built for newsletters: sends in batches of 100 from your own domain, with bounces and spam complaints reported back automatically. The way to reach 2,000+ readers in about a minute (Pro plan, $20/month).",
+      setup: "EMAIL_PROVIDER=resend + RESEND_API_KEY + RESEND_FROM (an address on a verified domain) + RESEND_WEBHOOK_SECRET",
+      ready: resendReady,
+    },
+  ];
+  return (
+    <section className="panel email-delivery">
+      <h2>Email delivery</h2>
+      <p className="muted small">
+        Subscribers&apos; replies always land in the Gmail inbox (the reply-to), so the Reader replies tab works with either. Nothing is ever emailed until
+        you confirm the issue.
+      </p>
+      <div className="delivery-rows">
+        {rows.map((r) => (
+          <div key={r.key} className={`delivery-row${active === r.key ? " active" : ""}`}>
+            <div className="delivery-head">
+              <b>{PROVIDER_INFO[r.key].label}</b>
+              {active === r.key ? <span className="chip good">Sending now</span> : r.ready ? <span className="chip tone-blue">Ready to switch</span> : <span className="chip">Integrated, not set up</span>}
+            </div>
+            <p className="small">{r.what}</p>
+            <p className="muted small">Capacity: {PROVIDER_INFO[r.key].capacity}.</p>
+            <p className="muted small">Settings: <code>{r.setup}</code></p>
+          </div>
+        ))}
+      </div>
+      {active === "resend" && (
+        <p className="muted small">Bounce and complaint webhook: <code>{appUrl()}/api/webhooks/resend</code> (events: email.bounced, email.complained).</p>
+      )}
+    </section>
   );
 }

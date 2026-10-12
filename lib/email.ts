@@ -186,12 +186,70 @@ Unsubscribe: ${links.unsubscribeUrl}${links.webUrl ? `\nView in browser: ${links
 `;
 }
 
-// ---------------------------------------------------------------- Gmail SMTP
+// ---------------------------------------------------------------- delivery providers
+//
+// EMAIL_PROVIDER picks how mail leaves:
+//   gmail  (default) Gmail SMTP with an app password. Free; ~500 recipients/day on a personal account.
+//   resend           Resend's API (RESEND_API_KEY, RESEND_FROM on a verified domain). Batches of 100;
+//                    the Pro plan has no daily cap, so a 2,000+ list goes out in about a minute.
+// Either way replies go to the Gmail inbox (reply-to), so the Reader replies tab keeps working.
 
-let transport: Transporter | null = null;
+export type OutgoingEmail = { to: string; subject: string; html: string; text: string; oneClickUrl?: string };
+export type SendOutcome = { ok: true; id: string } | { ok: false; error: string; quota?: boolean };
+export type EmailProvider = "gmail" | "resend";
 
 /** EMAIL_DRY_RUN=1 runs the whole send path but hands messages to a no-op transport (used by tests). */
 export const dryRun = () => process.env.EMAIL_DRY_RUN === "1";
+
+export function emailProvider(): EmailProvider {
+  return process.env.EMAIL_PROVIDER?.trim().toLowerCase() === "resend" ? "resend" : "gmail";
+}
+
+export const PROVIDER_INFO: Record<EmailProvider, { label: string; capacity: string }> = {
+  gmail: { label: "Gmail SMTP", capacity: "about 500 recipients a day on a personal Gmail account" },
+  resend: { label: "Resend", capacity: "100 a day on the free plan; no daily cap on Pro (50,000 a month)" },
+};
+
+export function emailConfigured(): boolean {
+  if (dryRun()) return true;
+  return emailProvider() === "resend"
+    ? !!process.env.RESEND_API_KEY && !!process.env.RESEND_FROM
+    : !!process.env.GMAIL_USER && !!process.env.GMAIL_APP_PASSWORD;
+}
+
+/** Where replies (and "unsubscribe" emails) should land: the Gmail inbox that the dashboard reads. */
+const replyAddress = () => process.env.RESEND_REPLY_TO || requireEnv("GMAIL_USER");
+
+function unsubscribeHeaders(oneClickUrl: string | undefined): Record<string, string> {
+  if (!oneClickUrl) return {};
+  return {
+    "List-Unsubscribe": `<${oneClickUrl}>, <mailto:${replyAddress()}?subject=unsubscribe>`,
+    "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+  };
+}
+
+/** Sends one email (tests, single sends). Throws on failure. */
+export async function sendEmail(msg: OutgoingEmail): Promise<string> {
+  const [outcome] = await sendEmails([msg]);
+  if (!outcome.ok) throw new Error(outcome.error);
+  return outcome.id;
+}
+
+/** Sends many emails with the configured provider; one outcome per message, in order. */
+export async function sendEmails(msgs: OutgoingEmail[], opts: { idempotencyKey?: string } = {}): Promise<SendOutcome[]> {
+  if (!msgs.length) return [];
+  return emailProvider() === "resend" ? sendWithResend(msgs, opts.idempotencyKey) : sendWithGmail(msgs);
+}
+
+/** How many messages the send loop should hand over at once. */
+export const sendBatchSize = () => (emailProvider() === "resend" ? RESEND_BATCH : 25);
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+// ---------------------------------------------------------------- Gmail SMTP
+
+let transport: Transporter | null = null;
+const GMAIL_GAP_MS = 250; // gentle pacing
 
 function mailer(): Transporter {
   if (!transport && dryRun()) transport = nodemailer.createTransport({ jsonTransport: true });
@@ -208,25 +266,106 @@ function mailer(): Transporter {
   return transport;
 }
 
-export function emailConfigured(): boolean {
-  return dryRun() || (!!process.env.GMAIL_USER && !!process.env.GMAIL_APP_PASSWORD);
+async function sendWithGmail(msgs: OutgoingEmail[]): Promise<SendOutcome[]> {
+  const from = requireEnv("GMAIL_USER");
+  const out: SendOutcome[] = [];
+  for (const [i, msg] of msgs.entries()) {
+    try {
+      const info = await mailer().sendMail({
+        from: { name: "Shreya at The Dispatch", address: from },
+        replyTo: from,
+        to: msg.to,
+        subject: msg.subject,
+        html: msg.html,
+        text: msg.text,
+        headers: unsubscribeHeaders(msg.oneClickUrl),
+      });
+      out.push({ ok: true, id: info.messageId });
+    } catch (err) {
+      const error = err instanceof Error ? err.message : String(err);
+      // Gmail's daily sending limit: everything after this would fail too, so stop here.
+      if (/5\.4\.5|daily user sending limit|quota/i.test(error)) {
+        out.push(...msgs.slice(i).map(() => ({ ok: false as const, error, quota: true })));
+        break;
+      }
+      out.push({ ok: false, error });
+    }
+    if (i < msgs.length - 1) await sleep(GMAIL_GAP_MS);
+  }
+  return out;
 }
 
-export async function sendEmail(msg: { to: string; subject: string; html: string; text: string; oneClickUrl?: string }): Promise<string> {
-  const from = requireEnv("GMAIL_USER");
-  const info = await mailer().sendMail({
-    from: { name: "Shreya at The Dispatch", address: from },
-    replyTo: from,
-    to: msg.to,
+// ---------------------------------------------------------------- Resend
+
+const RESEND_API = "https://api.resend.com";
+export const RESEND_BATCH = 100; // the batch endpoint's maximum
+
+type ResendError = { name?: string; message?: string; statusCode?: number };
+
+async function resendRequest(path: string, body: unknown, idempotencyKey?: string, attempt = 0): Promise<{ status: number; json: Record<string, unknown> }> {
+  const res = await fetch(`${RESEND_API}${path}`, {
+    method: "POST",
+    headers: {
+      authorization: `Bearer ${requireEnv("RESEND_API_KEY")}`,
+      "content-type": "application/json",
+      // Report bad addresses per email instead of rejecting the whole batch.
+      "x-batch-validation": "permissive",
+      // A retried request with the same key is never delivered twice.
+      ...(idempotencyKey ? { "idempotency-key": idempotencyKey } : {}),
+    },
+    body: JSON.stringify(body),
+    signal: AbortSignal.timeout(30_000),
+  });
+  const json = (await res.json().catch(() => ({}))) as Record<string, unknown>;
+  const err = json as ResendError;
+  // Too many requests per second: wait as told and try again (quota errors are not retried).
+  if (res.status === 429 && err.name === "rate_limit_exceeded" && attempt < 4) {
+    const wait = Number(res.headers.get("retry-after")) || 1;
+    await sleep(wait * 1000 + 200);
+    return resendRequest(path, body, idempotencyKey, attempt + 1);
+  }
+  return { status: res.status, json };
+}
+
+function toResendEmail(msg: OutgoingEmail) {
+  return {
+    from: requireEnv("RESEND_FROM"), // e.g. "Shreya at The Dispatch <shreya@thedispatch.in>"
+    to: [msg.to],
+    reply_to: replyAddress(),
     subject: msg.subject,
     html: msg.html,
     text: msg.text,
-    headers: msg.oneClickUrl
-      ? {
-          "List-Unsubscribe": `<${msg.oneClickUrl}>, <mailto:${from}?subject=unsubscribe>`,
-          "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
-        }
-      : {},
-  });
-  return info.messageId;
+    headers: unsubscribeHeaders(msg.oneClickUrl),
+  };
+}
+
+async function sendWithResend(msgs: OutgoingEmail[], idempotencyKey?: string): Promise<SendOutcome[]> {
+  if (dryRun()) return msgs.map((_, i) => ({ ok: true, id: `dry-run-${Date.now()}-${i}` }));
+  const out: SendOutcome[] = [];
+  for (let start = 0; start < msgs.length; start += RESEND_BATCH) {
+    const chunk = msgs.slice(start, start + RESEND_BATCH);
+    const key = idempotencyKey ? `${idempotencyKey}-${start / RESEND_BATCH}` : undefined;
+    const { status, json } = await resendRequest("/emails/batch", chunk.map(toResendEmail), key);
+    if (status >= 400) {
+      const err = json as ResendError;
+      const error = `Resend ${status}: ${err.name ?? ""} ${err.message ?? ""}`.trim();
+      // Daily / monthly allowance used up: leave the rest queued for the next run.
+      const quota = /quota/i.test(err.name ?? "") || /quota/i.test(err.message ?? "");
+      if (quota) {
+        out.push(...msgs.slice(start).map(() => ({ ok: false as const, error, quota: true })));
+        break;
+      }
+      out.push(...chunk.map(() => ({ ok: false as const, error })));
+      continue;
+    }
+    const ids = ((json.data as { id: string }[] | undefined) ?? []).map((d) => d.id);
+    const errors = new Map(((json.errors as { index: number; message: string }[] | undefined) ?? []).map((e) => [e.index, e.message]));
+    // In permissive mode ids are returned for the valid emails only, in order.
+    let next = 0;
+    chunk.forEach((_, i) => {
+      if (errors.has(i)) out.push({ ok: false, error: `Resend: ${errors.get(i)}` });
+      else out.push(ids[next] ? { ok: true, id: ids[next++] } : { ok: false, error: "Resend returned no id" });
+    });
+  }
+  return out;
 }

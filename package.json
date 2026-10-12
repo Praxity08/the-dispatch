@@ -12,7 +12,7 @@
     "telegram:poll": "sh scripts/with-secrets.sh tsx --env-file=.env.local scripts/telegram-poll.ts",
     "e2e": "sh scripts/with-secrets.sh tsx --env-file=.env.local scripts/e2e.ts",
     "e2e:send": "tsx --env-file=.env.local scripts/e2e-send.ts",
-    "test": "tsx scripts/check-rubric.ts && tsx scripts/check-bounces.mts && tsx scripts/check-rubric-rules.ts && tsx scripts/check-pins.ts"
+    "test": "tsx scripts/check-rubric.ts && tsx scripts/check-bounces.mts && tsx scripts/check-rubric-rules.ts && tsx scripts/check-pins.ts && tsx scripts/check-resend.mts"
   },
   "dependencies": {
     "@google/genai": "^2.28.0",

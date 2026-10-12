@@ -11,7 +11,7 @@ import { stripHtml, truncate } from "./text";
 
 const SOFT_BOUNCE_LIMIT = 3;
 
-type Outcome = { kind: "hard_bounce" | "soft_bounce" | "unsubscribe" | "reply" | "ignored"; email: string | null; detail: string };
+export type Outcome = { kind: "hard_bounce" | "soft_bounce" | "unsubscribe" | "reply" | "ignored"; email: string | null; detail: string };
 
 function allText(mail: ParsedMail): string {
   // The machine-readable delivery report usually arrives as a message/delivery-status attachment.
@@ -107,7 +107,8 @@ async function saveReply(mail: ParsedMail, messageId: string): Promise<boolean> 
   return rows.length > 0;
 }
 
-async function apply(outcome: Outcome) {
+/** Updates the subscriber (and their last delivery) for a bounce or unsubscribe. Shared with the Resend webhook. */
+export async function applyMailOutcome(outcome: Outcome) {
   if (!outcome.email) return false;
   if (outcome.kind === "unsubscribe") {
     const rows = await query("update subscribers set status = 'unsubscribed', unsubscribed_at = now() where email = $1 and status = 'active' returning id", [outcome.email]);
@@ -171,7 +172,7 @@ export async function processInbox({ days = 7 } = {}) {
         summary[outcome.kind]++;
         if (outcome.kind === "reply") {
           if (await saveReply(mail, messageId)) replies.push({ name: mail.from?.value[0]?.name || outcome.email || "A reader", body: replyBody(mail) });
-        } else if (await apply(outcome)) summary.changed++;
+        } else if (await applyMailOutcome(outcome)) summary.changed++;
         await query("insert into processed_mail (message_id, kind, email, detail) values ($1, $2, $3, $4) on conflict do nothing", [
           messageId,
           outcome.kind,

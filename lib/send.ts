@@ -1,15 +1,12 @@
 // Thursday send. The one hard rule: an issue is only ever emailed to subscribers if Shreya confirmed it
 // in Telegram (status 'confirmed'). There is no other path to 'sending'.
 import { logEvent, query } from "./db";
-import { dryRun, emailConfigured, loadEmailIssue, renderHtml, renderText, sendEmail } from "./email";
+import { dryRun, emailConfigured, emailProvider, loadEmailIssue, PROVIDER_INFO, renderHtml, renderText, sendBatchSize, sendEmail, sendEmails } from "./email";
 import { appUrl, requireEnv } from "./env";
 import { oneClickUnsubscribeUrl, unsubscribePageUrl } from "./subscribers";
 import { esc, sendHtml } from "./telegram";
 import { formatIst, sendTimeFor, weekStart } from "./week";
 
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
-const BATCH = 25;
-const GAP_MS = 250; // gentle pacing for Gmail
 
 type IssueRow = { id: number; issue_number: number; week_start: string; status: string };
 
@@ -33,7 +30,7 @@ export async function sendIssue({ budgetMs = Infinity, week = weekStart(), now =
   if (issue.status === "confirmed" && now < sendTimeFor(week)) {
     return { sent: false, complete: true, reason: `scheduled for ${formatIst(sendTimeFor(week))}` };
   }
-  if (!emailConfigured()) return { sent: false, complete: true, reason: "Gmail credentials are not configured" };
+  if (!emailConfigured()) return { sent: false, complete: true, reason: `${PROVIDER_INFO[emailProvider()].label} is not configured` };
 
   // Claim: confirmed → sending happens exactly once.
   if (issue.status === "confirmed") {
@@ -63,39 +60,44 @@ export async function sendIssue({ budgetMs = Infinity, week = weekStart(), now =
       `select d.id as delivery_id, s.id as subscriber_id, s.email, s.status
        from deliveries d join subscribers s on s.id = d.subscriber_id
        where d.issue_id = $1 and d.status = 'queued' order by d.id limit $2`,
-      [issue.id, BATCH],
+      [issue.id, sendBatchSize()],
     );
     if (batch.length === 0) break;
 
-    for (const d of batch) {
-      if (Date.now() >= deadline) break;
-      // Someone who unsubscribed or bounced after the send started is skipped.
-      if (d.status !== "active") {
-        await query("update deliveries set status = 'failed', error = $2 where id = $1", [d.delivery_id, `subscriber ${d.status}`]);
-        continue;
-      }
-      try {
+    // Someone who unsubscribed or bounced after the send started is skipped.
+    const inactive = batch.filter((d) => d.status !== "active");
+    for (const d of inactive) {
+      await query("update deliveries set status = 'failed', error = $2 where id = $1", [d.delivery_id, `subscriber ${d.status}`]);
+    }
+    const active = batch.filter((d) => d.status === "active");
+    if (!active.length) continue;
+
+    // Each subscriber gets their own unsubscribe links; the provider sends the batch in one go where it can.
+    const outcomes = await sendEmails(
+      active.map((d) => {
         const links = { unsubscribeUrl: unsubscribePageUrl(Number(d.subscriber_id)), webUrl };
-        const messageId = await sendEmail({
+        return {
           to: d.email,
           subject: content.subject,
           html: renderHtml(content, links),
           text: renderText(content, links),
           oneClickUrl: oneClickUnsubscribeUrl(Number(d.subscriber_id)),
-        });
-        await query("update deliveries set status = 'sent', message_id = $2, sent_at = now() where id = $1", [d.delivery_id, messageId]);
+        };
+      }),
+      { idempotencyKey: `dispatch-${issue.id}-${active[0].delivery_id}-${active.length}` },
+    );
+    for (const [i, d] of active.entries()) {
+      const o = outcomes[i];
+      if (!o) break;
+      if (o.ok) {
+        await query("update deliveries set status = 'sent', message_id = $2, sent_at = now() where id = $1", [d.delivery_id, o.id]);
         sent++;
-      } catch (err) {
-        const message = err instanceof Error ? err.message : String(err);
-        // Gmail's daily sending limit: stop and leave the rest queued for the next run.
-        if (/5\.4\.5|daily user sending limit|quota/i.test(message)) {
-          quotaHit = true;
-          break;
-        }
-        await query("update deliveries set status = 'failed', error = $2 where id = $1", [d.delivery_id, message.slice(0, 500)]);
+      } else if (o.quota) {
+        quotaHit = true; // daily allowance used up: the rest stay queued for the next run
+      } else {
+        await query("update deliveries set status = 'failed', error = $2 where id = $1", [d.delivery_id, o.error.slice(0, 500)]);
         failed++;
       }
-      await sleep(GAP_MS);
     }
   }
 
@@ -117,7 +119,7 @@ export async function sendIssue({ budgetMs = Infinity, week = weekStart(), now =
       ).catch(() => {});
     }
   } else if (quotaHit) {
-    await sendHtml(`⚠️ Gmail's daily sending limit was reached for #${issue.issue_number}. ${queued} emails are queued and will go out on the next run.`).catch(() => {});
+    await sendHtml(`⚠️ ${PROVIDER_INFO[emailProvider()].label}'s sending limit was reached for #${issue.issue_number}. ${queued} emails are queued and will go out on the next run.`).catch(() => {});
   }
   return { sent: true, complete: queued === 0, issue: issue.id, sentNow: sent, failedNow: failed, queued, quotaHit };
 }
