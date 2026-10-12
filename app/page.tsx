@@ -2,6 +2,7 @@ import { query } from "@/lib/db";
 import { TOPICS, type Topic } from "@/lib/topics";
 import { formatIst, weekStart } from "@/lib/week";
 import { SubscribeForm } from "./subscribe-form";
+import { ThemeToggle } from "./theme-toggle";
 
 export const dynamic = "force-dynamic";
 
@@ -34,6 +35,17 @@ export default async function Home() {
 
   return (
     <main>
+      <nav className="site-head" aria-label="Site">
+        <a href="/" className="site-brand">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/dispatch-logo.png" alt="The Dispatch — India's startup brief" />
+        </a>
+        <div className="site-actions">
+          <ThemeToggle />
+          <a href="/admin" className="btn primary">Editor login</a>
+        </div>
+      </nav>
+
       <header className="hero">
         <p className="eyebrow">Every Thursday morning</p>
         <h1 className="display">The Dispatch</h1>
@@ -86,7 +98,7 @@ export default async function Home() {
       )}
 
       <footer className="muted small">
-        <a href="/admin">Editor login</a>
+        The Dispatch · every Thursday morning · <a href="/admin">Editor login</a>
       </footer>
     </main>
   );

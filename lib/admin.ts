@@ -80,3 +80,12 @@ export async function isRubricUnlocked(): Promise<boolean> {
 }
 
 export const RUBRIC_UNLOCK_MINUTES_LABEL = `${RUBRIC_UNLOCK_MINUTES} minutes`;
+
+/**
+ * On the public sample deployment (SAMPLE_SITE=1) the login and rubric screens show their passwords,
+ * so anyone reviewing the project can get in. Off by default.
+ */
+export function samplePasswords(): { editor: string; rubric: string } | null {
+  if (process.env.SAMPLE_SITE !== "1") return null;
+  return { editor: process.env.ADMIN_PASSWORD ?? "", rubric: process.env.RUBRIC_PASSWORD ?? "" };
+}

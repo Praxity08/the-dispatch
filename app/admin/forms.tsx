@@ -352,15 +352,22 @@ export function RedraftPanel({ issueId, edits }: { issueId: number; edits: numbe
 
 // ---------------------------------------------------------------- scoring rubric editor
 
-export function RubricUnlockForm({ minutes }: { minutes: string }) {
+export function RubricUnlockForm({ minutes, sampleHint }: { minutes: string; sampleHint?: string }) {
   const [state, action, pending] = useActionState(unlockRubric, null);
   return (
-    <form action={action} className="inline-form">
-      <input type="password" name="password" placeholder="Rubric password" required autoComplete="off" aria-label="Rubric password" />
-      <button className="btn secondary" disabled={pending}>{pending ? "Checking…" : "Unlock to edit"}</button>
-      <span className="muted small">Separate from the editor login. Stays unlocked for {minutes} on this browser.</span>
-      {state && !state.ok && <Result state={state} />}
-    </form>
+    <>
+      <form action={action} className="inline-form">
+        <input type="password" name="password" placeholder="Rubric password" required autoComplete="off" aria-label="Rubric password" />
+        <button className="btn primary" disabled={pending}>{pending ? "Checking…" : "Unlock to edit"}</button>
+        <span className="muted small">Separate from the editor login. Stays unlocked for {minutes} on this browser.</span>
+        {state && !state.ok && <Result state={state} />}
+      </form>
+      {sampleHint && (
+        <p className="hint-bubble" role="note">
+          This is a sample site, so the rubric password is shown: <code>{sampleHint}</code>
+        </p>
+      )}
+    </>
   );
 }
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { isRubricUnlocked, RUBRIC_UNLOCK_MINUTES_LABEL, requireAdmin } from "@/lib/admin";
+import { isRubricUnlocked, RUBRIC_UNLOCK_MINUTES_LABEL, requireAdmin, samplePasswords } from "@/lib/admin";
 import { query } from "@/lib/db";
 import { editExamples } from "@/lib/draft";
 import { EDITABLE, type EditorIssue, type EditorItem, isLive, latestIssue, loadEditorItems, readiness } from "@/lib/editor";
@@ -976,7 +976,7 @@ async function RubricEditSection() {
           Weights, criterion wording, the penalty, lineup rules and commentary limits can be changed here. Editing needs the separate rubric
           password, so the scoring can&apos;t be changed by accident from a logged-in browser.
         </p>
-        {configured ? <RubricUnlockForm minutes={RUBRIC_UNLOCK_MINUTES_LABEL} /> : <p className="warn small">Set RUBRIC_PASSWORD to enable editing.</p>}
+        {configured ? <RubricUnlockForm minutes={RUBRIC_UNLOCK_MINUTES_LABEL} sampleHint={samplePasswords()?.rubric} /> : <p className="warn small">Set RUBRIC_PASSWORD to enable editing.</p>}
       </section>
     );
   }
