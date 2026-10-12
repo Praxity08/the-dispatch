@@ -611,3 +611,12 @@ main.narrow.login h1 { margin: 2px 0 18px; }
 .hint-bubble code { font: 600 14px ui-monospace, SFMono-Regular, Menlo, monospace; background: rgba(255,255,255,.65); border-radius: 8px; padding: 1px 7px; letter-spacing: .04em; }
 :root[data-theme="dark"] .hint-bubble code { background: rgba(0,0,0,.25); }
 .rubric-lock .hint-bubble { margin-top: 12px; }
+
+/* ---- Re-rank banner (rubric changed since the lineup was picked) ---- */
+.rerank-banner { background: var(--blue-bg); color: var(--blue); box-shadow: none; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 20px; margin-bottom: 22px; animation: dispatch-reveal .3s ease both; }
+.rerank-banner h3 { font: 500 18px var(--font); margin: 0 0 8px; color: inherit; }
+.rerank-text { flex: 1 1 340px; min-width: 0; }
+.rerank-text p { margin: 8px 0 0; color: var(--text-2); }
+.rerank-changes { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.rerank-changes .chip { background: var(--surface); color: var(--text); }
+.rerank-banner .confirm.armed { flex-basis: 100%; background: var(--surface); color: var(--text); }

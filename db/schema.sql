@@ -187,3 +187,5 @@ create index if not exists reader_replies_received_idx on reader_replies (receiv
 alter table stories  add column if not exists editor_flag text check (editor_flag in ('pin', 'block'));
 alter table articles add column if not exists added_by_shreya boolean not null default false;
 alter table issues   add column if not exists redeliver boolean not null default false;
+alter table issues   add column if not exists ranked_rubric jsonb;      -- the rubric the current lineup was picked with
+alter table issues   add column if not exists ranked_at timestamptz;

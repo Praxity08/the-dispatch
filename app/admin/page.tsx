@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { isRubricUnlocked, RUBRIC_UNLOCK_MINUTES_LABEL, requireAdmin, samplePasswords } from "@/lib/admin";
 import { query } from "@/lib/db";
-import { editExamples } from "@/lib/draft";
+import { editExamples, lineupDrift } from "@/lib/draft";
 import { EDITABLE, type EditorIssue, type EditorItem, isLive, latestIssue, loadEditorItems, readiness } from "@/lib/editor";
 import { emailConfigured } from "@/lib/email";
 import { COMMENTARY, CRITERIA, CRITERION_KEYS, type Criterion, criterionPoints, SCORING, SELECTION, snapshotRubric, UNDER_REPORTED_SCALE } from "@/lib/rubric";
@@ -20,6 +20,7 @@ import {
   IssueTextForm,
   JobButton,
   RedraftPanel,
+  RerankPanel,
   ReplyButton,
   RestoreDefaultsButton,
   RubricEditor,
@@ -237,6 +238,11 @@ async function IssueTab({ issue }: { issue: EditorIssue | undefined }) {
   const sendAt = sendTimeFor(issue.week_start);
   const late = Date.now() >= sendAt.getTime();
   const topics = new Set(lineup.map((i) => i.topic)).size;
+  // Weights or lineup rules changed since this lineup was picked? Offer to re-rank from the pool.
+  const drift = locked ? { stale: false, changes: [] } : await lineupDrift(issue.id);
+  const lowestInLineup = Math.min(...lineup.map((i) => Number(i.score ?? 0)));
+  const overtaking = bench.filter((b) => Number(b.score ?? 0) > lowestInLineup).length;
+  const [{ pool }] = await query<{ pool: number }>("select count(*)::int as pool from stories where week_start = $1 and score is not null", [issue.week_start]);
 
   const [pipeline] = await query<{ articles: number; relevant: number; stories: number; scored: number }>(
     `select (select count(*)::int from articles where week_start = $1) as articles,
@@ -256,6 +262,25 @@ async function IssueTab({ issue }: { issue: EditorIssue | undefined }) {
       </div>
     <div className="issue-layout">
       <div className="issue-main">
+        {drift.stale && (
+          <section className="panel rerank-banner" aria-live="polite">
+            <div className="rerank-text">
+              <h3>The scoring rubric changed since this lineup was picked</h3>
+              <ul className="rerank-changes">
+                {drift.changes.map((c) => <li key={c} className="chip">{c}</li>)}
+              </ul>
+              <p className="small">
+                {overtaking > 0
+                  ? `Under the new weights, ${overtaking} bench ${overtaking === 1 ? "story now outscores" : "stories now outscore"} a story in your lineup.`
+                  : "The scores below already use the new weights; the lineup itself was picked under the old ones."}
+              </p>
+            </div>
+            <RerankPanel
+              issueId={issue.id}
+              summary={`The engine re-picks ${SELECTION.min}–${SELECTION.max} stories from all ${pool} scored stories this week using the new weights (about 2–4 Gemini requests). Stories that stay keep your edits and approvals, ones you dropped or swapped out stay out, and new ones get draft commentary. Your subject line and opening aren't touched.`}
+            />
+          </section>
+        )}
         <section>
           <div className="section-head">
             <h2>Lineup <span className="muted">· {live} stories · {topics} topics{flagged ? ` · ⚠ ${flagged} flagged` : ""}</span></h2>

@@ -14,7 +14,7 @@ import {
   unlockRubricSession,
 } from "@/lib/admin";
 import { logEvent, query } from "@/lib/db";
-import { refreshTotals, rewriteCommentary } from "@/lib/draft";
+import { finishRerank, refreshTotals, rerankIssue, rewriteCommentary } from "@/lib/draft";
 import {
   addToBench,
   approveAll,
@@ -127,6 +127,12 @@ export async function editorAction(_: ActionState, formData: FormData): Promise<
       case "reopen":
         result = await reopenIssue(issueId);
         break;
+      case "rerank":
+        result = await rerankIssue(issueId);
+        // New stories get commentary and Telegram is updated once that's done, after we respond.
+        if (result.ok) after(() => finishRerank(issueId).catch((err) => console.error("rerank finish failed", err)));
+        revalidatePath("/admin");
+        return result;
       case "redraft":
         result = await resetDraft(issueId);
         if (result.ok) await triggerJob("/api/cron/draft");
@@ -296,7 +302,10 @@ async function applyNewRubric(rubric: Rubric, note: string): Promise<ActionState
   const issue = await latestIssue();
   if (issue) after(() => syncTelegram(issue.id).catch((err) => console.error("telegram sync failed", err)));
   revalidatePath("/admin");
-  return { ok: true, message: `Saved. ${updated} stories re-ranked with the new weights; wording changes apply the next time stories are scored.` };
+  return {
+    ok: true,
+    message: `Saved. ${updated} stories re-scored with the new weights. Your lineup hasn't changed: open This week's issue to re-rank it from the pool. Wording changes apply the next time stories are scored.`,
+  };
 }
 
 export async function saveRubricAction(_: ActionState, formData: FormData): Promise<ActionState> {

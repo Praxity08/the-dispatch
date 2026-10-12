@@ -7,9 +7,13 @@ import {
   checkCommentary,
   COMMENTARY,
   CRITERIA,
+  CRITERION_KEYS,
   type CriterionScores,
+  DEFAULT_RUBRIC,
+  type Rubric,
   isRecognisedOutlet,
   SELECTION,
+  snapshotRubric,
   underReportedScore,
   weightedScore,
 } from "./rubric";
@@ -311,10 +315,16 @@ function describeForSelection(c: Candidate): string {
    why: ${c.gemini?.reason ?? ""}`;
 }
 
-async function selectStories(issue: Issue, candidates: Candidate[], covered: { id: number; headline: string }[]) {
+/**
+ * Picks the lineup and bench (Gemini editor, validated in code, greedy fallback). Writes nothing.
+ * `exclude` keeps out stories Shreya already removed from this issue (used when re-ranking).
+ */
+async function chooseLineup(candidates: Candidate[], covered: { id: number; headline: string }[], exclude: Set<number> = new Set()) {
   const coveredIds = new Set(covered.map((c) => c.id));
   // Stories Shreya blocked never reach Gemini; the ones she pinned always make the shortlist.
-  const ranked = candidates.filter((c) => c.criteria && !coveredIds.has(c.id) && c.flag !== "block").sort((a, b) => b.score - a.score);
+  const ranked = candidates
+    .filter((c) => c.criteria && !coveredIds.has(c.id) && c.flag !== "block" && !exclude.has(c.id))
+    .sort((a, b) => b.score - a.score);
   const pinnedStories = ranked.filter((c) => c.flag === "pin").slice(0, SELECTION.max);
   const pinned = new Set(pinnedStories.map((c) => c.id));
   const shortlist = [...pinnedStories, ...ranked.filter((c) => !pinned.has(c.id))].slice(0, Math.max(SELECTION.shortlist, pinned.size));
@@ -357,24 +367,42 @@ async function selectStories(issue: Issue, candidates: Candidate[], covered: { i
   const benchIds = [...bench, ...ranked.map((c) => c.id)]
     .filter((id, i, arr) => arr.indexOf(id) === i && !selected.includes(id) && !coveredIds.has(id) && ranked.some((c) => c.id === id))
     .slice(0, SELECTION.bench);
+  return { method, selected, bench: benchIds, rationale, pinned: [...pinned], attempts: log };
+}
 
+/** First article of a story: the link the newsletter uses (direct publisher URLs before Google News ones). */
+async function leadArticle(storyId: number): Promise<number> {
+  const [article] = await query<{ id: number }>(
+    "select id from articles where story_id = $1 order by (url like 'https://news.google.com/%'), id limit 1",
+    [storyId],
+  );
+  return Number(article.id);
+}
+
+/** Records which rubric the current lineup was picked with, so the dashboard can tell when it's out of date. */
+async function markRanked(issueId: number, selectionLog: Record<string, unknown>) {
+  await query("update issues set selection_log = $2, ranked_rubric = $3, ranked_at = now() where id = $1", [
+    issueId,
+    JSON.stringify(selectionLog),
+    JSON.stringify(snapshotRubric()),
+  ]);
+}
+
+async function selectStories(issue: Issue, candidates: Candidate[], covered: { id: number; headline: string }[]) {
+  const { method, selected, bench: benchIds, rationale, pinned, attempts } = await chooseLineup(candidates, covered);
   const all = new Map(candidates.map((c) => [c.id, c]));
   const rows = [
     ...selected.map((id, i) => ({ c: all.get(id)!, role: "selected", position: i + 1 })),
     ...benchIds.map((id, i) => ({ c: all.get(id)!, role: "bench", position: i + 1 })),
   ];
   for (const { c, role, position } of rows) {
-    const [article] = await query<{ id: number }>(
-      "select id from articles where story_id = $1 order by (url like 'https://news.google.com/%'), id limit 1",
-      [c.id],
-    );
     await query(
       `insert into issue_items (issue_id, story_id, article_id, role, position, topic, reason, score)
        values ($1, $2, $3, $4, $5, $6, $7, $8) on conflict (issue_id, story_id) do nothing`,
-      [issue.id, c.id, article.id, role, position, c.topic, c.gemini?.reason ?? null, c.score],
+      [issue.id, c.id, await leadArticle(c.id), role, position, c.topic, c.gemini?.reason ?? null, c.score],
     );
   }
-  await query("update issues set selection_log = $2 where id = $1", [issue.id, JSON.stringify({ method, rationale, pinned: [...pinned], attempts: log })]);
+  await markRanked(issue.id, { method, rationale, pinned, attempts });
   for (const c of candidates) if (c.criteria) await query("update stories set score = $2 where id = $1", [c.id, c.score]);
   console.log(`selected ${selected.length} stories via ${method}; bench ${benchIds.length}`);
   return { method, selected, bench: benchIds, rationale };
@@ -535,7 +563,7 @@ async function saveItem(item: ItemState, fields: { commentary?: string; original
 }
 
 /** Runs the next commentary step for the issue. Returns a label for what it did, or null when all items are final. */
-async function commentaryStep(issue: Issue): Promise<string | null> {
+async function commentaryStep(issue: Issue, keepIssueText = false): Promise<string | null> {
   const items = await loadItems(issue.id);
   const stageOf = (i: ItemState): Stage | "new" => (i.commentary ? (i.checks?.stage ?? "final") : "new");
   const guide = await getStyleGuide();
@@ -562,11 +590,14 @@ async function commentaryStep(issue: Issue): Promise<string | null> {
     for (const item of fresh.filter((i) => !draft.items.some((d) => Number(d.id) === Number(i.story_id)))) {
       await saveItem(item, { commentary: "", stage: "final", problems: ["Gemini returned no commentary — write this one by hand"] });
     }
-    await query("update issues set subject = $2, intro = $3 where id = $1", [
-      issue.id,
-      `The Dispatch #${issue.issue_number} — ${draft.subject_hook.trim().replace(/[.!]+$/, "")}`,
-      draft.intro.trim(),
-    ]);
+    // After a re-rank the subject and opening are Shreya's to keep; only a fresh draft rewrites them.
+    if (!keepIssueText) {
+      await query("update issues set subject = $2, intro = $3 where id = $1", [
+        issue.id,
+        `The Dispatch #${issue.issue_number} — ${draft.subject_hook.trim().replace(/[.!]+$/, "")}`,
+        draft.intro.trim(),
+      ]);
+    }
     return `drafted ${draft.items.length} with ${draft._model}`;
   }
 
@@ -740,4 +771,146 @@ export async function refreshTotals(week = weekStart()) {
     [week],
   );
   return { updated: scored.length };
+}
+
+
+// ---------------------------------------------------------------- re-rank after a rubric change
+
+const SELECTION_LABELS: Partial<Record<keyof Rubric["selection"], string>> = {
+  min: "Fewest stories",
+  max: "Most stories",
+  target: "Target stories",
+  minTopics: "Minimum topics",
+  maxPerTopic: "Max per topic",
+  maxPerCompany: "Max per company",
+  lookbackIssues: "Issues checked for repeats",
+};
+
+/** What changed in the rubric since this issue's lineup was picked (weights, penalty, lineup rules). */
+export async function lineupDrift(issueId: number): Promise<{ stale: boolean; changes: string[] }> {
+  await loadRubric();
+  const [row] = await query<{ ranked_rubric: Partial<Rubric> | null; drafted_at: string | null }>(
+    "select ranked_rubric, drafted_at from issues where id = $1",
+    [issueId],
+  );
+  let then = row?.ranked_rubric ?? null;
+  if (!then && row?.drafted_at) {
+    // Lineups picked before this was recorded: use the rubric that was live when the issue was drafted.
+    const [v] = await query<{ rubric: Rubric }>("select rubric from rubric_versions where created_at <= $1 order by id desc limit 1", [row.drafted_at]);
+    then = v?.rubric ?? DEFAULT_RUBRIC;
+  }
+  if (!then) return { stale: false, changes: [] };
+  const now = snapshotRubric();
+  const changes: string[] = [];
+  for (const k of CRITERION_KEYS) {
+    const a = Math.round((then.criteria?.[k]?.weight ?? DEFAULT_RUBRIC.criteria[k].weight) * 100);
+    const b = Math.round(now.criteria[k].weight * 100);
+    if (a !== b) changes.push(`${CRITERIA[k].label} ${a}% → ${b}%`);
+  }
+  const penalty = then.weakSourcingPenalty ?? DEFAULT_RUBRIC.weakSourcingPenalty;
+  if (penalty !== now.weakSourcingPenalty) changes.push(`Weak-sourcing penalty −${penalty} → −${now.weakSourcingPenalty}`);
+  for (const [key, label] of Object.entries(SELECTION_LABELS) as [keyof Rubric["selection"], string][]) {
+    const a = then.selection?.[key] ?? DEFAULT_RUBRIC.selection[key];
+    if (a !== now.selection[key]) changes.push(`${label} ${a} → ${now.selection[key]}`);
+  }
+  return { stale: changes.length > 0, changes };
+}
+
+type ExistingItem = { id: number; story_id: number; role: string; status: string; edited_by_shreya: boolean; telegram_message_id: number | null };
+
+/**
+ * Re-picks this week's lineup from the whole story pool with the current rubric. No re-scoring:
+ * totals come from the stored 0-5 scores under the new weights. Stories that stay keep their
+ * commentary, edits and approval; stories Shreya dropped or swapped out stay out; any story she
+ * edited that falls out of the lineup moves to the bench. New stories get commentary in finishRerank.
+ */
+export async function rerankIssue(issueId: number): Promise<{ ok: boolean; message: string }> {
+  await loadRubric(true);
+  const [issue] = await query<Issue>("select id, week_start::text, status, issue_number from issues where id = $1", [issueId]);
+  if (!issue || !["drafted", "in_review"].includes(issue.status)) {
+    return { ok: false, message: issue?.status === "confirmed" ? "Reopen the issue first: a confirmed lineup can't be re-ranked." : "There's no open draft to re-rank." };
+  }
+
+  const existing = (await query<ExistingItem>(
+    "select id, story_id, role, status, edited_by_shreya, telegram_message_id from issue_items where issue_id = $1",
+    [issueId],
+  )).map((r) => ({ ...r, id: Number(r.id), story_id: Number(r.story_id) }));
+  const byStory = new Map(existing.map((r) => [r.story_id, r]));
+  const removedByHer = new Set(existing.filter((r) => r.status === "dropped" || r.status === "swapped_out").map((r) => r.story_id));
+  const isLiveRow = (r: ExistingItem) => r.role === "selected" && (r.status === "pending" || r.status === "approved");
+  const before = new Set(existing.filter(isLiveRow).map((r) => r.story_id));
+
+  const candidates = await loadCandidates(issue.week_start);
+  const pick = await chooseLineup(candidates, await loadCovered(issue.week_start), removedByHer);
+  const all = new Map(candidates.map((c) => [c.id, c]));
+  const keptEdits = existing.filter((r) => r.edited_by_shreya && !removedByHer.has(r.story_id) && !pick.selected.includes(r.story_id) && !pick.bench.includes(r.story_id));
+  const benchIds = [...pick.bench, ...keptEdits.map((r) => r.story_id)];
+
+  const retire: ExistingItem[] = []; // lineup stories whose Telegram review message must go
+  const place = async (storyId: number, role: "selected" | "bench", position: number) => {
+    const c = all.get(storyId);
+    const row = byStory.get(storyId);
+    if (row) {
+      if (role === "bench" && isLiveRow(row)) retire.push(row);
+      // Approval carries over only for a story that was already approved in the lineup.
+      const status = role === "selected" && isLiveRow(row) && row.status === "approved" ? "approved" : "pending";
+      await query(
+        "update issue_items set role = $2, position = $3, status = $4, score = coalesce($5, score), swapped_for = null, updated_at = now() where id = $1",
+        [row.id, role, position, status, c?.score ?? null],
+      );
+    } else if (c) {
+      await query(
+        `insert into issue_items (issue_id, story_id, article_id, role, position, topic, reason, score)
+         values ($1, $2, $3, $4, $5, $6, $7, $8) on conflict (issue_id, story_id) do nothing`,
+        [issueId, c.id, await leadArticle(c.id), role, position, c.topic, c.gemini?.reason ?? null, c.score],
+      );
+    }
+  };
+  for (const [i, id] of pick.selected.entries()) await place(id, "selected", i + 1);
+  for (const [i, id] of benchIds.entries()) await place(id, "bench", i + 1);
+
+  // Everything else that isn't one of her removals leaves the issue.
+  const keep = new Set([...pick.selected, ...benchIds, ...removedByHer]);
+  const gone = existing.filter((r) => !keep.has(r.story_id));
+  retire.push(...gone.filter(isLiveRow));
+  if (gone.length) {
+    const ids = gone.map((r) => r.id);
+    await query("update issue_items set swapped_for = null where swapped_for = any($1::bigint[])", [ids]);
+    await query("delete from issue_items where id = any($1::bigint[])", [ids]);
+  }
+
+  // Take the old review messages for stories leaving the lineup out of Telegram.
+  if (retire.some((r) => r.telegram_message_id)) {
+    const { tg, chatId } = await import("./telegram");
+    for (const r of retire.filter((x) => x.telegram_message_id)) {
+      await tg("deleteMessage", { chat_id: chatId(), message_id: Number(r.telegram_message_id) }).catch(() => {});
+      await query("update issue_items set telegram_message_id = null where id = $1", [r.id]);
+    }
+  }
+
+  await markRanked(issueId, { method: pick.method, rationale: pick.rationale, pinned: pick.pinned, attempts: pick.attempts, rerank: true });
+  const added = pick.selected.filter((id) => !before.has(id)).length;
+  const removed = [...before].filter((id) => !pick.selected.includes(id)).length;
+  await logEvent("reranked", { added, removed, keptEdits: keptEdits.length }, issueId);
+  if (!added && !removed) return { ok: true, message: "Re-ranked: the same stories still lead under the new weights, so the lineup stays (running order updated)." };
+  const kept = keptEdits.length ? ` ${keptEdits.length} story${keptEdits.length === 1 ? "" : "ies"} you'd edited moved to the bench with your text.` : "";
+  return {
+    ok: true,
+    message: `Re-ranked with the new weights: ${added} new ${added === 1 ? "story" : "stories"} in, ${removed} out.${kept} Gemini is writing commentary for the new ones; refresh in a minute, then review them.`,
+  };
+}
+
+/** After a re-rank: drafts and checks commentary for new stories (subject and opening untouched), then updates Telegram. */
+export async function finishRerank(issueId: number) {
+  await loadRubric();
+  const [issue] = await query<Issue>("select id, week_start::text, status, issue_number from issues where id = $1", [issueId]);
+  if (!issue) return;
+  try {
+    for (let step; (step = await commentaryStep(issue, true)); ) console.log("rerank:", step);
+  } catch (err) {
+    // Out of Gemini quota: the new stories show "needs commentary" and can be written or rewritten by hand.
+    console.error("rerank commentary failed", err);
+  }
+  const { syncTelegram } = await import("./review");
+  await syncTelegram(issueId).catch((err) => console.error("telegram sync failed", err));
 }

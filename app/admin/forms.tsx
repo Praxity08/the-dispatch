@@ -530,3 +530,30 @@ export function TabPending() {
   const { pending } = useLinkStatus();
   return <span className="tab-pending" data-pending={pending ? "" : undefined} aria-hidden="true" />;
 }
+
+/** Two-step "re-rank": re-picks the lineup from this week's pool with the current rubric weights. */
+export function RerankPanel({ issueId, summary }: { issueId: number; summary: string }) {
+  const [armed, setArmed] = useState(false);
+  const [state, action, pending] = useActionState(editorAction, null);
+  if (state?.ok) return <Result state={state} />;
+  if (!armed) {
+    return (
+      <div className="row">
+        <button type="button" className="btn primary" onClick={() => setArmed(true)}>Re-rank the lineup</button>
+        <Result state={state} />
+      </div>
+    );
+  }
+  return (
+    <form action={action} className="confirm armed">
+      <input type="hidden" name="op" value="rerank" />
+      <input type="hidden" name="issue" value={issueId} />
+      <p><b>Re-rank this week&apos;s lineup?</b> {summary}</p>
+      <div className="row">
+        <button className="btn primary" disabled={pending}>{pending ? "Re-ranking… (about a minute)" : "Yes, re-rank"}</button>
+        <button type="button" className="btn ghost" onClick={() => setArmed(false)} disabled={pending}>Cancel</button>
+      </div>
+      <Result state={state} />
+    </form>
+  );
+}
