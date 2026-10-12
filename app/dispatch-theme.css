@@ -798,3 +798,11 @@ main.narrow.login h1 { margin: 2px 0 18px; }
   .head-logo { height: 34px; }
   .strip.compact { border-radius: 18px; }
 }
+
+/* ---- The open rail makes room instead of covering the page ---- */
+.dash { transition: padding-left .28s cubic-bezier(.2, .7, .2, 1); }
+@media (min-width: 761px) {
+  .dash:has(.rail:hover), .dash:has(.rail:focus-within) { padding-left: calc(24px + 252px + 22px); }
+  .rail:hover .rail-inner, .rail:focus-within .rail-inner { box-shadow: var(--shadow); }
+}
+@media (prefers-reduced-motion: reduce) { .dash, .rail-inner { transition: none; } }
