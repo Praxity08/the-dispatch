@@ -1186,8 +1186,13 @@ async function PipelineTab() {
           <div className="stat"><b>{p.scored}</b><span className="muted">scored</span></div>
         </div>
       </section>
-      <section className="panel">
-        <h2>Run a step now</h2>
+      <details className="panel collapsible">
+        <summary>
+          <h2>Run a step now</h2>
+          <span className="collapsible-meta">Fetch · draft · Telegram · reminder · early look · inbox · scoring{issue && EDITABLE.includes(issue.status) ? " · start over" : ""}</span>
+          <span className="chevron" aria-hidden="true" />
+        </summary>
+        <div className="collapsible-body">
         <p className="muted small">
           On schedule: fetch Mon–Wed 6 AM · early look Mon &amp; Tue 7 PM · draft Wed 2 PM · Telegram Wed 6 PM · reminder Wed 10 PM · send Thu 8 AM (IST). Emailing subscribers only
           ever happens after you confirm.
@@ -1207,7 +1212,8 @@ async function PipelineTab() {
             <RedraftPanel issueId={issue.id} edits={(await loadEditorItems(issue.id)).filter((i) => i.edited_by_shreya).length} />
           </div>
         )}
-      </section>
+        </div>
+      </details>
       <EmailDeliveryPanel />
       <details className="panel collapsible">
         <summary>
@@ -1281,8 +1287,16 @@ function EmailDeliveryPanel() {
     },
   ];
   return (
-    <section className="panel email-delivery">
-      <h2>Email delivery</h2>
+    <details className="panel collapsible email-delivery">
+      <summary>
+        <h2>Email delivery</h2>
+        <span className="collapsible-meta">
+          Sending via {PROVIDER_INFO[active].label}
+          {active === "gmail" && (resendReady ? " · Resend ready to switch" : " · Resend integrated")}
+        </span>
+        <span className="chevron" aria-hidden="true" />
+      </summary>
+      <div className="collapsible-body">
       <p className="muted small">
         Subscribers&apos; replies always land in the Gmail inbox (the reply-to), so the Reader replies tab works with either. Nothing is ever emailed until
         you confirm the issue.
@@ -1303,7 +1317,8 @@ function EmailDeliveryPanel() {
       {active === "resend" && (
         <p className="muted small">Bounce and complaint webhook: <code>{appUrl()}/api/webhooks/resend</code> (events: email.bounced, email.complained).</p>
       )}
-    </section>
+      </div>
+    </details>
   );
 }
 
