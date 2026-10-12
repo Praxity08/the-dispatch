@@ -189,3 +189,6 @@ alter table articles add column if not exists added_by_shreya boolean not null d
 alter table issues   add column if not exists redeliver boolean not null default false;
 alter table issues   add column if not exists ranked_rubric jsonb;      -- the rubric the current lineup was picked with
 alter table issues   add column if not exists ranked_at timestamptz;
+-- Demo data: sample subscribers and replies are labelled on the dashboard and never emailed or counted for sending.
+alter table subscribers    add column if not exists is_sample boolean not null default false;
+alter table reader_replies add column if not exists is_sample boolean not null default false;

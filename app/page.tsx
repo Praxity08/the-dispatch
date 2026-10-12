@@ -17,7 +17,7 @@ export default async function Home() {
             (select count(*)::int from articles where week_start = $1 and is_relevant) as relevant,
             (select count(*)::int from stories where week_start = $1) as stories,
             (select count(*)::int from sources where active) as sources,
-            (select count(*)::int from subscribers where status = 'active') as subscribers`,
+            (select count(*)::int from subscribers where status = 'active' and not is_sample) as subscribers`,
     [week],
   );
   const stories = await query<StoryRow>(

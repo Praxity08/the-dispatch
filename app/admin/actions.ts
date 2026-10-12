@@ -246,6 +246,22 @@ export async function replyAction(_: ActionState, formData: FormData): Promise<A
   return rows.length ? { ok: true, message: "Done." } : { ok: false, message: "Nothing to update." };
 }
 
+/** Deletes the demo data (sample subscribers or sample replies). Real rows are never touched. */
+export async function removeSamples(_: ActionState, formData: FormData): Promise<ActionState> {
+  await requireAdmin();
+  const target = str(formData, "target");
+  let removed = 0;
+  if (target === "replies") removed = (await query("delete from reader_replies where is_sample returning id")).length;
+  else if (target === "subscribers") {
+    await query("delete from deliveries where subscriber_id in (select id from subscribers where is_sample)");
+    await query("update reader_replies set subscriber_id = null where subscriber_id in (select id from subscribers where is_sample)");
+    removed = (await query("delete from subscribers where is_sample returning id")).length;
+  } else return { ok: false, message: "Unknown action." };
+  await logEvent("samples_removed", { target, removed });
+  revalidatePath("/admin");
+  return { ok: true, message: `Removed ${removed} sample ${target === "replies" ? "replies" : "subscribers"}.` };
+}
+
 export async function toggleSource(formData: FormData) {
   await requireAdmin();
   await query("update sources set active = not active where id = $1", [Number(formData.get("id"))]);

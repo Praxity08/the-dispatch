@@ -27,6 +27,7 @@ import {
   FilterPills,
   ProgressSteps,
   ReplyButton,
+  SampleRemoveButton,
   TestEmailPanel,
   RestoreDefaultsButton,
   RubricEditor,
@@ -276,7 +277,7 @@ async function IssueTab({ issue }: { issue: EditorIssue | undefined }) {
         : [],
     }))
     .sort((a, b) => b.score - a.score);
-  const [{ subscribers }] = await query<{ subscribers: number }>("select count(*)::int as subscribers from subscribers where status = 'active'");
+  const [{ subscribers }] = await query<{ subscribers: number }>("select count(*)::int as subscribers from subscribers where status = 'active' and not is_sample");
   const sendAt = sendTimeFor(issue.week_start);
   const late = Date.now() >= sendAt.getTime();
   const topics = new Set(lineup.map((i) => i.topic)).size;
@@ -702,18 +703,24 @@ async function PoolTab({ issue, topic }: { issue: EditorIssue | undefined; topic
 
 async function SubscribersTab({ status }: { status?: string }) {
   const filter = ["active", "unsubscribed", "bounced"].includes(status ?? "") ? status! : null;
-  const [counts] = await query<{ active: number; unsubscribed: number; bounced: number }>(
+  const [counts] = await query<{ active: number; unsubscribed: number; bounced: number; samples: number }>(
     `select count(*) filter (where status = 'active')::int as active, count(*) filter (where status = 'unsubscribed')::int as unsubscribed,
-            count(*) filter (where status = 'bounced')::int as bounced from subscribers`,
+            count(*) filter (where status = 'bounced')::int as bounced, count(*) filter (where is_sample)::int as samples from subscribers`,
   );
-  const rows = await query<{ id: number; email: string; name: string | null; status: string; bounce_count: number; last_bounce_reason: string | null; subscribed_at: string; unsubscribed_at: string | null }>(
-    `select id, email, name, status, bounce_count, last_bounce_reason, subscribed_at, unsubscribed_at from subscribers
+  const rows = await query<{ id: number; email: string; name: string | null; status: string; bounce_count: number; last_bounce_reason: string | null; subscribed_at: string; unsubscribed_at: string | null; is_sample: boolean }>(
+    `select id, email, name, status, bounce_count, last_bounce_reason, subscribed_at, unsubscribed_at, is_sample from subscribers
      where ($1::text is null or status = $1) order by subscribed_at desc limit 200`,
     [filter],
   );
   return (
     <section>
       <h2 className="page-title">Subscribers</h2>
+      {counts.samples > 0 && (
+        <div className="sample-banner" role="note">
+          <p><b>Includes {counts.samples} sample subscribers.</b> They are made-up people on <code>example.com</code> addresses, added to show how the list works. They are not real, are never emailed, and don&apos;t count towards the send.</p>
+          <SampleRemoveButton target="subscribers" />
+        </div>
+      )}
       <div className="stats">
         <Link href="/admin?tab=subscribers&status=active" className={`stat tone-green${filter === "active" ? " active" : ""}`}><b>{counts.active}</b><span className="muted">active</span></Link>
         <Link href="/admin?tab=subscribers&status=unsubscribed" className={`stat tone-neutral${filter === "unsubscribed" ? " active" : ""}`}><b>{counts.unsubscribed}</b><span className="muted">unsubscribed</span></Link>
@@ -731,7 +738,7 @@ async function SubscribersTab({ status }: { status?: string }) {
           <tbody>
             {rows.map((s) => (
               <tr key={s.id}>
-                <td>{s.email}{s.name && <div className="muted small">{s.name}</div>}</td>
+                <td>{s.email}{s.is_sample && <span className="chip sample">Sample · not real</span>}{s.name && <div className="muted small">{s.name}</div>}</td>
                 <td><span className={`chip${s.status === "active" ? " good" : s.status === "bounced" ? " bad" : ""}`}>{s.status}</span>{s.last_bounce_reason && <div className="muted small">{s.last_bounce_reason}</div>}</td>
                 <td>{s.bounce_count}</td>
                 <td className="nowrap">{fmt(s.subscribed_at)}</td>
@@ -799,15 +806,15 @@ async function RepliesTab({ view }: { view?: string }) {
   const archived = view === "archived";
   const rows = await query<{
     id: number; from_email: string; from_name: string | null; subject: string | null; body: string; received_at: string; status: string;
-    issue_number: number | null; subscriber_status: string | null;
+    issue_number: number | null; subscriber_status: string | null; is_sample: boolean;
   }>(
-    `select r.id, r.from_email, r.from_name, r.subject, r.body, r.received_at, r.status, i.issue_number, s.status as subscriber_status
+    `select r.id, r.from_email, r.from_name, r.subject, r.body, r.received_at, r.status, r.is_sample, i.issue_number, s.status as subscriber_status
      from reader_replies r left join issues i on i.id = r.issue_id left join subscribers s on s.id = r.subscriber_id
      where (r.status = 'archived') = $1 order by (r.status = 'new') desc, r.received_at desc limit 200`,
     [archived],
   );
-  const [counts] = await query<{ unread: number; total: number; archived: number; people: number }>(
-    `select count(*) filter (where status = 'new')::int as unread, count(*) filter (where status <> 'archived')::int as total,
+  const [counts] = await query<{ unread: number; total: number; archived: number; people: number; samples: number }>(
+    `select count(*) filter (where status = 'new')::int as unread, count(*) filter (where status <> 'archived')::int as total, count(*) filter (where is_sample)::int as samples,
             count(*) filter (where status = 'archived')::int as archived, count(distinct from_email)::int as people from reader_replies`,
   );
   const reSubject = (subject: string | null) => (subject && /^re:/i.test(subject) ? subject : `Re: ${subject ?? "The Dispatch"}`);
@@ -825,6 +832,12 @@ async function RepliesTab({ view }: { view?: string }) {
         unsubscribes, auto-replies and robots are filtered out. The quoted newsletter is trimmed so you only see their words. The inbox is checked at
         noon and 8 PM IST, and new replies are announced in Telegram.
       </p>
+      {counts.samples > 0 && (
+        <div className="sample-banner" role="note">
+          <p><b>{counts.samples} of these replies are samples.</b> They were written to show how reader replies appear here. They are not from real readers.</p>
+          <SampleRemoveButton target="replies" />
+        </div>
+      )}
       <div className="stats">
         <Link href="/admin?tab=replies" className="stat tone-rose"><b>{counts.unread}</b><span className="muted">unread</span></Link>
         <Link href="/admin?tab=replies" className={`stat tone-blue${archived ? "" : " active"}`}><b>{counts.total}</b><span className="muted">in inbox</span></Link>
@@ -848,6 +861,7 @@ async function RepliesTab({ view }: { view?: string }) {
                   </div>
                 </div>
                 <div className="reply-chips">
+                  {r.is_sample && <span className="chip sample">Sample · not a real reader</span>}
                   {r.status === "new" && <span className="chip dark">New</span>}
                   {r.subscriber_status ? (
                     <span className={`chip${r.subscriber_status === "active" ? "" : " warn"}`}>{r.subscriber_status === "active" ? "Subscriber" : `Subscriber · ${r.subscriber_status}`}</span>

@@ -339,7 +339,7 @@ async function handleCallback(cb: TgCallbackQuery) {
         const missing = checklist.filter((c) => !c.ok).map((c) => `${c.label}${c.detail ? ` (${c.detail})` : ""}`);
         return answer(cb, `Not ready yet: ${missing.join("; ")}. Tip: "Approve all pending" approves everything at once.`, true);
       }
-      const [{ subscribers }] = await query<{ subscribers: number }>("select count(*)::int as subscribers from subscribers where status = 'active'");
+      const [{ subscribers }] = await query<{ subscribers: number }>("select count(*)::int as subscribers from subscribers where status = 'active' and not is_sample");
       await answer(cb);
       await sendHtml(
         `📬 <b>Send The Dispatch #${issue.issue_number}?</b>\n${active(items).length} stories to <b>${subscribers}</b> active subscribers on <b>${formatIst(sendTimeFor(issue.week_start))}</b>.\nYou can still reopen it before then.`,

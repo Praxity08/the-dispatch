@@ -44,7 +44,7 @@ export async function sendIssue({ budgetMs = Infinity, week = weekStart(), now =
 
   // Everyone active right now gets a delivery row (no-op for rows that already exist).
   await query(
-    `insert into deliveries (issue_id, subscriber_id) select $1, id from subscribers where status = 'active'
+    `insert into deliveries (issue_id, subscriber_id) select $1, id from subscribers where status = 'active' and not is_sample
      on conflict (issue_id, subscriber_id) do nothing`,
     [issue.id],
   );

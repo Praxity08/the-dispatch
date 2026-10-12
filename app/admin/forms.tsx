@@ -6,6 +6,7 @@ import { checkCommentary, type CommentaryLimits, CRITERION_KEYS, type Rubric } f
 import {
   type ActionState,
   editorAction,
+  removeSamples,
   replyAction,
   restoreDefaultRubric,
   runJob,
@@ -719,5 +720,26 @@ export function FilterPills({ items, active }: { items: { key: string; label: st
         </Link>
       ))}
     </div>
+  );
+}
+
+/** Two-step removal of the demo data on the Subscribers or Reader replies tab. */
+export function SampleRemoveButton({ target }: { target: "subscribers" | "replies" }) {
+  const [armed, setArmed] = useState(false);
+  const [state, action, pending] = useActionState(removeSamples, null);
+  if (state?.ok) return <Result state={state} />;
+  return (
+    <form action={action} className="row sample-remove">
+      <input type="hidden" name="target" value={target} />
+      {armed ? (
+        <>
+          <button className="btn danger" disabled={pending}>{pending ? "Removing…" : "Yes, remove the samples"}</button>
+          <button type="button" className="btn ghost" onClick={() => setArmed(false)}>Keep them</button>
+        </>
+      ) : (
+        <button type="button" className="btn white" onClick={() => setArmed(true)}>Remove samples</button>
+      )}
+      <Result state={state} />
+    </form>
   );
 }
