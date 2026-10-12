@@ -703,3 +703,22 @@ main.narrow.login h1 { margin: 2px 0 18px; }
 .delivery-note.warn { background: var(--butter-bg); color: var(--butter); }
 .delivery-note.warn .delivery-guide, .delivery-note.warn .delivery-now { color: inherit; }
 .delivery-note a { color: inherit; justify-self: start; }
+
+/* ---- How scoring works: the six criteria, as an even 3 × 2 grid ---- */
+.explainer .criteria { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+@media (max-width: 1180px) { .explainer .criteria { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .explainer .criteria { grid-template-columns: minmax(0, 1fr); } }
+.criterion { display: flex; flex-direction: column; min-width: 0; padding: 22px 24px; }
+/* Name on top, weight as a pill underneath: never collides or spills past the card. */
+.criterion-head { flex-direction: column; align-items: flex-start; gap: 8px; }
+.criterion h3 { font-size: 21px; line-height: 1.2; letter-spacing: -.01em; }
+.criterion .weight { display: inline-block; background: rgba(255,255,255,.6); border-radius: var(--r-pill); padding: 3px 10px; font-size: 12px; white-space: nowrap; }
+:root[data-theme="dark"] .criterion .weight { background: rgba(0,0,0,.22); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .criterion .weight { background: rgba(0,0,0,.22); } }
+.criterion .question { margin: 12px 0 6px; }
+.criterion .scale { margin: 12px 0; }
+.criterion .scored-by { margin-top: auto; padding-top: 6px; }  /* aligns the footers along each row */
+/* Under-reported's outlet → score table: even columns that fit the card. */
+.criterion table.mini { width: 100%; table-layout: fixed; border-spacing: 0 4px; margin: 6px 0 4px; }
+.criterion table.mini th, .criterion table.mini td { padding: 4px 2px; text-align: center; font-size: 12px; white-space: nowrap; }
+.criterion table.mini th:first-child, .criterion table.mini td:first-child { width: 22%; text-align: left; padding-left: 8px; }
