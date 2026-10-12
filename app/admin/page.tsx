@@ -24,6 +24,8 @@ import {
   JobButton,
   RedraftPanel,
   RerankPanel,
+  FilterPills,
+  ProgressSteps,
   ReplyButton,
   TestEmailPanel,
   RestoreDefaultsButton,
@@ -186,19 +188,7 @@ export default async function EditorDashboard({ searchParams }: Props) {
               <p className="today">{today}</p>
               <h1>Good to see you, Shreya</h1>
             </div>
-            {issue && (
-              <ol className="steps progress" aria-label="Issue progress">
-                {STATUS_STEPS.map((step, i) => {
-                  const done = i < stepIndex || issue.status === "sent";
-                  const current = i === stepIndex && issue.status !== "sent";
-                  return (
-                    <li key={step.key} className={done ? "done" : current ? "current" : ""} aria-current={current ? "step" : undefined}>
-                      {done ? "✓ " : current ? "● " : ""}{step.label}
-                    </li>
-                  );
-                })}
-              </ol>
-            )}
+            {issue && <ProgressSteps steps={STATUS_STEPS} current={stepIndex} allDone={issue.status === "sent"} />}
           </div>
         </header>
 
@@ -655,13 +645,15 @@ async function PoolTab({ issue, topic }: { issue: EditorIssue | undefined; topic
           <JobButton job="score" label="Score new stories" hint="1–2 Gemini requests; your lineup isn't touched" />
         </div>
       )}
-      <div className="filters">
-        <Link href="/admin?tab=pool" className={!filterTopic ? "active" : ""}>All</Link>
-        {TOPIC_KEYS.filter((k) => k !== "other").map((k) => (
-          <Link key={k} href={`/admin?tab=pool&topic=${k}`} className={filterTopic === k ? "active" : ""}>{TOPICS[k]}</Link>
-        ))}
-      </div>
-      <div className="table-wrap">
+      <FilterPills
+        active={filterTopic ?? "all"}
+        items={[
+          { key: "all", label: "All", href: "/admin?tab=pool" },
+          ...TOPIC_KEYS.filter((k) => k !== "other").map((k) => ({ key: k, label: TOPICS[k], href: `/admin?tab=pool&topic=${k}` })),
+        ]}
+      />
+      {/* Keyed by topic so a new filter's list fades in instead of snapping. */}
+      <div className="table-wrap pool-list" key={filterTopic ?? "all"}>
         <table>
           <thead><tr><th>Score</th><th>Story</th><th>Topic</th><th>Outlets</th><th></th></tr></thead>
           <tbody>

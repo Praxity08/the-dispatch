@@ -1,7 +1,7 @@
 "use client";
 
-import { useLinkStatus } from "next/link";
-import { useActionState, useState } from "react";
+import Link, { useLinkStatus } from "next/link";
+import { useActionState, useLayoutEffect, useRef, useState } from "react";
 import { checkCommentary, type CommentaryLimits, CRITERION_KEYS, type Rubric } from "@/lib/rubric";
 import {
   type ActionState,
@@ -617,6 +617,107 @@ export function TestEmailPanel({
           <Result state={state} />
         </div>
       )}
+    </div>
+  );
+}
+
+/**
+ * The issue's progress track. A single "current" pill glides from step to step when the status changes
+ * (e.g. on Confirm), the step left behind turns green and its ✓ fades in. Server-rendered first; the
+ * pill takes over once it has measured the steps.
+ */
+export function ProgressSteps({ steps, current, allDone }: { steps: { key: string; label: string }[]; current: number; allDone: boolean }) {
+  const ref = useRef<HTMLOListElement>(null);
+  const [box, setBox] = useState<{ x: number; y: number; w: number; h: number } | null>(null);
+  const [animated, setAnimated] = useState(false);
+
+  useLayoutEffect(() => {
+    const ol = ref.current;
+    if (!ol) return;
+    const measure = () => {
+      const li = ol.querySelectorAll("li")[Math.max(0, current)] as HTMLElement | undefined;
+      if (li) setBox({ x: li.offsetLeft, y: li.offsetTop, w: li.offsetWidth, h: li.offsetHeight });
+    };
+    measure();
+    // Only animate moves after the first placement, so the pill doesn't fly in on page load.
+    const frame = requestAnimationFrame(() => setAnimated(true));
+    const ro = new ResizeObserver(measure);
+    ro.observe(ol);
+    return () => {
+      cancelAnimationFrame(frame);
+      ro.disconnect();
+    };
+  }, [current]);
+
+  return (
+    <ol ref={ref} className={`steps progress${box ? " ready" : ""}${animated ? " animated" : ""}`} aria-label="Issue progress">
+      <span
+        className="step-indicator"
+        aria-hidden="true"
+        style={box ? { transform: `translate(${box.x}px, ${box.y}px)`, width: box.w, height: box.h, opacity: allDone ? 0 : 1 } : { opacity: 0 }}
+      />
+      {steps.map((step, i) => {
+        const done = allDone || i < current;
+        const now = !allDone && i === current;
+        return (
+          <li key={step.key} className={done ? "done" : now ? "current" : ""} aria-current={now ? "step" : undefined}>
+            <span className="step-mark" aria-hidden="true">{done ? "✓" : "●"}</span>
+            {step.label}
+          </li>
+        );
+      })}
+    </ol>
+  );
+}
+
+/**
+ * Topic filter pills with one dark highlight that glides to the pill you click. It moves at once
+ * (before the filtered list arrives) and follows the server's choice once the page updates.
+ */
+export function FilterPills({ items, active }: { items: { key: string; label: string; href: string }[]; active: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [selected, setSelected] = useState(active);
+  const [lastActive, setLastActive] = useState(active);
+  if (active !== lastActive) {
+    setLastActive(active);
+    setSelected(active);
+  }
+  const [box, setBox] = useState<{ x: number; y: number; w: number; h: number } | null>(null);
+  const [animated, setAnimated] = useState(false);
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const measure = () => {
+      const pill = el.querySelector<HTMLElement>(`[data-key="${CSS.escape(selected)}"]`);
+      if (pill) setBox({ x: pill.offsetLeft, y: pill.offsetTop, w: pill.offsetWidth, h: pill.offsetHeight });
+    };
+    measure();
+    const frame = requestAnimationFrame(() => setAnimated(true));
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => {
+      cancelAnimationFrame(frame);
+      ro.disconnect();
+    };
+  }, [selected]);
+
+  return (
+    <div ref={ref} className={`filters sliding${box ? " ready" : ""}${animated ? " animated" : ""}`}>
+      <span className="filter-indicator" aria-hidden="true" style={box ? { transform: `translate(${box.x}px, ${box.y}px)`, width: box.w, height: box.h } : { opacity: 0 }} />
+      {items.map((it) => (
+        <Link
+          key={it.key}
+          href={it.href}
+          data-key={it.key}
+          className={it.key === selected ? "active" : ""}
+          aria-current={it.key === active ? "page" : undefined}
+          onClick={() => setSelected(it.key)}
+          scroll={false}
+        >
+          {it.label}
+        </Link>
+      ))}
     </div>
   );
 }

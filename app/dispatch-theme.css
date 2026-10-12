@@ -812,3 +812,35 @@ main.narrow.login h1 { margin: 2px 0 18px; }
 .via-pill { border: 0; cursor: pointer; border-radius: var(--r-pill); padding: 5px 12px; font: 500 12.5px var(--font); background: var(--surface); color: var(--text-2); }
 .via-pill.on { background: var(--ink-btn); color: var(--surface); }
 .test-note { margin: 0; background: var(--blue-bg); color: var(--blue); border-radius: 12px; padding: 8px 10px; line-height: 1.4; }
+
+/* ---- Progress track: one pill glides between steps ---- */
+.steps { position: relative; }
+.steps li { position: relative; z-index: 1; display: inline-flex; align-items: center; transition: background-color .45s ease, color .45s ease; }
+.step-indicator { position: absolute; left: 0; top: 0; z-index: 0; border-radius: var(--r-pill); background: var(--ink-btn); pointer-events: none; }
+.steps.animated .step-indicator { transition: transform .55s cubic-bezier(.65, 0, .35, 1), width .55s cubic-bezier(.65, 0, .35, 1), height .55s ease, opacity .35s ease; }
+/* Once the pill is placed it carries the "current" look; before that (server render) the step itself does. */
+.steps.ready li.current { background: transparent; }
+.steps li.current { color: var(--surface); }
+/* The ✓ / ● grow in and out instead of popping. */
+.step-mark { display: inline-block; overflow: hidden; max-width: 0; margin-right: 0; opacity: 0; transition: max-width .4s ease, margin-right .4s ease, opacity .3s ease; }
+.steps li.done .step-mark, .steps li.current .step-mark { max-width: 1.1em; margin-right: 5px; opacity: 1; }
+.steps li.current .step-mark { font-size: .8em; }
+@media (prefers-reduced-motion: reduce) {
+  .steps.animated .step-indicator, .steps li, .step-mark { transition: none; }
+}
+.steps.ready li.current, .steps.ready li.done + li.current { background: transparent; }
+
+/* ---- Topic filters: one highlight glides to the chosen pill; the list fades in ---- */
+.filters.sliding { position: relative; }
+.filters.sliding a { position: relative; z-index: 1; transition: color .35s ease, background-color .35s ease; }
+.filter-indicator { position: absolute; left: 0; top: 0; z-index: 0; border-radius: var(--r-pill); background: var(--ink-btn); pointer-events: none; }
+.filters.sliding.animated .filter-indicator { transition: transform .45s cubic-bezier(.65, 0, .35, 1), width .45s cubic-bezier(.65, 0, .35, 1), height .45s ease; }
+.filters.sliding.ready a.active { background: transparent; }
+.filters.sliding a.active { color: var(--surface); }
+.pool-list { animation: dispatch-enter .35s cubic-bezier(.2, .7, .2, 1) both; }
+/* While the new topic loads, the old list steps back (same cue as switching tabs). */
+.dash:has(.filters.sliding a.active:not([aria-current])) .pool-list { opacity: .45; transition: opacity .2s ease; }
+@media (prefers-reduced-motion: reduce) {
+  .filters.sliding.animated .filter-indicator, .filters.sliding a { transition: none; }
+  .pool-list { animation: none; }
+}
