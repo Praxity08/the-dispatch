@@ -885,3 +885,29 @@ details.collapsible[open] > summary { border-radius: 30px 30px 0 0; }
 .sample-remove { margin: 0; }
 .chip.sample { background: var(--butter-bg); color: var(--butter); font-size: 11.5px; margin-left: 8px; }
 .collapsible-body > p:first-child { margin-top: 0; }
+
+/* ---- Smooth open / close for every collapsible (Pipeline sections, Why it was picked, bench stories) ---- */
+:root { interpolate-size: allow-keywords; }
+details.collapsible::details-content,
+details.rubric::details-content,
+details.bench::details-content {
+  block-size: 0;
+  overflow: clip;
+  opacity: 0;
+  transition: block-size .42s cubic-bezier(.2, .7, .2, 1), opacity .32s ease, content-visibility .42s allow-discrete;
+}
+details.collapsible[open]::details-content,
+details.rubric[open]::details-content,
+details.bench[open]::details-content {
+  block-size: auto;
+  opacity: 1;
+}
+/* The height transition replaces the old fade-in where the browser supports it. */
+@supports selector(::details-content) {
+  .collapsible-body, .rubric[open] > :not(summary), details.bench[open] > :not(summary) { animation: none; }
+}
+/* The summary's rounded bottom corners return only once the panel has finished closing. */
+details.collapsible > summary { transition: border-radius .42s ease, background-color .2s ease; }
+@media (prefers-reduced-motion: reduce) {
+  details.collapsible::details-content, details.rubric::details-content, details.bench::details-content { transition: none; }
+}
