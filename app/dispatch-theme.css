@@ -633,3 +633,17 @@ main.narrow.login h1 { margin: 2px 0 18px; }
 .test-or { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
 .test-email-panel .result { margin: 0; font-size: 13px; }
 .test-email > .btn { flex: 1 1 120px; }
+
+/* ---- Sidebar follows the page when it sits beside the content (wide screens only) ---- */
+@media (min-width: 940px) {
+  .dash-side {
+    position: sticky;
+    top: 24px;
+    align-self: flex-start;
+    /* On short windows the sidebar scrolls on its own instead of being cut off. */
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+}
