@@ -1,7 +1,7 @@
 "use client";
 
 import Link, { useLinkStatus } from "next/link";
-import { useActionState, useLayoutEffect, useRef, useState } from "react";
+import { Component, type ReactNode, useActionState, useLayoutEffect, useRef, useState } from "react";
 import { checkCommentary, type CommentaryLimits, CRITERION_KEYS, type Rubric } from "@/lib/rubric";
 import {
   type ActionState,
@@ -742,4 +742,61 @@ export function SampleRemoveButton({ target }: { target: "subscribers" | "replie
       <Result state={state} />
     </form>
   );
+}
+
+type Rects = Map<string, { top: number; left: number }>;
+
+/**
+ * A list whose items glide to their new places when the order changes (move up/down, swaps).
+ * It records each item's position just before React updates the page, then animates every item
+ * from where it was to where it is now ("FLIP"). Items new to the list fade and rise in.
+ * Children mark themselves with data-flip-id.
+ */
+export class FlipList extends Component<{ children: ReactNode; className?: string }> {
+  private el: HTMLDivElement | null = null;
+
+  private measure(): Rects {
+    const out: Rects = new Map();
+    if (!this.el) return out;
+    const base = this.el.getBoundingClientRect();
+    this.el.querySelectorAll<HTMLElement>(":scope > [data-flip-id]").forEach((node) => {
+      const r = node.getBoundingClientRect();
+      out.set(node.dataset.flipId!, { top: r.top - base.top, left: r.left - base.left });
+    });
+    return out;
+  }
+
+  getSnapshotBeforeUpdate(): Rects {
+    return this.measure();
+  }
+
+  componentDidUpdate(_: unknown, __: unknown, before: Rects) {
+    if (!this.el || !before?.size) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const after = this.measure();
+    const ease = "cubic-bezier(.2, .7, .2, 1)";
+    this.el.querySelectorAll<HTMLElement>(":scope > [data-flip-id]").forEach((node) => {
+      const id = node.dataset.flipId!;
+      const was = before.get(id);
+      const now = after.get(id)!;
+      if (!was) {
+        node.animate([{ opacity: 0, transform: "translateY(14px) scale(.985)" }, { opacity: 1, transform: "none" }], { duration: 460, easing: ease });
+        return;
+      }
+      const dx = was.left - now.left;
+      const dy = was.top - now.top;
+      if (Math.abs(dx) < 1 && Math.abs(dy) < 1) return;
+      node.animate([{ transform: `translate(${dx}px, ${dy}px)` }, { transform: "none" }], { duration: 520, easing: ease });
+      // A brief lift on the card that travelled furthest makes the move easy to follow.
+      if (Math.abs(dy) > 40) node.animate([{ boxShadow: "0 18px 40px -18px rgba(40,35,25,.35)" }, { boxShadow: "0 1px 2px rgba(40,35,25,.04), 0 18px 40px -26px rgba(40,35,25,.16)" }], { duration: 700, easing: "ease-out" });
+    });
+  }
+
+  render() {
+    return (
+      <div ref={(el) => { this.el = el; }} className={this.props.className}>
+        {this.props.children}
+      </div>
+    );
+  }
 }

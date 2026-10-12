@@ -25,6 +25,7 @@ import {
   RedraftPanel,
   RerankPanel,
   FilterPills,
+  FlipList,
   ProgressSteps,
   ReplyButton,
   SampleRemoveButton,
@@ -332,16 +333,19 @@ async function IssueTab({ issue }: { issue: EditorIssue | undefined }) {
               <ActionButton op="approve-all" fields={{ issue: issue.id }} label="Approve all pending" pendingLabel="Approving…" variant="good" />
             )}
           </div>
-          {lineup.map((item, idx) => (
-            <StoryCard key={item.id} item={item} issueId={issue.id} locked={locked} first={idx === 0} last={idx === lineup.length - 1} swapOptions={swapOptions} />
-          ))}
+          <FlipList className="flip-list">
+            {lineup.map((item, idx) => (
+              <StoryCard key={item.id} item={item} issueId={issue.id} locked={locked} first={idx === 0} last={idx === lineup.length - 1} swapOptions={swapOptions} />
+            ))}
+          </FlipList>
         </section>
 
         {removed.length > 0 && (
           <section>
             <h2>Removed from this issue</h2>
+            <FlipList className="flip-list">
             {removed.map((item) => (
-              <div key={item.id} className="card removed">
+              <div key={item.id} className="card removed" data-flip-id={item.id}>
                 <div className="card-top">
                   <span className="chip">{item.status === "dropped" ? "Dropped" : "Swapped out"}</span>
                   <a href={item.url} target="_blank" rel="noreferrer" className="removed-title">{item.headline}</a>
@@ -352,6 +356,7 @@ async function IssueTab({ issue }: { issue: EditorIssue | undefined }) {
                 )}
               </div>
             ))}
+            </FlipList>
           </section>
         )}
 
@@ -363,9 +368,11 @@ async function IssueTab({ issue }: { issue: EditorIssue | undefined }) {
           <p className="muted small">The next-best stories. Edit their commentary here, then use “Swap” on a lineup story to bring one in.</p>
           <div className="bench-list">
             {!locked && <AddLinkForm hint="Saw something the feeds missed? It's scored, gets a draft commentary in your voice, and lands here on the bench." />}
-            {bench.map((item) => (
-              <BenchCard key={item.id} item={item} issueId={issue.id} locked={locked} />
-            ))}
+            <FlipList className="flip-list bench-flip">
+              {bench.map((item) => (
+                <BenchCard key={item.id} item={item} issueId={issue.id} locked={locked} />
+              ))}
+            </FlipList>
             {bench.length === 0 && <p className="muted small">The bench is empty.</p>}
           </div>
         </section>
@@ -528,7 +535,7 @@ function StoryCard({
 }) {
   const f = { item: item.id, issue: issueId };
   return (
-    <article className={`card ${item.status}`}>
+    <article className={`card ${item.status}`} data-flip-id={item.id}>
       <div className="card-top">
         <span className="pos">{item.position}</span>
         <span className={topicChip(item.topic)}>{TOPICS[item.topic] ?? item.topic}</span>
@@ -576,7 +583,7 @@ function StoryCard({
 
 function BenchCard({ item, issueId, locked }: { item: EditorItem; issueId: number; locked: boolean }) {
   return (
-    <details className="card bench">
+    <details className="card bench" data-flip-id={item.id}>
       <summary>
         <span className="num bench-score">{Math.round(Number(item.score ?? 0))}</span>
         <span className="bench-title">{item.headline}</span>
