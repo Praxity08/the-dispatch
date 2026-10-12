@@ -722,3 +722,79 @@ main.narrow.login h1 { margin: 2px 0 18px; }
 .criterion table.mini { width: 100%; table-layout: fixed; border-spacing: 0 4px; margin: 6px 0 4px; }
 .criterion table.mini th, .criterion table.mini td { padding: 4px 2px; text-align: center; font-size: 12px; white-space: nowrap; }
 .criterion table.mini th:first-child, .criterion table.mini td:first-child { width: 22%; text-align: left; padding-left: 8px; }
+
+/* =====================================================================
+   Shell v2: a slim icon rail that opens on hover, logo + status in the header
+   ===================================================================== */
+.dash { --rail: 68px; display: block; max-width: 1500px; margin: 0 auto; padding: 24px 24px 32px calc(24px + var(--rail) + 22px); }
+.dash-main { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* Rail: icons only until hovered (or tabbed into), then it slides open over the page. */
+.rail { position: fixed; z-index: 40; top: 24px; left: 24px; }
+.rail-inner {
+  width: var(--rail); max-height: calc(100vh - 48px); overflow: hidden auto; scrollbar-width: none;
+  display: flex; flex-direction: column; gap: 4px; padding: 12px 12px;
+  background: var(--surface); border-radius: 26px; box-shadow: var(--shadow);
+  transition: width .28s cubic-bezier(.2, .7, .2, 1), box-shadow .28s ease;
+}
+.rail:hover .rail-inner, .rail:focus-within .rail-inner {
+  width: 252px;
+  box-shadow: 0 1px 2px rgba(40,35,25,.06), 0 28px 60px -24px rgba(40,35,25,.32);
+}
+.rail-item {
+  display: flex; align-items: center; gap: 12px; width: 100%; min-height: 44px; padding: 2px; margin: 0;
+  border: 0; border-radius: 16px; background: transparent; color: var(--text);
+  font: 500 14.5px/1.2 var(--font); text-align: left; text-decoration: none; white-space: nowrap; cursor: pointer;
+}
+.rail-item:hover, .rail-item:has(.tab-pending[data-pending]) { background: var(--bg); text-decoration: none; }
+.rail-item.active { background: var(--surface-3); font-weight: 600; }
+.rail-icon { flex: none; position: relative; width: 40px; height: 40px; border-radius: 14px; display: grid; place-items: center; }
+.rail-item.active .rail-icon { outline: 2px solid currentColor; outline-offset: 2px; }
+.rail-icon.tone-green { background: var(--green-bg); color: var(--green); }
+.rail-icon.tone-blue { background: var(--blue-bg); color: var(--blue); }
+.rail-icon.tone-lav { background: var(--lav-bg); color: var(--lav); }
+.rail-icon.tone-rose { background: var(--rose-bg); color: var(--rose); }
+.rail-icon.tone-butter { background: var(--butter-bg); color: var(--butter); }
+.rail-icon.tone-sand { background: var(--sand-bg); color: var(--sand); }
+.rail-icon.tone-neutral { background: var(--surface-3); color: var(--text-2); }
+.rail .rail-label { display: flex; flex-direction: column; gap: 2px; opacity: 0; transform: translateX(-6px); transition: opacity .18s ease, transform .18s ease; }
+.rail:hover .rail-label, .rail:focus-within .rail-label { opacity: 1; transform: none; transition-delay: .07s; }
+.rail-sub { font-size: 11.5px; font-weight: 400; color: var(--muted); }
+.rail .badge {
+  position: absolute; top: -5px; right: -5px; min-width: 18px; height: 18px; padding: 0 5px; margin: 0;
+  border-radius: var(--r-pill); background: var(--ink-btn); color: var(--surface);
+  font: 600 10.5px/18px var(--font); text-align: center; box-shadow: 0 0 0 2px var(--surface);
+}
+.rail-foot { display: grid; gap: 4px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+.rail-foot form { margin: 0; }
+/* The light/dark switch as a rail item. */
+.theme-toggle.rail-item { justify-content: flex-start; gap: 12px; padding: 2px; background: transparent; font: 500 14.5px/1.2 var(--font); }
+.theme-toggle.rail-item:hover { background: var(--bg); }
+.theme-toggle:not(.rail-item) .tt-icon, .theme-toggle:not(.rail-item) .tt-label { display: contents; }
+
+/* Header: logo + Editor tag + one-line status, then the greeting and progress. */
+.dash-head { display: grid; gap: 16px; }
+.head-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
+.head-brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
+.head-brand:hover { text-decoration: none; }
+.head-logo { display: block; height: 42px; width: auto; }
+:root[data-theme="dark"] .head-logo { filter: invert(1) hue-rotate(180deg); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .head-logo { filter: invert(1) hue-rotate(180deg); } }
+.strip.compact { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; padding: 8px 16px; border-radius: var(--r-pill); font-size: 13px; }
+.strip.compact .strip-status { font-size: 13.5px; }
+.strip-line { color: var(--text-2); }
+.head-main { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 24px; }
+.head-main h1 { margin: 0; }
+
+/* Phones: no hover, so the rail becomes a scrollable strip of icons along the top. */
+@media (max-width: 760px) {
+  .dash { padding: 12px 16px 28px; }
+  .rail { position: sticky; top: 8px; left: auto; margin-bottom: 16px; }
+  .rail-inner, .rail:hover .rail-inner, .rail:focus-within .rail-inner { width: auto; max-height: none; flex-direction: row; overflow: auto hidden; padding: 8px; border-radius: 22px; }
+  .rail-item { width: auto; min-height: 0; }
+  .rail .rail-label { display: none; }
+  .rail-foot { display: flex; margin: 0 0 0 auto; padding: 0 0 0 8px; border-top: 0; border-left: 1px solid var(--line); }
+  .head-logo { height: 34px; }
+  .strip.compact { border-radius: 18px; }
+}

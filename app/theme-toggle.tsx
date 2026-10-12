@@ -25,7 +25,7 @@ function savedTheme(): Theme | null {
 }
 
 /** Light / dark switch. The new theme spreads out from the button as a circle where the browser supports it. */
-export function ThemeToggle({ floating = false }: { floating?: boolean }) {
+export function ThemeToggle({ floating = false, rail = false }: { floating?: boolean; rail?: boolean }) {
   // Until she picks one, follow the system setting live.
   useEffect(() => {
     const mq = matchMedia("(prefers-color-scheme: dark)");
@@ -75,7 +75,8 @@ export function ThemeToggle({ floating = false }: { floating?: boolean }) {
   }
 
   return (
-    <button type="button" className={`theme-toggle${floating ? " floating" : ""}`} onClick={toggle} aria-label="Switch between light and dark mode">
+    <button type="button" className={`theme-toggle${floating ? " floating" : ""}${rail ? " rail-item" : ""}`} onClick={toggle} aria-label="Switch between light and dark mode">
+      <span className="tt-icon rail-icon tone-neutral" aria-hidden="true">
       <svg className="icon-moon" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
         <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7Z" fill="currentColor" />
       </svg>
@@ -85,8 +86,11 @@ export function ThemeToggle({ floating = false }: { floating?: boolean }) {
           <path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" />
         </g>
       </svg>
-      <span className="label-dark">Dark mode</span>
-      <span className="label-light">Light mode</span>
+      </span>
+      <span className="tt-label rail-label">
+        <span className="label-dark">Dark mode</span>
+        <span className="label-light">Light mode</span>
+      </span>
     </button>
   );
 }

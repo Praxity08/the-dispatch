@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type React from "react";
 import { isRubricUnlocked, RUBRIC_UNLOCK_MINUTES_LABEL, requireAdmin, samplePasswords } from "@/lib/admin";
 import { query } from "@/lib/db";
 import { editExamples, lineupDrift } from "@/lib/draft";
@@ -49,6 +50,33 @@ const TABS = [
   { key: "pipeline", label: "Pipeline" },
 ] as const;
 type Tab = (typeof TABS)[number]["key"];
+
+const svg = (d: string) => (
+  <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d={d} />
+  </svg>
+);
+const ICON = {
+  issue: svg("M5 4h11a2 2 0 0 1 2 2v13a1 1 0 0 0 2 0V9M5 4a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h14M8 8h6M8 12h6M8 16h4"),
+  pool: svg("M12 3 3 7.5l9 4.5 9-4.5L12 3ZM3 12l9 4.5 9-4.5M3 16.5 12 21l9-4.5"),
+  subscribers: svg("M16 19v-1a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v1M9 10a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM22 19v-1a4 4 0 0 0-3-3.9M16 3.1a3.5 3.5 0 0 1 0 6.8"),
+  replies: svg("M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12Z"),
+  guide: svg("M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"),
+  scoring: svg("M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"),
+  history: svg("M3 4h18v4H3zM5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8M10 12h4"),
+  pipeline: svg("M5 3a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM19 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4ZM5 7v4a4 4 0 0 0 4 4h6a4 4 0 0 1 4 4M14 5h3a2 2 0 0 1 2 2v3"),
+  signOut: svg("M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 16l-4-4 4-4M6 12h10"),
+};
+const TAB_ICON: Record<Tab, { icon: React.ReactNode; tone: string }> = {
+  issue: { icon: ICON.issue, tone: "green" },
+  pool: { icon: ICON.pool, tone: "blue" },
+  subscribers: { icon: ICON.subscribers, tone: "lav" },
+  replies: { icon: ICON.replies, tone: "rose" },
+  guide: { icon: ICON.guide, tone: "butter" },
+  scoring: { icon: ICON.scoring, tone: "blue" },
+  history: { icon: ICON.history, tone: "sand" },
+  pipeline: { icon: ICON.pipeline, tone: "neutral" },
+};
 
 const STATUS_COPY: Record<string, { label: string; tone: string }> = {
   collecting: { label: "Collecting stories", tone: "butter" },
@@ -110,48 +138,68 @@ export default async function EditorDashboard({ searchParams }: Props) {
     <>
     <FloatingBackground />
     <main className="dash">
-      <aside className="dash-side">
-        <div className="side-brand">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="dash-logo" src="/dispatch-logo.png" alt="The Dispatch — India's startup brief" />
-          <span className="editor-chip">Editor</span>
-        </div>
-        {issue && <IssueStrip issue={issue} />}
-        <nav className="tabs" aria-label="Sections">
+      <nav className="rail" aria-label="Sections">
+        <div className="rail-inner">
           {TABS.map((t) => (
-            <Link key={t.key} href={`/admin?tab=${t.key}`} className={t.key === tab ? "active" : ""} aria-current={t.key === tab ? "page" : undefined}>
-              <span className="tab-label">{t.label}</span>
+            <Link
+              key={t.key}
+              href={`/admin?tab=${t.key}`}
+              className={`rail-item${t.key === tab ? " active" : ""}`}
+              aria-current={t.key === tab ? "page" : undefined}
+              title={t.label}
+            >
+              <span className={`rail-icon tone-${TAB_ICON[t.key].tone}`} aria-hidden="true">
+                {TAB_ICON[t.key].icon}
+                {t.key === "replies" && unread > 0 && <span className="badge">{unread}</span>}
+              </span>
+              <span className="rail-label">
+                {t.label}
+                {t.key === "replies" && unread > 0 && <span className="sr-only"> ({unread} unread)</span>}
+              </span>
               <TabPending />
-              {t.key === "replies" && unread > 0 && <span className="badge" aria-label={`${unread} unread`}>{unread}</span>}
             </Link>
           ))}
-        </nav>
-        <ThemeToggle />
-        <div className="side-foot">
-          <span>Signed in as Shreya</span>
-          <form action={logout}><button className="link-btn">Log out</button></form>
+          <div className="rail-foot">
+            <ThemeToggle rail />
+            <form action={logout}>
+              <button className="rail-item" title="Sign out">
+                <span className="rail-icon tone-neutral" aria-hidden="true">{ICON.signOut}</span>
+                <span className="rail-label">Sign out<span className="rail-sub">Signed in as Shreya</span></span>
+              </button>
+            </form>
+          </div>
         </div>
-      </aside>
+      </nav>
 
       <div className="dash-main">
         <header className="dash-head">
-          <div>
-            <p className="today">{today}</p>
-            <h1>Good to see you, Shreya</h1>
+          <div className="head-top">
+            <Link href="/admin" className="head-brand" aria-label="The Dispatch: this week's issue">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img className="head-logo" src="/dispatch-logo.png" alt="The Dispatch — India's startup brief" />
+              <span className="editor-chip">Editor</span>
+            </Link>
+            {issue && <IssueStrip issue={issue} />}
           </div>
-          {issue && (
-            <ol className="steps progress" aria-label="Issue progress">
-              {STATUS_STEPS.map((step, i) => {
-                const done = i < stepIndex || issue.status === "sent";
-                const current = i === stepIndex && issue.status !== "sent";
-                return (
-                  <li key={step.key} className={done ? "done" : current ? "current" : ""} aria-current={current ? "step" : undefined}>
-                    {done ? "✓ " : current ? "● " : ""}{step.label}
-                  </li>
-                );
-              })}
-            </ol>
-          )}
+          <div className="head-main">
+            <div>
+              <p className="today">{today}</p>
+              <h1>Good to see you, Shreya</h1>
+            </div>
+            {issue && (
+              <ol className="steps progress" aria-label="Issue progress">
+                {STATUS_STEPS.map((step, i) => {
+                  const done = i < stepIndex || issue.status === "sent";
+                  const current = i === stepIndex && issue.status !== "sent";
+                  return (
+                    <li key={step.key} className={done ? "done" : current ? "current" : ""} aria-current={current ? "step" : undefined}>
+                      {done ? "✓ " : current ? "● " : ""}{step.label}
+                    </li>
+                  );
+                })}
+              </ol>
+            )}
+          </div>
         </header>
 
       {/* Keyed by tab, so each switch remounts the panel and plays its entrance. */}
@@ -176,13 +224,11 @@ function IssueStrip({ issue }: { issue: EditorIssue }) {
   const sendAt = sendTimeFor(issue.week_start);
   const remindAt = new Date(sendAt.getTime() - 10 * 3600 * 1000);
   return (
-    <div className={`strip tone-${s.tone}`}>
-      <div className="strip-status"><span className="dot" aria-hidden="true" />{s.label} · #{issue.issue_number}</div>
-      <div className="strip-lines">
-        {EDITABLE.includes(issue.status) && <span>Confirm before {formatIst(remindAt)}</span>}
-        {issue.status !== "sent" && <span>Sends {formatIst(sendAt)}</span>}
-        {issue.sent_at && <span>Sent {fmt(issue.sent_at)}</span>}
-      </div>
+    <div className={`strip compact tone-${s.tone}`}>
+      <span className="strip-status"><span className="dot" aria-hidden="true" />{s.label} · #{issue.issue_number}</span>
+      {EDITABLE.includes(issue.status) && <span className="strip-line">Confirm by {formatIst(remindAt)}</span>}
+      {issue.status !== "sent" && <span className="strip-line">Sends {formatIst(sendAt)}</span>}
+      {issue.sent_at && <span className="strip-line">Sent {fmt(issue.sent_at)}</span>}
     </div>
   );
 }
