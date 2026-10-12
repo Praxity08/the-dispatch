@@ -896,12 +896,14 @@ async function ScoringTab({ issue }: { issue: EditorIssue | undefined }) {
   return (
     <div className="explainer">
       <section className="panel hero-card">
-        <span className="chip">How scoring works</span>
-        <p className="statement">
-          Every story gets a score out of 100.{" "}
-          <span className="faint">It measures how well it fits The Dispatch: counterintuitive, under-reported, or connecting two trends.</span>{" "}
-          <span className="good-ink">You make the final call.</span>
-        </p>
+        <div className="hero-intro">
+          <span className="chip">How scoring works</span>
+          <p className="statement">
+            Every story gets a score out of 100.{" "}
+            <span className="faint">It measures how well it fits The Dispatch: counterintuitive, under-reported, or connecting two trends.</span>{" "}
+            <span className="good-ink">You make the final call.</span>
+          </p>
+        </div>
         <ol className="flow">
           <li>
             <b>Gemini reads the week.</b> Stories go to Gemini Flash in batches of 70, together with the headline of every other story this week, so it

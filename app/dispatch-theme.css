@@ -844,3 +844,22 @@ main.narrow.login h1 { margin: 2px 0 18px; }
   .filters.sliding.animated .filter-indicator, .filters.sliding a { transition: none; }
   .pool-list { animation: none; }
 }
+
+/* ---- How scoring works: hero card in two columns (statement | steps) ---- */
+.hero-card { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); column-gap: 44px; row-gap: 14px; align-items: start; padding: 30px 34px; }
+.hero-card > .chip { grid-column: 1; justify-self: start; }
+.hero-card > .statement { grid-column: 1; font-size: clamp(22px, 2.3vw, 30px); line-height: 1.28; }
+.hero-card > .flow { grid-column: 2; grid-row: 1 / span 2; align-self: center; margin: 0; padding: 0; list-style: none; counter-reset: step; display: grid; gap: 14px; max-width: none; font-size: 14px; line-height: 1.5; }
+.hero-card > .flow li { counter-increment: step; display: grid; grid-template-columns: 26px minmax(0, 1fr); column-gap: 12px; }
+.hero-card > .flow li::before { content: counter(step); width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font: 600 12px var(--font); background: var(--green-bg); color: var(--green); }
+.hero-card > .flow li > * { grid-column: 2; }
+@media (max-width: 1000px) {
+  .hero-card { grid-template-columns: minmax(0, 1fr); }
+  .hero-card > .flow { grid-column: 1; grid-row: auto; }
+}
+.hero-card > .flow li { display: block; position: relative; padding-left: 38px; min-height: 26px; }
+.hero-card > .flow li::before { position: absolute; left: 0; top: -1px; }
+.hero-card { align-items: center; }
+.hero-intro { grid-column: 1; display: grid; gap: 14px; justify-items: start; }
+.hero-intro .statement { font-size: clamp(22px, 2.3vw, 30px); line-height: 1.28; margin: 0; }
+.hero-card > .flow { grid-row: auto; align-self: center; }
