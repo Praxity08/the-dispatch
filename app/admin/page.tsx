@@ -22,6 +22,7 @@ import {
   RedraftPanel,
   RerankPanel,
   ReplyButton,
+  TestEmailPanel,
   RestoreDefaultsButton,
   RubricEditor,
   RubricUnlockForm,
@@ -363,10 +364,10 @@ async function IssueTab({ issue }: { issue: EditorIssue | undefined }) {
           <div className="side-links">
             <a href="/admin/preview" target="_blank" className="btn secondary">Preview email</a>
             {emailConfigured() ? (
-              <ActionButton op="test-email" fields={{ issue: issue.id }} label="Send test to me" pendingLabel="Sending…" />
+              <TestEmailPanel issueId={issue.id} inbox={process.env.GMAIL_USER ?? "the newsletter inbox"} />
             ) : (
               <span className="action">
-                <button className="btn secondary" disabled title="Add the Gmail app password to enable">Send test to me</button>
+                <button className="btn secondary" disabled title="Add the Gmail app password to enable">Send a test email</button>
                 <span className="muted small">Needs the Gmail app password</span>
               </span>
             )}

@@ -37,7 +37,7 @@ import { sendTestEmail } from "@/lib/send";
 import { CRITERION_KEYS, DEFAULT_RUBRIC, type Rubric } from "@/lib/rubric";
 import { loadRubric, saveRubric } from "@/lib/rubric-store";
 import { saveStyleGuide } from "@/lib/style";
-import { addSubscriber, unsubscribe } from "@/lib/subscribers";
+import { addSubscriber, normaliseEmail, unsubscribe } from "@/lib/subscribers";
 import { adminId } from "@/lib/telegram";
 import { syncTelegram } from "@/lib/review";
 import { latestIssue } from "@/lib/editor";
@@ -45,6 +45,9 @@ import { triggerJob } from "@/lib/trigger";
 import { sendTimeFor } from "@/lib/week";
 
 export type ActionState = Result | null;
+
+/** Keeps a burst of tests from denting the Gmail account's sending reputation. */
+const TEST_EMAILS_PER_HOUR = 20;
 
 export async function login(_: ActionState, formData: FormData): Promise<ActionState> {
   if (!passwordMatches(String(formData.get("password") ?? ""))) return { ok: false, message: "Wrong password." };
@@ -151,10 +154,22 @@ export async function editorAction(_: ActionState, formData: FormData): Promise<
         }
         break;
       }
-      case "test-email":
+      case "test-email": {
+        // Blank "to" = the newsletter's own inbox; otherwise any one address Shreya types in.
+        const raw = str(formData, "to").trim();
+        const to = raw ? normaliseEmail(raw) : null;
+        const [{ recent }] = await query<{ recent: number }>(
+          "select count(*)::int as recent from events where kind = 'test_email_sent' and created_at > now() - interval '1 hour'",
+        );
         if (!emailConfigured()) result = { ok: false, message: "Gmail isn't configured yet (app password missing)." };
-        else result = { ok: true, message: `Test email sent to ${(await sendTestEmail(issueId)).to}. Only you got it.` };
+        else if (raw && !to) result = { ok: false, message: "That doesn't look like an email address." };
+        else if (recent >= TEST_EMAILS_PER_HOUR) result = { ok: false, message: `That's ${TEST_EMAILS_PER_HOUR} test emails in the last hour. Try again a little later.` };
+        else {
+          const sent = await sendTestEmail(issueId, to ?? undefined);
+          result = { ok: true, message: to ? `Test sent to ${sent.to}. Subscribers didn't get anything.` : `Test sent to your inbox (${sent.to}). Subscribers didn't get anything.` };
+        }
         break;
+      }
       default:
         result = { ok: false, message: "Unknown action." };
     }

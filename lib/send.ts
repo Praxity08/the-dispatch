@@ -125,7 +125,9 @@ export async function sendIssue({ budgetMs = Infinity, week = weekStart(), now =
 /** Sends the current draft to the newsletter's own inbox only. Never touches subscribers or the issue status. */
 export async function sendTestEmail(issueId: number, to = requireEnv("GMAIL_USER")) {
   const content = await loadEmailIssue(issueId);
-  const links = { unsubscribeUrl: `${appUrl()}/unsubscribe?test=1`, webUrl: `${appUrl()}/admin/preview` };
+  // The preview link needs the editor login, so only the newsletter's own inbox gets it.
+  const own = to.toLowerCase() === requireEnv("GMAIL_USER").toLowerCase();
+  const links = { unsubscribeUrl: `${appUrl()}/unsubscribe?test=1`, webUrl: own ? `${appUrl()}/admin/preview` : undefined };
   const messageId = await sendEmail({
     to,
     subject: `[TEST] ${content.subject}`,

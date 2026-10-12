@@ -620,3 +620,16 @@ main.narrow.login h1 { margin: 2px 0 18px; }
 .rerank-changes { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .rerank-changes .chip { background: var(--surface); color: var(--text); }
 .rerank-banner .confirm.armed { flex-basis: 100%; background: var(--surface); color: var(--text); }
+
+/* ---- Send a test email (side panel) ---- */
+.test-email { display: contents; }
+.test-email.open > .btn { flex-basis: 100%; }
+.test-email-panel { flex-basis: 100%; background: var(--bg); border-radius: 18px; padding: 12px; display: grid; gap: 8px; animation: dispatch-reveal .24s ease both; }
+.test-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.test-row .btn { width: auto !important; flex: none; }
+.side-links .test-row .btn.primary { background: var(--ink-btn); color: var(--surface); }
+.test-row .muted.small { overflow-wrap: anywhere; }
+.test-row input { flex: 1 1 140px; min-width: 0; background: var(--surface); }
+.test-or { margin: 2px 0 0; font-size: 12px; color: var(--muted); }
+.test-email-panel .result { margin: 0; font-size: 13px; }
+.test-email > .btn { flex: 1 1 120px; }

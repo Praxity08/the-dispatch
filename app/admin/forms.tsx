@@ -557,3 +557,34 @@ export function RerankPanel({ issueId, summary }: { issueId: number; summary: st
     </form>
   );
 }
+
+/** "Send a test email": one tap to the newsletter inbox, or type any one address. Never reaches subscribers. */
+export function TestEmailPanel({ issueId, inbox }: { issueId: number; inbox: string }) {
+  const [open, setOpen] = useState(false);
+  const [state, action, pending] = useActionState(editorAction, null);
+  const [sentTo, setSentTo] = useState<"me" | "other" | null>(null);
+  return (
+    <div className={`test-email${open ? " open" : ""}`}>
+      <button type="button" className="btn secondary" onClick={() => setOpen((v) => !v)} aria-expanded={open}>
+        {open ? "Close" : "Send a test email"}
+      </button>
+      {open && (
+        <div className="test-email-panel">
+          <form action={action} onSubmit={() => setSentTo("me")} className="test-row">
+            <Hidden fields={{ op: "test-email", issue: issueId }} />
+            <button className="btn primary" disabled={pending}>{pending && sentTo === "me" ? "Sending…" : "Send to me"}</button>
+            <span className="muted small">{inbox}</span>
+          </form>
+          <p className="test-or">or to someone else</p>
+          <form action={action} onSubmit={() => setSentTo("other")} className="test-row">
+            <Hidden fields={{ op: "test-email", issue: issueId }} />
+            <input type="email" name="to" placeholder="name@example.com" required aria-label="Send the test to this email address" />
+            <button className="btn primary" disabled={pending}>{pending && sentTo === "other" ? "Sending…" : "Send"}</button>
+          </form>
+          <p className="muted small">Marked [TEST] and sent only to that address. Subscribers and the issue aren&apos;t touched.</p>
+          <Result state={state} />
+        </div>
+      )}
+    </div>
+  );
+}
