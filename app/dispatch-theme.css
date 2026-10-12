@@ -806,3 +806,9 @@ main.narrow.login h1 { margin: 2px 0 18px; }
   .rail:hover .rail-inner, .rail:focus-within .rail-inner { box-shadow: var(--shadow); }
 }
 @media (prefers-reduced-motion: reduce) { .dash, .rail-inner { transition: none; } }
+
+/* ---- Test email: choose the sender ---- */
+.test-via { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.via-pill { border: 0; cursor: pointer; border-radius: var(--r-pill); padding: 5px 12px; font: 500 12.5px var(--font); background: var(--surface); color: var(--text-2); }
+.via-pill.on { background: var(--ink-btn); color: var(--surface); }
+.test-note { margin: 0; background: var(--blue-bg); color: var(--blue); border-radius: 12px; padding: 8px 10px; line-height: 1.4; }

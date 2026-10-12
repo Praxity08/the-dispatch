@@ -559,10 +559,24 @@ export function RerankPanel({ issueId, summary }: { issueId: number; summary: st
 }
 
 /** "Send a test email": one tap to the newsletter inbox, or type any one address. Never reaches subscribers. */
-export function TestEmailPanel({ issueId, inbox }: { issueId: number; inbox: string }) {
+export function TestEmailPanel({
+  issueId,
+  inbox,
+  providers,
+  defaultProvider,
+}: {
+  issueId: number;
+  inbox: string;
+  /** Senders that are set up; with more than one, Shreya picks which sends the test. */
+  providers: { key: "gmail" | "resend"; label: string; me: string; note?: string }[];
+  defaultProvider: "gmail" | "resend";
+}) {
   const [open, setOpen] = useState(false);
   const [state, action, pending] = useActionState(editorAction, null);
   const [sentTo, setSentTo] = useState<"me" | "other" | null>(null);
+  const [via, setVia] = useState(providers.some((p) => p.key === defaultProvider) ? defaultProvider : providers[0]?.key ?? "gmail");
+  const chosen = providers.find((p) => p.key === via);
+  const me = chosen?.me ?? inbox;
   return (
     <div className={`test-email${open ? " open" : ""}`}>
       <button type="button" className="btn secondary" onClick={() => setOpen((v) => !v)} aria-expanded={open}>
@@ -570,14 +584,32 @@ export function TestEmailPanel({ issueId, inbox }: { issueId: number; inbox: str
       </button>
       {open && (
         <div className="test-email-panel">
+          {providers.length > 1 && (
+            <div className="test-via" role="radiogroup" aria-label="Send the test with">
+              <span className="muted small">Send with</span>
+              {providers.map((p) => (
+                <button
+                  key={p.key}
+                  type="button"
+                  role="radio"
+                  aria-checked={via === p.key}
+                  className={`via-pill${via === p.key ? " on" : ""}`}
+                  onClick={() => setVia(p.key)}
+                >
+                  {p.label}
+                </button>
+              ))}
+            </div>
+          )}
+          {chosen?.note && <p className="test-note small">{chosen.note}</p>}
           <form action={action} onSubmit={() => setSentTo("me")} className="test-row">
-            <Hidden fields={{ op: "test-email", issue: issueId }} />
+            <Hidden fields={{ op: "test-email", issue: issueId, via }} />
             <button className="btn primary" disabled={pending}>{pending && sentTo === "me" ? "Sending…" : "Send to me"}</button>
-            <span className="muted small">{inbox}</span>
+            <span className="muted small">{me}</span>
           </form>
           <p className="test-or">or to someone else</p>
           <form action={action} onSubmit={() => setSentTo("other")} className="test-row">
-            <Hidden fields={{ op: "test-email", issue: issueId }} />
+            <Hidden fields={{ op: "test-email", issue: issueId, via }} />
             <input type="email" name="to" placeholder="name@example.com" required aria-label="Send the test to this email address" />
             <button className="btn primary" disabled={pending}>{pending && sentTo === "other" ? "Sending…" : "Send"}</button>
           </form>

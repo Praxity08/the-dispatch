@@ -4,7 +4,7 @@ import { isRubricUnlocked, RUBRIC_UNLOCK_MINUTES_LABEL, requireAdmin, samplePass
 import { query } from "@/lib/db";
 import { editExamples, lineupDrift } from "@/lib/draft";
 import { EDITABLE, type EditorIssue, type EditorItem, isLive, latestIssue, loadEditorItems, readiness } from "@/lib/editor";
-import { emailConfigured, emailProvider, PROVIDER_INFO } from "@/lib/email";
+import { emailConfigured, emailProvider, PROVIDER_INFO, resendTestMode } from "@/lib/email";
 import { appUrl } from "@/lib/env";
 import { COMMENTARY, CRITERIA, CRITERION_KEYS, type Criterion, criterionPoints, SCORING, SELECTION, snapshotRubric, UNDER_REPORTED_SCALE } from "@/lib/rubric";
 import { loadRubric, rubricHistory } from "@/lib/rubric-store";
@@ -415,8 +415,25 @@ async function IssueTab({ issue }: { issue: EditorIssue | undefined }) {
           {(issue.status === "sending" || issue.status === "sent") && <DeliveryStats issueId={issue.id} />}
           <div className="side-links">
             <a href="/admin/preview" target="_blank" className="btn secondary">Preview email</a>
-            {emailConfigured() ? (
-              <TestEmailPanel issueId={issue.id} inbox={process.env.GMAIL_USER ?? "the newsletter inbox"} />
+            {emailConfigured("gmail") || emailConfigured("resend") ? (
+              <TestEmailPanel
+                issueId={issue.id}
+                inbox={process.env.GMAIL_USER ?? "the newsletter inbox"}
+                defaultProvider={emailProvider()}
+                providers={[
+                  ...(emailConfigured("gmail") ? [{ key: "gmail" as const, label: "Gmail", me: process.env.GMAIL_USER ?? "the newsletter inbox" }] : []),
+                  ...(emailConfigured("resend")
+                    ? [{
+                        key: "resend" as const,
+                        label: "Resend",
+                        me: resendTestMode() && process.env.RESEND_TEST_TO ? process.env.RESEND_TEST_TO : process.env.GMAIL_USER ?? "the newsletter inbox",
+                        note: resendTestMode()
+                          ? `Resend is in test mode until a domain is verified: it sends from onboarding@resend.dev and only reaches ${process.env.RESEND_TEST_TO ?? "your Resend account's email"}.`
+                          : undefined,
+                      }]
+                    : []),
+                ]}
+              />
             ) : (
               <span className="action">
                 <button className="btn secondary" disabled title="Add the Gmail app password to enable">Send a test email</button>

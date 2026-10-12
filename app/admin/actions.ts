@@ -30,7 +30,7 @@ import {
   swapIn,
   undoSwap,
 } from "@/lib/editor";
-import { emailConfigured } from "@/lib/email";
+import { emailConfigured, type EmailProvider, emailProvider, PROVIDER_INFO, resendTestMode } from "@/lib/email";
 import { addStoryFromLink } from "@/lib/manual";
 import { resetDraft } from "@/lib/redraft";
 import { sendTestEmail } from "@/lib/send";
@@ -161,12 +161,16 @@ export async function editorAction(_: ActionState, formData: FormData): Promise<
         const [{ recent }] = await query<{ recent: number }>(
           "select count(*)::int as recent from events where kind = 'test_email_sent' and created_at > now() - interval '1 hour'",
         );
-        if (!emailConfigured()) result = { ok: false, message: "Gmail isn't configured yet (app password missing)." };
+        const via: EmailProvider = str(formData, "via") === "resend" ? "resend" : str(formData, "via") === "gmail" ? "gmail" : emailProvider();
+        const label = PROVIDER_INFO[via].label;
+        if (!emailConfigured(via)) result = { ok: false, message: `${label} isn't set up yet.` };
         else if (raw && !to) result = { ok: false, message: "That doesn't look like an email address." };
         else if (recent >= TEST_EMAILS_PER_HOUR) result = { ok: false, message: `That's ${TEST_EMAILS_PER_HOUR} test emails in the last hour. Try again a little later.` };
-        else {
-          const sent = await sendTestEmail(issueId, to ?? undefined);
-          result = { ok: true, message: to ? `Test sent to ${sent.to}. Subscribers didn't get anything.` : `Test sent to your inbox (${sent.to}). Subscribers didn't get anything.` };
+        else if (via === "resend" && resendTestMode() && to && process.env.RESEND_TEST_TO && to !== process.env.RESEND_TEST_TO.toLowerCase()) {
+          result = { ok: false, message: `Resend is in test mode (no domain yet), so it only delivers to ${process.env.RESEND_TEST_TO}. Use "Send to me", or send this one with Gmail.` };
+        } else {
+          const sent = await sendTestEmail(issueId, to ?? undefined, via);
+          result = { ok: true, message: `Test sent with ${label} to ${sent.to}. Subscribers didn't get anything.` };
         }
         break;
       }

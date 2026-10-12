@@ -1,7 +1,7 @@
 // Thursday send. The one hard rule: an issue is only ever emailed to subscribers if Shreya confirmed it
 // in Telegram (status 'confirmed'). There is no other path to 'sending'.
 import { logEvent, query } from "./db";
-import { dryRun, emailConfigured, emailProvider, loadEmailIssue, PROVIDER_INFO, renderHtml, renderText, sendBatchSize, sendEmail, sendEmails } from "./email";
+import { dryRun, emailConfigured, type EmailProvider, emailProvider, loadEmailIssue, PROVIDER_INFO, renderHtml, renderText, resendTestMode, sendBatchSize, sendEmail, sendEmails } from "./email";
 import { appUrl, requireEnv } from "./env";
 import { oneClickUnsubscribeUrl, unsubscribePageUrl } from "./subscribers";
 import { esc, sendHtml } from "./telegram";
@@ -125,7 +125,9 @@ export async function sendIssue({ budgetMs = Infinity, week = weekStart(), now =
 }
 
 /** Sends the current draft to the newsletter's own inbox only. Never touches subscribers or the issue status. */
-export async function sendTestEmail(issueId: number, to = requireEnv("GMAIL_USER")) {
+export async function sendTestEmail(issueId: number, to?: string, provider: EmailProvider = emailProvider()) {
+  // "Send to me" through Resend's test mode goes to the Resend account's own address (the only one it reaches).
+  to ??= provider === "resend" && resendTestMode() && process.env.RESEND_TEST_TO ? process.env.RESEND_TEST_TO : requireEnv("GMAIL_USER");
   const content = await loadEmailIssue(issueId);
   // The preview link needs the editor login, so only the newsletter's own inbox gets it.
   const own = to.toLowerCase() === requireEnv("GMAIL_USER").toLowerCase();
@@ -135,7 +137,7 @@ export async function sendTestEmail(issueId: number, to = requireEnv("GMAIL_USER
     subject: `[TEST] ${content.subject}`,
     html: renderHtml(content, links),
     text: renderText(content, links),
-  });
-  await logEvent("test_email_sent", { to }, issueId);
+  }, provider);
+  await logEvent("test_email_sent", { to, provider }, issueId);
   return { to, messageId };
 }

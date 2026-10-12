@@ -210,11 +210,19 @@ export const PROVIDER_INFO: Record<EmailProvider, { label: string; capacity: str
   resend: { label: "Resend", capacity: "100 a day on the free plan; no daily cap on Pro (50,000 a month)" },
 };
 
-export function emailConfigured(): boolean {
+export function emailConfigured(provider: EmailProvider = emailProvider()): boolean {
   if (dryRun()) return true;
-  return emailProvider() === "resend"
+  return provider === "resend"
     ? !!process.env.RESEND_API_KEY && !!process.env.RESEND_FROM
     : !!process.env.GMAIL_USER && !!process.env.GMAIL_APP_PASSWORD;
+}
+
+/**
+ * Resend's test mode: until a domain is verified, mail can only come from onboarding@resend.dev and only
+ * reaches the address the Resend account was created with (RESEND_TEST_TO).
+ */
+export function resendTestMode(): boolean {
+  return /@resend\.dev>?\s*$/i.test(process.env.RESEND_FROM ?? "");
 }
 
 /** Where replies (and "unsubscribe" emails) should land: the Gmail inbox that the dashboard reads. */
@@ -229,16 +237,16 @@ function unsubscribeHeaders(oneClickUrl: string | undefined): Record<string, str
 }
 
 /** Sends one email (tests, single sends). Throws on failure. */
-export async function sendEmail(msg: OutgoingEmail): Promise<string> {
-  const [outcome] = await sendEmails([msg]);
+export async function sendEmail(msg: OutgoingEmail, provider: EmailProvider = emailProvider()): Promise<string> {
+  const [outcome] = await sendEmails([msg], { provider });
   if (!outcome.ok) throw new Error(outcome.error);
   return outcome.id;
 }
 
 /** Sends many emails with the configured provider; one outcome per message, in order. */
-export async function sendEmails(msgs: OutgoingEmail[], opts: { idempotencyKey?: string } = {}): Promise<SendOutcome[]> {
+export async function sendEmails(msgs: OutgoingEmail[], opts: { idempotencyKey?: string; provider?: EmailProvider } = {}): Promise<SendOutcome[]> {
   if (!msgs.length) return [];
-  return emailProvider() === "resend" ? sendWithResend(msgs, opts.idempotencyKey) : sendWithGmail(msgs);
+  return (opts.provider ?? emailProvider()) === "resend" ? sendWithResend(msgs, opts.idempotencyKey) : sendWithGmail(msgs);
 }
 
 /** How many messages the send loop should hand over at once. */
